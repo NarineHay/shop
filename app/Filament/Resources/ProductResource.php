@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
+use App\Filament\Resources\ProductResource\RelationManagers\ImagesRelationManager;
 use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
@@ -30,7 +31,8 @@ class ProductResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
-     public static function form(Form $form): Form
+
+    public static function form(Forms\Form $form): Forms\Form
     {
         return $form->schema([
             Group::make([
@@ -49,16 +51,6 @@ class ProductResource extends Resource
                 Toggle::make('active')
                     ->label('Активен')
                     ->default(true),
-
-                FileUpload::make('images')
-                    ->label('Изображения')
-                    ->multiple()
-                    ->directory('products')
-                    ->reorderable()
-                    ->preserveFilenames()
-                    ->image()
-                    ->enableOpen()
-                    ->enableDownload(),
 
                 Tabs::make('Translations')->tabs([
                     self::langTab('ru', 'Русский'),
@@ -114,7 +106,7 @@ class ProductResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            ImagesRelationManager::class,
         ];
     }
 
