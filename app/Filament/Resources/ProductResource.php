@@ -1,56 +1,46 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
-use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Filament\Resources\ProductResource\RelationManagers\ImagesRelationManager;
 use App\Models\Category;
 use App\Models\Product;
-use Filament\Forms;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Group;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Toggle;
+use Filament\Forms\Components\{Group, Select, Tabs, TextInput, Textarea, Toggle};
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Columns\{TextColumn, ToggleColumn};
 use Filament\Tables\Table;
+use Filament\Forms\Components\Tabs\Tab;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\EditAction;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
-
-    public static function form(Forms\Form $form): Forms\Form
+    public static function form(Form $form): Form
     {
         return $form->schema([
             Group::make([
                 Select::make('category_id')
                     ->label('Категория')
-                    ->options(function () {
-                        return Category::with('translations')->get()
-                            ->mapWithKeys(fn ($cat) => [
-                                $cat->id => $cat->translation()?->name ?? '(без названия)',
-                            ]);
-                    })
+                    ->options(fn () => Category::with('translations')->get()->mapWithKeys(
+                        fn ($cat) => [$cat->id => $cat->translation()?->name ?? '(без названия)']
+                    ))
                     ->searchable()
                     ->preload()
                     ->required(),
 
-                Toggle::make('active')
-                    ->label('Активен')
-                    ->default(true),
+                TextInput::make('price')
+                    ->label('Цена')
+                    ->numeric()
+                    ->integer()
+                    ->required()
+                    ->suffix(' ֏'),
+
+                Toggle::make('active')->label('Активен')->default(true),
 
                 Tabs::make('Translations')->tabs([
                     self::langTab('ru', 'Русский'),
@@ -66,15 +56,18 @@ class ProductResource extends Resource
         return Tab::make($label)->schema([
             TextInput::make("translations.{$locale}.name")
                 ->label('Название')
-                ->required(),
+                ->required()
+                ->default(fn($record) => $record?->translation($locale)?->name),
 
             TextInput::make("translations.{$locale}.slug")
                 ->label('Slug')
-                ->required(),
+                ->required()
+                ->default(fn($record) => $record?->translation($locale)?->slug),
 
             Textarea::make("translations.{$locale}.description")
                 ->label('Описание')
-                ->rows(4),
+                ->rows(4)
+                ->default(fn($record) => $record?->translation($locale)?->description),
         ]);
     }
 
@@ -83,21 +76,21 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
-                TextColumn::make('name')
+                TextColumn::make('translation_name')
                     ->label('Название')
-                    ->getStateUsing(fn ($record) => $record->translation()?->name ?? '(без названия)')
                     ->searchable(),
+                TextColumn::make('price')
+                    ->label('Цена')
+                    ->suffix(' ֏'),
                 ToggleColumn::make('active')->label('Активен'),
             ])
-            ->filters([
-                //
-            ])
+            ->filters([])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\DeleteBulkAction::make(),
+             ->bulkActions([
+                DeleteBulkAction::make(),
             ])
             ->defaultSort('id', 'desc');
     }
@@ -109,6 +102,8 @@ class ProductResource extends Resource
             ImagesRelationManager::class,
         ];
     }
+
+
 
     public static function getPages(): array
     {

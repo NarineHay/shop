@@ -13,6 +13,21 @@ class ProductImage extends Model
     {
         return $this->belongsTo(Product::class);
     }
-    
+
+    public function getPathUrlAttribute(): ?string
+    {
+        return $this->path ? asset('storage/' . $this->path) : null;
+    }
+
+    protected static function booted()
+    {
+        static::saving(function ($image) {
+            if ($image->is_main) {
+                static::where('product_id', $image->product_id)
+                    ->where('id', '!=', $image->id)
+                    ->update(['is_main' => false]);
+            }
+        });
+    }
 
 }

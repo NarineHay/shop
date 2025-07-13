@@ -3,23 +3,16 @@
 namespace App\Filament\Resources\ProductResource\RelationManagers;
 
 use App\Models\ProductImage;
+use Filament\Tables;
 use Filament\Forms;
+use Illuminate\Database\Eloquent\Model;
+use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
-use Filament\Tables\Actions\CreateAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Columns\IconColumn;
-use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Actions\{CreateAction, EditAction, DeleteAction, Action};
+use Filament\Tables\Columns\{ImageColumn, IconColumn};
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class ImagesRelationManager extends RelationManager
 {
@@ -35,8 +28,7 @@ class ImagesRelationManager extends RelationManager
                 ->preserveFilenames()
                 ->required(),
 
-            Toggle::make('is_main')
-                ->label('Главное изображение'),
+            Toggle::make('is_main')->label('Главное изображение'),
         ]);
     }
 
@@ -44,13 +36,8 @@ class ImagesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                ImageColumn::make('path')
-                    ->label('Превью')
-                    ->circular(),
-
-                IconColumn::make('is_main')
-                    ->label('Главное')
-                    ->boolean(),
+                ImageColumn::make('path_url')->label('Превью')->circular(),
+                IconColumn::make('is_main')->label('Главное')->boolean(),
             ])
             ->headerActions([
                 CreateAction::make(),
@@ -67,9 +54,6 @@ class ImagesRelationManager extends RelationManager
                         ProductImage::where('product_id', $record->product_id)->update(['is_main' => false]);
                         $record->update(['is_main' => true]);
                     }),
-            ])
-            ->bulkActions([
-                DeleteBulkAction::make(),
             ]);
     }
 }

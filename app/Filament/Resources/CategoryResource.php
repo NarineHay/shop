@@ -3,9 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CategoryResource\Pages;
-use App\Filament\Resources\CategoryResource\RelationManagers;
 use App\Models\Category;
-use Filament\Forms;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -79,7 +77,6 @@ class CategoryResource extends Resource
                 TextColumn::make('name')
                     ->label('Название')
                     ->getStateUsing(fn ($record) => $record->translation()?->name ?? '(нет названия)')
-                    ->sortable()
                     ->searchable(),
 
                 ToggleColumn::make('active')->label('Активна'),
