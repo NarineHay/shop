@@ -22,13 +22,13 @@ class ImagesRelationManager extends RelationManager
     {
         return $form->schema([
             FileUpload::make('path')
-                ->label('Изображение')
+                ->label('Պատկեր')
                 ->image()
                 ->directory('products')
                 ->preserveFilenames()
                 ->required(),
 
-            Toggle::make('is_main')->label('Главное изображение'),
+            Toggle::make('is_main')->label('Գլխավոր պատկեր'),
         ]);
     }
 
@@ -36,8 +36,8 @@ class ImagesRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                ImageColumn::make('path_url')->label('Превью')->circular(),
-                IconColumn::make('is_main')->label('Главное')->boolean(),
+                ImageColumn::make('path_url')->label('Նախադիտում')->circular(),
+                IconColumn::make('is_main')->label('Գլխավոր')->boolean(),
             ])
             ->headerActions([
                 CreateAction::make(),
@@ -46,7 +46,7 @@ class ImagesRelationManager extends RelationManager
                 EditAction::make(),
                 DeleteAction::make(),
                 Action::make('setAsMain')
-                    ->label('Сделать главным')
+                    ->label('Դարձրեք այն գլխավորը')
                     ->icon('heroicon-o-star')
                     ->requiresConfirmation()
                     ->visible(fn (Model $record) => !$record->is_main)
@@ -55,5 +55,21 @@ class ImagesRelationManager extends RelationManager
                         $record->update(['is_main' => true]);
                     }),
             ]);
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Պատկեր';
+    }
+
+    // Также можешь переопределить заголовок страницы, если нужно:
+    public static function getModelLabel(): string
+    {
+        return 'Պատկեր';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Պատկերներ';
     }
 }

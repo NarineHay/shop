@@ -30,10 +30,10 @@ class CategoryResource extends Resource
         return $form->schema([
             Group::make([
                 Select::make('parent_id')
-                    ->label('Родительская категория')
+                    ->label('Ծնողի կատեգորիա')
                     ->options(function () {
                         return Category::with('translations')->get()->mapWithKeys(function ($cat) {
-                            return [$cat->id => $cat->translation()?->name ?? '(без названия)'];
+                            return [$cat->id => $cat->translation('am')?->name ?? '(без названия)'];
                         });
                     })
                     ->searchable()
@@ -41,7 +41,7 @@ class CategoryResource extends Resource
                     ->nullable(),
 
                 Toggle::make('active')
-                    ->label('Активна')
+                    ->label('Ակտիվ')
                     ->default(true),
 
                 Tabs::make('Translations')
@@ -58,7 +58,7 @@ class CategoryResource extends Resource
     {
         return Tab::make($label)->schema([
             TextInput::make("translations.{$locale}.name")
-                ->label("Название")
+                ->label("Անվանում")
                 ->required(),
 
             TextInput::make("translations.{$locale}.slug")
@@ -75,11 +75,11 @@ class CategoryResource extends Resource
                 TextColumn::make('id')->sortable()->label('ID'),
 
                 TextColumn::make('name')
-                    ->label('Название')
-                    ->getStateUsing(fn ($record) => $record->translation()?->name ?? '(нет названия)')
+                    ->label('Անվանում')
+                    ->getStateUsing(fn ($record) => $record->translation('am')?->name ?? '(нет названия)')
                     ->searchable(),
 
-                ToggleColumn::make('active')->label('Активна'),
+                ToggleColumn::make('active')->label('Ակտիվ'),
             ])
             ->filters([])
             ->actions([
@@ -100,5 +100,22 @@ class CategoryResource extends Resource
             'create' => Pages\CreateCategory::route('/create'),
             'edit' => Pages\EditCategory::route('/{record}/edit'),
         ];
+    }
+
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Կատեգորիա';
+    }
+
+    // Также можешь переопределить заголовок страницы, если нужно:
+    public static function getModelLabel(): string
+    {
+        return 'Կատեգորիա';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Կատեգորիաներ';
     }
 }
