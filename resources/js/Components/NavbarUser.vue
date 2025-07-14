@@ -4,7 +4,7 @@ import { onMounted } from 'vue'
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
-  await import('../../../assets/js/main.js')
+ 
 })
 </script>
 
