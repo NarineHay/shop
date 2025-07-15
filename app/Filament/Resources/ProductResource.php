@@ -19,28 +19,29 @@ use Illuminate\Database\Eloquent\Builder;
 class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form->schema([
             Group::make([
                 Select::make('category_id')
-                    ->label('Категория')
+                    ->label('Կատեգորիա')
                     ->options(fn () => Category::with('translations')->get()->mapWithKeys(
-                        fn ($cat) => [$cat->id => $cat->translation()?->name ?? '(без названия)']
+                        fn ($cat) => [$cat->id => $cat->translation('am')?->name ?? '(без названия)']
                     ))
                     ->searchable()
                     ->preload()
                     ->required(),
 
                 TextInput::make('price')
-                    ->label('Цена')
+                    ->label('Արժեք')
                     ->numeric()
                     ->integer()
                     ->required()
                     ->suffix(' ֏'),
 
-                Toggle::make('active')->label('Активен')->default(true),
+                Toggle::make('active')->label('Ակտիվ')->default(true),
 
                 Tabs::make('Translations')->tabs([
                     self::langTab('ru', 'Русский'),
@@ -55,7 +56,7 @@ class ProductResource extends Resource
     {
         return Tab::make($label)->schema([
             TextInput::make("translations.{$locale}.name")
-                ->label('Название')
+                ->label('Անվանում')
                 ->required()
                 ->default(fn($record) => $record?->translation($locale)?->name),
 
@@ -65,7 +66,7 @@ class ProductResource extends Resource
                 ->default(fn($record) => $record?->translation($locale)?->slug),
 
             Textarea::make("translations.{$locale}.description")
-                ->label('Описание')
+                ->label('Նկարագրություն')
                 ->rows(4)
                 ->default(fn($record) => $record?->translation($locale)?->description),
         ]);
@@ -76,13 +77,19 @@ class ProductResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('id')->sortable(),
-                TextColumn::make('translation_name')
-                    ->label('Название')
+                // TextColumn::make('translation_name')
+                //     ->label('Անվանում')
+                //     ->searchable(),
+
+                TextColumn::make('name')
+                    ->label('Անվանում')
+                    ->getStateUsing(fn ($record) => $record->translation('am')?->name ?? '(нет названия)')
                     ->searchable(),
+
                 TextColumn::make('price')
-                    ->label('Цена')
+                    ->label('Արժեք')
                     ->suffix(' ֏'),
-                ToggleColumn::make('active')->label('Активен'),
+                ToggleColumn::make('active')->label('Ակտիվ'),
             ])
             ->filters([])
             ->actions([
@@ -113,4 +120,22 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+
+
+    public static function getNavigationLabel(): string
+    {
+        return 'Ապրանք';
+    }
+
+    // Также можешь переопределить заголовок страницы, если нужно:
+    public static function getModelLabel(): string
+    {
+        return 'Ապրանք';
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return 'Ապրանքներ';
+    }
+
 }
