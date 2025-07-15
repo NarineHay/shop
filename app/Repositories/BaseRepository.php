@@ -1,0 +1,62 @@
+<?php
+
+namespace App\Repositories;
+
+use App\Interfaces\BaseInterface;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Collection;
+
+abstract class BaseRepository implements BaseInterface
+{
+    protected Model $model;
+
+    public function __construct(Model $model)
+    {
+        $this->model = $model;
+    }
+
+    public function getAll(array $with = []): Collection
+    {
+        return $this->model->with($with)->get();
+    }
+
+
+    public function getById(int $id, array $with = []): Model
+    {
+        return $this->model->with($with)->findOrFail($id);
+    }
+
+    public function findBy(array $conditions, array $with = []): ?Model
+    {
+        return $this->model->with($with)->where($conditions)->first();
+    }
+
+    public function create(array $data): Model
+    {
+        return $this->model->create($data);
+    }
+
+    public function update(int $id, array $data): bool
+    {
+        return $this->getById($id)->update($data);
+    }
+
+    public function delete(int $id): bool
+    {
+        return $this->getById($id)->delete();
+    }
+
+    public function getActiveRows(array $with = []): Collection
+    {
+        return $this->model->with($with)
+            ->where('active', 1)
+            ->get();
+    }
+
+    public function getByFilter(array $conditions = [], array $with = []): Collection
+    {
+        return $this->model->with($with)
+            ->where($conditions)
+            ->get();
+    }
+}
