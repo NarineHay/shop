@@ -12,6 +12,7 @@ class Product extends Model
 {
     use SoftDeletes;
     protected $guarded = [];
+    protected $appends = ['translation_lang'];
 
     public function category(): BelongsTo
     {
@@ -26,6 +27,13 @@ class Product extends Model
     public function translation($locale = null)
     {
         $locale = $locale ?? app()->getLocale();
+        return $this->translations->firstWhere('locale', $locale);
+    }
+
+    public function getTranslationLangAttribute()
+    {
+        $locale = app()->getLocale();
+        
         return $this->translations->firstWhere('locale', $locale);
     }
 

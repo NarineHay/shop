@@ -1,0 +1,18 @@
+<?php
+
+namespace App\Interfaces;
+
+use Illuminate\Database\Eloquent\Model;
+
+interface BaseInterface
+{
+    public function getAll(array $with = []): mixed;
+    public function getById(int $id, array $with = []): Model;
+    public function findBy(array $conditions, array $with = []): ?Model;
+    public function create(array $data): Model;
+    public function update(int $id, array $data): bool;
+    public function delete(int $id): bool;
+    public function getActiveRows(array $with = []): mixed;
+    public function getByFilter(array $conditions = [], array $with = []): mixed;
+
+}

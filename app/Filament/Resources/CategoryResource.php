@@ -33,7 +33,7 @@ class CategoryResource extends Resource
                     ->label('Ծնողի կատեգորիա')
                     ->options(function () {
                         return Category::with('translations')->get()->mapWithKeys(function ($cat) {
-                            return [$cat->id => $cat->translation('am')?->name ?? '(без названия)'];
+                            return [$cat->id => $cat->translation('hy')?->name ?? '(без названия)'];
                         });
                     })
                     ->searchable()
@@ -47,7 +47,7 @@ class CategoryResource extends Resource
                 Tabs::make('Translations')
                     ->tabs([
                         self::makeLangTab('ru', 'Русский'),
-                        self::makeLangTab('am', 'Հայերեն'),
+                        self::makeLangTab('hy', 'Հայերեն'),
                         self::makeLangTab('en', 'English'),
                     ])
             ])
@@ -76,7 +76,7 @@ class CategoryResource extends Resource
 
                 TextColumn::make('name')
                     ->label('Անվանում')
-                    ->getStateUsing(fn ($record) => $record->translation('am')?->name ?? '(нет названия)')
+                    ->getStateUsing(fn ($record) => $record->translation('hy')?->name ?? '(нет названия)')
                     ->searchable(),
 
                 ToggleColumn::make('active')->label('Ակտիվ'),
