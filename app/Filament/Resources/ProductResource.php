@@ -28,7 +28,7 @@ class ProductResource extends Resource
                 Select::make('category_id')
                     ->label('Կատեգորիա')
                     ->options(fn () => Category::with('translations')->get()->mapWithKeys(
-                        fn ($cat) => [$cat->id => $cat->translation('am')?->name ?? '(без названия)']
+                        fn ($cat) => [$cat->id => $cat->translation('hy')?->name ?? '(без названия)']
                     ))
                     ->searchable()
                     ->preload()
@@ -45,7 +45,7 @@ class ProductResource extends Resource
 
                 Tabs::make('Translations')->tabs([
                     self::langTab('ru', 'Русский'),
-                    self::langTab('am', 'Հայերեն'),
+                    self::langTab('hy', 'Հայերեն'),
                     self::langTab('en', 'English'),
                 ]),
             ]),
@@ -83,7 +83,7 @@ class ProductResource extends Resource
 
                 TextColumn::make('name')
                     ->label('Անվանում')
-                    ->getStateUsing(fn ($record) => $record->translation('am')?->name ?? '(нет названия)')
+                    ->getStateUsing(fn ($record) => $record->translation('hy')?->name ?? '(нет названия)')
                     ->searchable(),
 
                 TextColumn::make('price')

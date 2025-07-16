@@ -15,10 +15,14 @@ class WelcomeController extends Controller
 
     public function index()
     {
-        
-        $products = $this->service->getActiveRows(['category']);
-        dd($products);
-        return Inertia::render('Products/Index', compact('products'));
+
+        $products = $this->service->getActiveRows(['category.translations', 'images']);
+
+        return Inertia::render('Welcome',
+                    [
+                        'products' => $products
+                    ]
+                );
     }
 
     public function show($id)
