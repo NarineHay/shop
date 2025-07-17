@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ProductImage extends Model
 {
     protected $guarded = [];
-
+    protected $appends = ['path_url'];
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
@@ -29,5 +29,6 @@ class ProductImage extends Model
             }
         });
     }
+
 
 }

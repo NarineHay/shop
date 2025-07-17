@@ -1,6 +1,6 @@
 <script setup>
 import { Link } from '@inertiajs/vue3'
-
+import { onMounted } from 'vue'
 // layout для гостей
 import Layout from '@/Layouts/GuestLayout.vue'
 import sliderImg1 from '../../assets/img/slider/slider1-home1.jpg';
@@ -9,6 +9,20 @@ import sliderImg2 from '../../assets/img/slider/slider2-home1.jpg';
 defineOptions({
   layout: Layout
 })
+
+const props = defineProps({
+    //   categories: Array,
+    products: Array,
+})
+
+onMounted(() => {
+    console.log(888888)
+  console.log(props.products, 11111)
+})
+
+
+
+
 </script>
 
 
@@ -139,11 +153,10 @@ defineOptions({
                 <div class="tab-pane fade show active" id="one" role="tabpanel" aria-labelledby="one-tab">
                     <div class="product-gallary-wrapper">
                         <div class="product-gallary-active owl-carousel owl-arrow-style product-spacing">
-                            <div class="product-item">
+                            <div v-for="product in props.products" class="product-item">
                                 <div class="product-thumb">
                                     <a href="product-details.html">
-                                        <img src="../../assets/img/product/product-1.jpg" class="pri-img" alt="">
-                                        <img src="../../assets/img/product/product-2.jpg" class="sec-img" alt="">
+                                        <img v-for="img in product.images" :src="img.path_url" :class="img.is_main ? 'pri-img' : 'sec-img'" alt="">
                                     </a>
                                     <div class="box-label">
                                         <div class="label-product label_new">
@@ -156,256 +169,21 @@ defineOptions({
                                         <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
                                     </div>
                                 </div>
-                                <div class="product-caption">
+                                <div class="product-caption ">
                                     <div class="manufacture-product">
                                         <p><a href="shop-grid-left-sidebar.html">apple</a></p>
                                     </div>
                                     <div class="product-name">
-                                        <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
+                                        <h4><a href="product-details.html">{{product.translation_lang?.name}}</a></h4>
                                     </div>
-                                    <div class="ratings">
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                    </div>
+
                                     <div class="price-box">
-                                        <span class="regular-price">£30.31</span>
+                                        <span class="regular-price">{{product.price}} ֏</span>
                                     </div>
                                     <button class="btn-cart" type="button">add to cart</button>
                                 </div>
-                            </div><!-- </div> end single item -->
-                            <div class="product-item">
-                                <div class="product-thumb">
-                                    <a href="product-details.html">
-                                        <img src="../../assets/img/product/product-3.jpg" class="pri-img" alt="">
-                                        <img src="../../assets/img/product/product-4.jpg" class="sec-img" alt="">
-                                    </a>
-                                    <div class="box-label">
-                                        <div class="label-product label_new">
-                                                <span>new</span>
-                                            </div>
-                                        <div class="label-product label_sale">
-                                            <span>-10%</span>
-                                        </div>
-                                    </div>
-                                    <div class="action-links">
-                                        <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                        <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                        <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="manufacture-product">
-                                        <p><a href="shop-grid-left-sidebar.html">jony</a></p>
-                                    </div>
-                                    <div class="product-name">
-                                        <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
-                                    </div>
-                                    <div class="ratings">
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                    </div>
-                                    <div class="price-box">
-                                        <span class="regular-price"><span class="special-price">£50.00</span></span>
-                                        <span class="old-price"><del>£60.00</del></span>
-                                    </div>
-                                    <button class="btn-cart" type="button">add to cart</button>
-                                </div>
-                            </div><!-- </div> end single item -->
-                            <div class="product-item">
-                                <div class="product-thumb">
-                                    <a href="product-details.html">
-                                        <img src="../../assets/img/product/product-5.jpg" class="pri-img" alt="">
-                                        <img src="../../assets/img/product/product-6.jpg" class="sec-img" alt="">
-                                    </a>
-                                    <div class="box-label">
-                                        <div class="label-product label_new">
-                                            <span>new</span>
-                                        </div>
-                                    </div>
-                                    <div class="action-links">
-                                        <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                        <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                        <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="manufacture-product">
-                                        <p><a href="shop-grid-left-sidebar.html">sumsang</a></p>
-                                    </div>
-                                    <div class="product-name">
-                                        <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
-                                    </div>
-                                    <div class="ratings">
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                    </div>
-                                    <div class="price-box">
-                                        <span class="regular-price">£46.31</span>
-                                    </div>
-                                    <button class="btn-cart" type="button">add to cart</button>
-                                </div>
-                            </div><!-- </div> end single item -->
-                            <div class="product-item">
-                                <div class="product-thumb">
-                                    <a href="product-details.html">
-                                        <img src="../../assets/img/product/product-4.jpg" class="pri-img" alt="">
-                                        <img src="../../assets/img/product/product-8.jpg" class="sec-img" alt="">
-                                    </a>
-                                    <div class="box-label">
-                                        <div class="label-product label_sale">
-                                            <span>-10%</span>
-                                        </div>
-                                    </div>
-                                    <div class="action-links">
-                                        <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                        <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                        <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="manufacture-product">
-                                        <p><a href="shop-grid-left-sidebar.html">toshiba</a></p>
-                                    </div>
-                                    <div class="product-name">
-                                        <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
-                                    </div>
-                                    <div class="ratings">
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                    </div>
-                                    <div class="price-box">
-                                        <span class="regular-price">£78.31</span>
-                                    </div>
-                                    <button class="btn-cart" type="button">add to cart</button>
-                                </div>
-                            </div><!-- </div> end single item -->
-                            <div class="product-item">
-                                <div class="product-thumb">
-                                    <a href="product-details.html">
-                                        <img src="../../assets/img/product/product-9.jpg" class="pri-img" alt="">
-                                        <img src="../../assets/img/product/product-10.jpg" class="sec-img" alt="">
-                                    </a>
-                                    <div class="box-label">
-                                        <div class="label-product label_sale">
-                                            <span>-5%</span>
-                                        </div>
-                                    </div>
-                                    <div class="action-links">
-                                        <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                        <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                        <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="manufacture-product">
-                                        <p><a href="shop-grid-left-sidebar.html">hitachi</a></p>
-                                    </div>
-                                    <div class="product-name">
-                                        <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
-                                    </div>
-                                    <div class="ratings">
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                    </div>
-                                    <div class="price-box">
-                                        <span class="regular-price">£90.31</span>
-                                    </div>
-                                    <button class="btn-cart" type="button">add to cart</button>
-                                </div>
-                            </div><!-- </div> end single item -->
-                            <div class="product-item">
-                                <div class="product-thumb">
-                                    <a href="product-details.html">
-                                        <img src="../../assets/img/product/product-2.jpg" class="pri-img" alt="">
-                                        <img src="../../assets/img/product/product-3.jpg" class="sec-img" alt="">
-                                    </a>
-                                    <div class="box-label">
-                                        <div class="label-product label_new">
-                                            <span>new</span>
-                                        </div>
-                                        <div class="label-product label_sale">
-                                            <span>-20%</span>
-                                        </div>
-                                    </div>
-                                    <div class="action-links">
-                                        <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                        <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                        <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="manufacture-product">
-                                        <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                                    </div>
-                                    <div class="product-name">
-                                        <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
-                                    </div>
-                                    <div class="ratings">
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                        <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                    </div>
-                                    <div class="price-box">
-                                        <span class="regular-price"><span class="special-price">£65.00</span></span>
-                                        <span class="old-price"><del>£90.00</del></span>
-                                    </div>
-                                    <button class="btn-cart" type="button">add to cart</button>
-                                </div>
-                            </div> <!-- </div> end single item -->
-                            <div class="product-item">
-                                <div class="product-thumb">
-                                    <a href="product-details.html">
-                                        <img src="../../assets/img/product/product-4.jpg" class="pri-img" alt="">
-                                        <img src="../../assets/img/product/product-1.jpg" class="sec-img" alt="">
-                                    </a>
-                                    <div class="box-label">
-                                        <div class="label-product label_sale">
-                                            <span>-7%</span>
-                                        </div>
-                                    </div>
-                                    <div class="action-links">
-                                        <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                        <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                        <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                    </div>
-                                </div>
-                                <div class="product-caption">
-                                    <div class="manufacture-product">
-                                        <p><a href="shop-grid-left-sidebar.html">nokia</a></p>
-                                    </div>
-                                    <div class="product-name">
-                                        <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
-                                    </div>
-                                    <div class="ratings">
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                        <span><i class="lnr lnr-star"></i></span>
-                                    </div>
-                                    <div class="price-box">
-                                        <span class="regular-price">£78.31</span>
-                                    </div>
-                                    <button class="btn-cart" type="button">add to cart</button>
-                                </div>
-                            </div><!-- </div> end single item -->
+                            </div>
+
                         </div>
                     </div>
                 </div>

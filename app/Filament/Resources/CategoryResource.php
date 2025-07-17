@@ -59,7 +59,7 @@ class CategoryResource extends Resource
                 Tabs::make('Translations')
                     ->tabs([
                         self::makeLangTab('ru', 'Русский'),
-                        self::makeLangTab('am', 'Հայերեն'),
+                        self::makeLangTab('hy', 'Հայերեն'),
                         self::makeLangTab('en', 'English'),
                     ])
             ])
