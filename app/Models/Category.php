@@ -13,9 +13,14 @@ class Category extends Model
 
     protected $guarded = [];
 
-    public function parent(): BelongsTo
+    // public function parent(): BelongsTo
+    // {
+    //     return $this->belongsTo(Category::class, 'parent_id');
+    // }
+
+    public function parent()
     {
-        return $this->belongsTo(Category::class, 'parent_id');
+        return $this->belongsTo(self::class, 'parent_id')->with('translations');
     }
 
     public function children(): HasMany
@@ -32,5 +37,18 @@ class Category extends Model
     {
         $locale = $locale ?? app()->getLocale();
         return $this->translations->firstWhere('locale', $locale);
+    }
+
+    public function getDepth(): int
+    {
+        $depth = 0;
+        $parent = $this->parent;
+
+        while ($parent) {
+            $depth++;
+            $parent = $parent->parent;
+        }
+
+        return $depth;
     }
 }
