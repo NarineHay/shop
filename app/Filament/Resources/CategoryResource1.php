@@ -15,9 +15,6 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\Filter;
@@ -26,7 +23,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class CategoryResource extends Resource
+class CategoryResource1 extends Resource
 {
     use DynamicFilterTrait;
     protected static ?string $model = Category::class;
@@ -84,63 +81,79 @@ class CategoryResource extends Resource
     }
 
     public static function table(Table $table): Table
-    {
+{
+    return $table
+        ->query(Category::query()->with(['parent.translations', 'translations']))
+        ->columns([
+            TextColumn::make('id')
+                ->label('ID')
+                ->sortable(),
 
-        return $table
-            ->query(Category::query()->with(['parent.translations', 'translations']))
-            ->columns([
-                TextColumn::make('id')
-                    ->label('ID')
-                    ->sortable(),
+            TextColumn::make('name')
+                ->label('Անվանում')
+                ->getStateUsing(function ($record) {
+                    $depth = $record->getDepth();
+                    $indent = str_repeat('➝ ', $depth);
+                    $icon = '📁 ';
+                    $name = e($record->translation('am')?->name ?? '(անանուն)');
+                    return "<span>{$icon}{$indent}{$name}</span>";
+                })
+                ->html(),
 
-                TextColumn::make('name')
-                    ->label('Անվանում')
-                    ->getStateUsing(function ($record) {
-                        $depth = $record->getDepth();
-                        $indent = str_repeat('➝ ', $depth);
-                        $icon = '📁 ';
-                        $name = e($record->translation('hy')?->name ?? '(անանուն)');
-                        return "<span>{$icon}{$indent}{$name}</span>";
-                    })
-                    ->html(),
+            TextColumn::make('parent_name')
+                ->label('Ծնողի կատեգորիա')
+                ->getStateUsing(fn ($record) => $record->parent?->translation('am')?->name ?? '—'),
 
-                TextColumn::make('parent_name')
-                    ->label('Ծնողի կատեգորիա')
-                    ->getStateUsing(fn ($record) => $record->parent?->translation('hy')?->name ?? '—'),
+            ToggleColumn::make('active')
+                ->label('Ակտիվ'),
+        ])
+        ->filters([
+            Filter::make('name')
+                ->form([
+                    TextInput::make('value')->label('Название'),
+                ])
+                ->query(function ($query, array $data) {
+                    if (empty($data['value'])) return;
+                    $query->whereHas('translations', function ($q) use ($data) {
+                        $q->where('locale', 'am')
+                          ->where('name', 'like', '%' . $data['value'] . '%');
+                    });
+                }),
 
-                ToggleColumn::make('active')
-                    ->label('Ակտիվ'),
-            ])
-            ->filters(self::makeDynamicFilters([
-                'name' => [
-                    'label' => 'Название',
-                    'relation' => 'translations',
-                    'column' => 'name',
-                    'operator' => 'like',
-                ],
-                // 'parent.name' => [
-                //     'label' => 'Родитель',
-                //     'relation' => 'parent.translations',
-                //     'column' => 'name',
-                //     'operator' => 'like',
-                // ],
-                'active' => [
-                    'type' => 'ternary',
-                    'label' => 'Активна',
-                    'trueLabel' => 'Да',
-                    'falseLabel' => 'Нет',
-                ]
+            Filter::make('parent.name')
+                ->label('Родитель')
+                ->form([
+                    TextInput::make('value')->label('Родитель'),
+                ])
+                ->query(function ($query, array $data) {
+                    if (empty($data['value'])) return;
+                    $query->whereHas('parent.translations', function ($q) use ($data) {
+                        $q->where('locale', 'am')
+                          ->where('name', 'like', '%' . $data['value'] . '%');
+                    });
+                }),
 
-            ]))
-            ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
-            ])
-             ->bulkActions([
-                DeleteBulkAction::make(),
-            ])
-            ->defaultSort('id', 'desc');
-    }
+            TernaryFilter::make('active')
+                ->label('Активна')
+                ->trueLabel('Да')
+                ->falseLabel('Нет'),
+
+            // Filter::make('order')
+            //     ->form([
+            //         TextInput::make('from')->label('Порядок от')->numeric(),
+            //         TextInput::make('to')->label('Порядок до')->numeric(),
+            //     ])
+            //     ->query(function ($query, array $data) {
+            //         if (!empty($data['from'])) {
+            //             $query->where('order', '>=', $data['from']);
+            //         }
+            //         if (!empty($data['to'])) {
+            //             $query->where('order', '<=', $data['to']);
+            //         }
+            //     }),
+        ])
+        ->defaultSort('id', 'desc');
+}
     public static function getPages(): array
     {
         return [
@@ -163,7 +176,7 @@ class CategoryResource extends Resource
                 continue;
             }
 
-            $name = $category->translation('hy')?->name ?? '(без названия)';
+            $name = $category->translation('am')?->name ?? '(без названия)';
             $result[$category->id] = $prefix . $name;
 
             if ($category->children && $category->children->count()) {
