@@ -24,7 +24,18 @@ onMounted(() => {
 
 
 </script>
+<style scoped>
+.product-name h4 {
+  height: 3em; /* 2 строки по 1.5em */
+  line-height: 1.5em;
+  overflow: hidden;
+  text-overflow: ellipsis;
 
+  display: -webkit-box;
+  -webkit-line-clamp: 2;      /* Ограничить двумя строками */
+  -webkit-box-orient: vertical;
+}
+</style>
 
 <template>
     <!-- slider area start -->

@@ -84,7 +84,7 @@ trait DynamicFilterTraitaaa
                     if ($type === 'text' && $translation) {
                         if (!empty($data[$name])) {
                             $search = $data[$name];
-                            $locale = $translation['locale'] ?? 'am';
+                            $locale = $translation['locale'] ?? 'hy';
                             $transField = $translation['field'] ?? 'name';
                             $relations = $translation['relations'] ?? [];
 

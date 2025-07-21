@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\CategoryHelper;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -29,8 +30,12 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $categories = CategoryHelper::getCategoryTree();
+
         return [
             ...parent::share($request),
+            'categories' => $categories,
+
             'auth' => [
                 'user' => $request->user(),
             ],

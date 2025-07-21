@@ -95,14 +95,14 @@ class CategoryResource1 extends Resource
                     $depth = $record->getDepth();
                     $indent = str_repeat('➝ ', $depth);
                     $icon = '📁 ';
-                    $name = e($record->translation('am')?->name ?? '(անանուն)');
+                    $name = e($record->translation('hy')?->name ?? '(անանուն)');
                     return "<span>{$icon}{$indent}{$name}</span>";
                 })
                 ->html(),
 
             TextColumn::make('parent_name')
                 ->label('Ծնողի կատեգորիա')
-                ->getStateUsing(fn ($record) => $record->parent?->translation('am')?->name ?? '—'),
+                ->getStateUsing(fn ($record) => $record->parent?->translation('hy')?->name ?? '—'),
 
             ToggleColumn::make('active')
                 ->label('Ակտիվ'),
