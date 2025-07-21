@@ -14,7 +14,7 @@ class ListCategories extends ListRecords
     {
         return parent::getTableQuery()->leftJoin('category_translations as ct', function ($join) {
             $join->on('categories.id', '=', 'ct.category_id')
-                 ->where('ct.locale', '=', 'am'); // укажи нужную локаль
+                 ->where('ct.locale', '=', 'hy'); // укажи нужную локаль
         })
         ->select('categories.*', 'ct.name as translated_name');
     }

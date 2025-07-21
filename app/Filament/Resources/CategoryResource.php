@@ -14,37 +14,31 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
+use Filament\Tables\Actions\DeleteBulkAction;
+use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
-use Filament\Tables\Filters\Filter;
-use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CategoryResource extends Resource
 {
     use DynamicFilterTrait;
-    protected static ?string $model = Category::class;
 
+    protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    public const SUPPORTED_LOCALES = [
+        'ru' => 'Русский',
+        'hy' => 'Հայերեն',
+        'en' => 'English',
+    ];
 
     public static function form(Form $form): Form
     {
         return $form->schema([
             Group::make([
-                // Select::make('parent_id')
-                //     ->label('Ծնողի կատեգորիա')
-                //     ->options(function () {
-                //         return Category::with('translations')->get()->mapWithKeys(function ($cat) {
-                //             return [$cat->id => $cat->translation('am')?->name ?? '(без названия)'];
-                //         });
-                //     })
-                //     ->searchable()
-                //     ->preload()
-                //     ->nullable(),
-
                 Select::make('parent_id')
                     ->label('Ծնողի կատեգորիա')
                     ->options(fn ($get) => self::getCategoryOptionsIndented(excludeId: $get('id')))
@@ -57,11 +51,11 @@ class CategoryResource extends Resource
                     ->default(true),
 
                 Tabs::make('Translations')
-                    ->tabs([
-                        self::makeLangTab('ru', 'Русский'),
-                        self::makeLangTab('hy', 'Հայերեն'),
-                        self::makeLangTab('en', 'English'),
-                    ])
+                    ->tabs(
+                        collect(self::SUPPORTED_LOCALES)->map(
+                            fn($label, $locale) => self::makeLangTab($locale, $label)
+                        )->toArray()
+                    ),
             ])
         ]);
     }
@@ -70,90 +64,66 @@ class CategoryResource extends Resource
     {
         return Tab::make($label)->schema([
             TextInput::make("translations.{$locale}.name")
-                ->label("Անվանում")
+                ->label('Անվանում')
                 ->required(),
 
             TextInput::make("translations.{$locale}.slug")
-                ->label("Slug")
-                ->required()
-
+                ->label('Slug')
+                ->required(),
         ]);
     }
 
     public static function table(Table $table): Table
-{
-    return $table
-        ->query(Category::query()->with(['parent.translations', 'translations']))
-        ->columns([
-            TextColumn::make('id')
-                ->label('ID')
-                ->sortable(),
+    {
+        return $table
+            ->query(Category::query()->with(['translations', 'parent.translations']))
+            ->columns([
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
 
-            TextColumn::make('name')
-                ->label('Անվանում')
-                ->getStateUsing(function ($record) {
-                    $depth = $record->getDepth();
-                    $indent = str_repeat('➝ ', $depth);
-                    $icon = '📁 ';
-                    $name = e($record->translation('am')?->name ?? '(անանուն)');
-                    return "<span>{$icon}{$indent}{$name}</span>";
-                })
-                ->html(),
+                TextColumn::make('name')
+                    ->label('Անվանում')
+                    ->getStateUsing(fn ($record) => self::renderIndentedName($record))
+                    ->html(),
 
-            TextColumn::make('parent_name')
-                ->label('Ծնողի կատեգորիա')
-                ->getStateUsing(fn ($record) => $record->parent?->translation('am')?->name ?? '—'),
+                TextColumn::make('parent_name')
+                    ->label('Ծնողի կատեգորիա')
+                    ->getStateUsing(fn ($record) => $record->parent?->translation('hy')?->name ?? '—'),
 
-            ToggleColumn::make('active')
-                ->label('Ակտիվ'),
-        ])
-        ->filters([
-            Filter::make('name')
-                ->form([
-                    TextInput::make('value')->label('Название'),
-                ])
-                ->query(function ($query, array $data) {
-                    if (empty($data['value'])) return;
-                    $query->whereHas('translations', function ($q) use ($data) {
-                        $q->where('locale', 'am')
-                          ->where('name', 'like', '%' . $data['value'] . '%');
-                    });
-                }),
+                ToggleColumn::make('active')
+                    ->label('Ակտիվ'),
+            ])
+            ->filters(self::makeDynamicFilters([
+                'name' => [
+                    'label' => 'Անվանում',
+                    'relation' => 'translations',
+                    'column' => 'name',
+                    'operator' => 'like',
+                ],
+                'parent.name' => [
+                    'label' => 'Ծ․ կատեգորիայի անվանում',
+                    'relation' => 'parent.translations',
+                    'column' => 'name',
+                    'operator' => 'like',
+                ],
+                'active' => [
+                    'type' => 'ternary',
+                    'label' => 'Ակտիվ',
+                    'trueLabel' => 'Այո',
+                    'falseLabel' => 'Ոչ',
+                ],
+            ]))
+            ->actions([
+                EditAction::make(),
+                DeleteAction::make(),
+            ])
+            ->bulkActions([
+                DeleteBulkAction::make(),
+            ])
+            ->defaultSort('id', 'desc');
+    }
 
-            Filter::make('parent.name')
-                ->label('Родитель')
-                ->form([
-                    TextInput::make('value')->label('Родитель'),
-                ])
-                ->query(function ($query, array $data) {
-                    if (empty($data['value'])) return;
-                    $query->whereHas('parent.translations', function ($q) use ($data) {
-                        $q->where('locale', 'am')
-                          ->where('name', 'like', '%' . $data['value'] . '%');
-                    });
-                }),
-
-            TernaryFilter::make('active')
-                ->label('Активна')
-                ->trueLabel('Да')
-                ->falseLabel('Нет'),
-
-            // Filter::make('order')
-            //     ->form([
-            //         TextInput::make('from')->label('Порядок от')->numeric(),
-            //         TextInput::make('to')->label('Порядок до')->numeric(),
-            //     ])
-            //     ->query(function ($query, array $data) {
-            //         if (!empty($data['from'])) {
-            //             $query->where('order', '>=', $data['from']);
-            //         }
-            //         if (!empty($data['to'])) {
-            //             $query->where('order', '<=', $data['to']);
-            //         }
-            //     }),
-        ])
-        ->defaultSort('id', 'desc');
-}
     public static function getPages(): array
     {
         return [
@@ -163,39 +133,41 @@ class CategoryResource extends Resource
         ];
     }
 
-
     protected static function getCategoryOptionsIndented($categories = null, $prefix = '', $excludeId = null): array
     {
-        $categories = $categories ?? Category::with('translations', 'children')->whereNull('parent_id')->get();
+        $categories = $categories ?? Category::with(['translations', 'children.translations'])->whereNull('parent_id')->get();
 
-        $result = [];
-
-        foreach ($categories as $category) {
-            // Пропускаем саму себя при редактировании, чтобы не назначать категорию родителем самой себе
+        return $categories->flatMap(function ($category) use ($prefix, $excludeId) {
             if ($excludeId && $category->id === $excludeId) {
-                continue;
+                return [];
             }
 
-            $name = $category->translation('am')?->name ?? '(без названия)';
-            $result[$category->id] = $prefix . $name;
+            $name = $category->translation('hy')?->name ?? '(без названия)';
+            $options = [$category->id => $prefix . $name];
 
-            if ($category->children && $category->children->count()) {
+            if ($category->children->isNotEmpty()) {
                 $childOptions = self::getCategoryOptionsIndented($category->children, $prefix . '— ', $excludeId);
-                $result += $childOptions;
+                $options += $childOptions;
             }
-        }
 
-        return $result;
+            return $options;
+        })->toArray();
     }
 
-
+    protected static function renderIndentedName($record, string $locale = 'hy'): string
+    {
+        $depth = $record->getDepth();
+        $indent = str_repeat('➝ ', $depth);
+        $icon = '📁 ';
+        $name = e($record->translation($locale)?->name ?? '(անանուն)');
+        return "<span>{$icon}{$indent}{$name}</span>";
+    }
 
     public static function getNavigationLabel(): string
     {
         return 'Կատեգորիա';
     }
 
-    // Также можешь переопределить заголовок страницы, если нужно:
     public static function getModelLabel(): string
     {
         return 'Կատեգորիա';
