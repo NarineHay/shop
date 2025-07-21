@@ -3,6 +3,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers\ImagesRelationManager;
+use App\Filament\Traits\DynamicFilterTrait;
 use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms\Components\{Group, Select, Tabs, TextInput, Textarea, Toggle};
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class ProductResource extends Resource
 {
+    use DynamicFilterTrait;
     protected static ?string $model = Product::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -75,23 +77,56 @@ class ProductResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                Product::query()->with(['translations', 'category.translations'])
+            )
             ->columns([
                 TextColumn::make('id')->sortable(),
                 // TextColumn::make('translation_name')
                 //     ->label('Անվանում')
                 //     ->searchable(),
+                TextColumn::make('id')
+                    ->label('ID')
+                    ->sortable(),
 
                 TextColumn::make('name')
                     ->label('Անվանում')
-                    ->getStateUsing(fn ($record) => $record->translation('hy')?->name ?? '(нет названия)')
-                    ->searchable(),
+                    ->getStateUsing(fn ($record) => $record->translation('hy')?->name ?? '(нет названия)'),
+
+                TextColumn::make('category.translations.name')
+                    ->label('Կատեգորիա')
+                    ->getStateUsing(fn ($record) => $record->category?->translation('hy')?->name ?? '—'),
 
                 TextColumn::make('price')
                     ->label('Արժեք')
                     ->suffix(' ֏'),
                 ToggleColumn::make('active')->label('Ակտիվ'),
             ])
-            ->filters([])
+             ->filters(self::makeDynamicFilters([
+                'name' => [
+                    'label' => 'Անվանում',
+                    'relation' => 'translations',
+                    'column' => 'name',
+                    'operator' => 'like',
+                ],
+                'category.name' => [
+                    'label' => 'կատեգորիայի ',
+                    'relation' => 'category.translations',
+                    'column' => 'name',
+                    'operator' => 'like',
+                ],
+                'price' => [
+                    'type' => 'range',
+                    'label' => 'Արժեք ',
+                    'column' => 'price'
+                ],
+                'active' => [
+                    'type' => 'ternary',
+                    'label' => 'Ակտիվ',
+                    'trueLabel' => 'Այո',
+                    'falseLabel' => 'Ոչ',
+                ],
+            ]))
             ->actions([
                 EditAction::make(),
                 DeleteAction::make(),

@@ -2,13 +2,16 @@
 <script setup>
 import { onMounted } from 'vue'
 import { initMeanMenu } from '@/main.js'
+import CategoryItem from '@/Components/CategoryItem.vue';
+import { usePage } from '@inertiajs/vue3';
 
+const page = usePage();
+const categories = page.props.categories;
+
+console.log(categories, 22222222)
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
-//   await import('../../assets/js/main.js')
-
-
 
   initMeanMenu()
 })
@@ -168,79 +171,27 @@ onMounted(async () => {
                                 </div>
                                 <nav class="categorie-menus ha-dropdown">
                                     <ul id="menu2">
-                                        <li><a href="shop-grid-left-sidebar.html">Audio & Home Theater <span class="lnr lnr-chevron-right"></span></a>
-                                            <ul class="cat-submenu">
-                                                <li><a href="shop-grid-left-sidebar.html">Home Audio <span class="lnr lnr-chevron-right"></span></a>
-                                                    <ul class="cat-submenu">
-                                                        <li><a href="shop-grid-left-sidebar.html">CD Players & Turntables</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Home Theater Systems</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Receivers & Amplifiers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Speakers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Wireless  Audio</a></li>
+                                        <CategoryItem
+                                            v-for="category in categories"
+                                            :key="category.id"
+                                            :category="category"
+                                        />
+                                        <!-- <li v-for="category in categories" :key="category.id" >
+                                            <a href="shop-grid-left-sidebar.html">{{category.translation.name}}<span class="lnr lnr-chevron-right"></span></a>
+                                            <ul v-if="category.children" class="cat-submenu">
+                                                <li v-for="subCategory in category.children" :key="subCategory.id">
+                                                    <a href="shop-grid-left-sidebar.html">{{subCategory.translation.name}}<span class="lnr lnr-chevron-right"></span></a>
+                                                    <ul  v-if="subCategory.children" class="cat-submenu">
+                                                        <li v-for="subSubCategory in subCategory.children" :key="subSubCategory.id">
+                                                            <a href="shop-grid-left-sidebar.html">{{subSubCategory.translation.name}}</a></li>
+
                                                     </ul>
                                                 </li>
-                                                <li><a href="shop-grid-left-sidebar.html">Blu-ray Disc Players</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Curved TVs<span class="lnr lnr-chevron-right"></span></a>
-                                                    <ul class="cat-submenu">
-                                                        <li><a href="shop-grid-left-sidebar.html">CD Players & Turntables</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Home Theater Systems</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Receivers & Amplifiers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Speakers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Wireless  Audio</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="shop-grid-left-sidebar.html">Streaming Media Players</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">OLED TVs</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">LED & LCD TVs</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html">Blu-ray Disc Players 4444</a></li>
+
                                             </ul>
-                                        </li>
-                                        <li><a href="shop-grid-left-sidebar.html">Video & Home Theater<span class="lnr lnr-chevron-right"></span></a>
-                                            <ul class="cat-submenu category-mega">
-                                                <li class="cat-mega-title"><a href="#">Security Cameras</a>
-                                                    <ul>
-                                                        <li><a href="shop-grid-left-sidebar.html">DSLR Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Lense Camera</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Digital Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Mirrorless Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Point</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="cat-mega-title"><a href="#">Mirrorless Cameras</a>
-                                                    <ul>
-                                                        <li><a href="shop-grid-left-sidebar.html">DSLR Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Lense Camera</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Digital Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Mirrorless Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Point</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="cat-mega-title"><a href="#">Digital Cameras</a>
-                                                    <ul>
-                                                        <li><a href="shop-grid-left-sidebar.html">DSLR Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Lense Camera</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Digital Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Mirrorless Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Point</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop-grid-left-sidebar.html">Cellphones & Accessories<span class="lnr lnr-chevron-right"></span></a>
-                                            <ul class="cat-submenu">
-                                                <li><a href="shop-grid-left-sidebar.html">CD Players & Turntables</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Home Theater Systems</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Receivers & Amplifiers</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Speakers</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Wireless  Audio</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop-grid-left-sidebar.html">Top Item</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Video Games Consoles</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Business & Office</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Headphones & Accessories</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Quadcopters & Accessories</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Network Devices</a></li>
-                                        <li class="category-item-parent hidden"><a href="shop-grid-left-sidebar.html">Smart Watches</a></li>
+                                        </li> -->
+                                        <!-- <li class="category-item-parent hidden"><a href="shop-grid-left-sidebar.html">Smart Watches</a></li> -->
                                         <li class="category-item-parent"><a class="more-btn" href="#">More Categories</a></li>
                                     </ul>
                                 </nav>
