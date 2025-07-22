@@ -5,6 +5,7 @@ import { onMounted } from 'vue'
 import Layout from '@/Layouts/GuestLayout.vue'
 import sliderImg1 from '../../assets/img/slider/slider1-home1.jpg';
 import sliderImg2 from '../../assets/img/slider/slider2-home1.jpg';
+import { useTrans } from '/resources/js/trans';
 
 defineOptions({
   layout: Layout
@@ -40,6 +41,7 @@ onMounted(() => {
 <template>
     <!-- slider area start -->
     <div class="slider-area">
+        <h1>{{useTrans('page.title')}}</h1>
         <div class="hero-slider-active slick-dot-style slider-arrow-style">
             <div class="single-slider d-flex align-items-center"
             :style="{ backgroundImage: `url(${sliderImg1})` }">

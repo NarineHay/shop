@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use App\Helpers\CategoryHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\File;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -30,6 +32,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        // $lang = in_array(request()->segment(1), ['am', 'ru', 'en']) ? request()->segment(1) : 'am';
+        $lang = App::currentLocale();
+        $name = request()->route()->getName();
+        $file = lang_path($lang . '/' . $name . ".json");
+        // $formFile = lang_path($lang . "/form.json");
+        // $navbarFile = lang_path($lang . "/navbar.json");
+
         $categories = CategoryHelper::getCategoryTree();
 
         return [
@@ -38,6 +47,12 @@ class HandleInertiaRequests extends Middleware
 
             'auth' => [
                 'user' => $request->user(),
+            ],
+
+            'translations' => [
+                // 'form' => File::exists($formFile) ? File::json($formFile) : [],
+                'page' => File::exists($file) ? File::json($file) : [],
+                // 'navbar' => File::exists($navbarFile) ? File::json($navbarFile) : []
             ],
         ];
     }
