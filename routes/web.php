@@ -16,8 +16,11 @@ use Inertia\Inertia;
 
 // });
 
-Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
-
+// Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( function()
+{
+    Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+} );
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
