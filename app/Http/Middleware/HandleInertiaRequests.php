@@ -32,11 +32,11 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        // $lang = in_array(request()->segment(1), ['am', 'ru', 'en']) ? request()->segment(1) : 'am';
-        $lang = App::currentLocale();
+        $locale = in_array(request()->segment(1), ['hy', 'ru', 'en']) ? request()->segment(1) : 'hy';
+
         $name = request()->route()->getName();
-        $file = lang_path($lang . '/' . $name . ".json");
-        // $formFile = lang_path($lang . "/form.json");
+        $file = resource_path('lang/' . $locale . '/' . $name . ".json");
+        $formFile = resource_path('lang/' . $locale . "/form.json");
         // $navbarFile = lang_path($lang . "/navbar.json");
 
         $categories = CategoryHelper::getCategoryTree();
@@ -44,13 +44,14 @@ class HandleInertiaRequests extends Middleware
         return [
             ...parent::share($request),
             'categories' => $categories,
-
+            'locale' => $locale,
+            'locales' => ['hy', 'ru', 'en'],
             'auth' => [
                 'user' => $request->user(),
             ],
 
             'translations' => [
-                // 'form' => File::exists($formFile) ? File::json($formFile) : [],
+                'form' => File::exists($formFile) ? File::json($formFile) : [],
                 'page' => File::exists($file) ? File::json($file) : [],
                 // 'navbar' => File::exists($navbarFile) ? File::json($navbarFile) : []
             ],

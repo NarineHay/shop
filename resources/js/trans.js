@@ -13,3 +13,8 @@ export function useTrans(value) {
 
     return value.split('.').reduce((t, k) => t?.[k] ?? value, array);
 }
+
+
+export function useRoute(value = null) {
+    return `/${usePage().props.locale}${value ?? ''}`;
+}

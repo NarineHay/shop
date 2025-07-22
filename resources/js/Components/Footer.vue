@@ -3,6 +3,9 @@ const year = new Date().getFullYear()
 </script>
 
 <template>
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
     <footer>
         <!-- news-letter area start -->
         <div class="newsletter-group">
@@ -271,7 +274,7 @@ const year = new Date().getFullYear()
         </div>
     </div>
     <!-- Quick view modal end -->
-    
+
 </template>
 
 

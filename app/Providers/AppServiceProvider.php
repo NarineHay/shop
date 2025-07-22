@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App;
 use App\Interfaces\Products\ProductInterface;
 use App\Repositories\Products\ProductRepository;
 use Illuminate\Support\Facades\Session;
@@ -27,9 +28,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Vite::prefetch(concurrency: 3);
 
-         Inertia::share([
-            'locale' => fn() => Session::get('locale', config('app.locale')),
-        ]);
+        App::useLangPath(base_path('lang'));
+
+        //  Inertia::share([
+        //     'locale' => fn() => Session::get('locale', config('app.locale')),
+        // ]);
 
     }
 }

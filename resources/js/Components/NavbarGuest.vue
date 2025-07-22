@@ -3,18 +3,52 @@
 import { onMounted } from 'vue'
 import { initMeanMenu } from '@/main.js'
 import CategoryItem from '@/Components/CategoryItem.vue';
-import { usePage } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { useTrans, useRoute } from '/resources/js/trans';
 
 const page = usePage();
 const categories = page.props.categories;
 
-console.log(categories, 22222222)
+
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
 
   initMeanMenu()
 })
+
+// Текущий путь без локали
+const fullPath = page.url // например: /en/dashboard
+const parts = fullPath.split('/').slice(2)
+
+const currentPath = parts.length ? '/' + parts.join('/') : ''
+
+function localizedUrl(lang) {
+
+    return currentPath ? `/${lang}${currentPath}` : `/${lang}`
+}
+
+// const changeLanguage = (lang) => {
+
+//     // localStorage.setItem('locale', lang);
+
+//     const path = window.location.pathname.split('/');
+
+//     // Replace the current locale (first segment) with the new one
+//     path[1] = lang;
+
+//     // Получаем текущие параметры запроса
+//     const searchParams = new URLSearchParams(window.location.search);
+
+//     // Формируем новый URL с параметрами запроса
+//     const newUrl = `${path.join('/')}?${searchParams.toString()}`;
+
+//     // Construct the new URL using the updated path
+
+//     // Navigate to the new URL without reloading the page
+//     router.get(newUrl, {}, { preserveState: true, preserveScroll: true });
+// };
+
 </script>
 
 
@@ -43,10 +77,23 @@ onMounted(async () => {
                                     </ul>
                                 </li>
                                 <li class="settings">
-                                    <button type="button" class="ha-toggle">Language<span class="lnr lnr-chevron-down"></span></button>
+                                    <button type="button" class="ha-toggle">Language - {{ $page.props.locale.toUpperCase()}}<span class="lnr lnr-chevron-down"></span></button>
                                     <ul class="box-dropdown ha-dropdown">
-                                        <li><a href="login.html"><img src="../../assets/img/icon/en.png" alt=""> English</a></li>
-                                        <li><a href="login.html"><img src="../../assets/img/icon/ge.png" alt=""> Germany</a></li>
+                                        <li>
+                                            <Link :href="localizedUrl('hy')">
+                                                Armenian
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link :href="localizedUrl('en')">
+                                                English
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link :href="localizedUrl('ru')">
+                                                Russian
+                                            </Link>
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="currency">
@@ -312,7 +359,22 @@ onMounted(async () => {
         </div>
     </header>
     <!-- header area end -->
-
+    <!-- <div class="breadcrumb-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Register</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> -->
 </template>
 
 

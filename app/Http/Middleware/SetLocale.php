@@ -20,14 +20,13 @@ class SetLocale
     {
 
         $locale = $request->route('locale'); // Получаем язык из URL
-        if (!in_array($locale, ['en', 'ru', 'am'])) {
+        if (!in_array($locale, ['en', 'ru', 'hy'])) {
             $locale = Session::get('locale', config('app.locale')); // Берем из сессии, если нет в URL
         }
 
         // Устанавливаем локаль
         App::setLocale($locale);
         session(['locale' => $locale]);
-        URL::defaults( [ 'locale' => App::currentLocale() ] );
 
         Inertia::share('locale', $locale);
 

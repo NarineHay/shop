@@ -4,7 +4,7 @@ import { onMounted } from 'vue'
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
- 
+
 })
 </script>
 
@@ -354,7 +354,22 @@ onMounted(async () => {
         </div>
     </header>
     <!-- header area end -->
-
+    <div class="breadcrumb-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Register</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 

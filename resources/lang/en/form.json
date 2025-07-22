@@ -1,0 +1,29 @@
+{
+
+    "create": "Create",
+    "name": "Name Surname",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Region",
+    "password": "Password",
+    "password_confirmation": "Confirm Password",
+    "current_password": "Current password",
+    "sign_in": "Sign In",
+    "register": "Register",
+
+    "name_placeholder": "Enter your name and surname",
+    "email_placeholder": "Enter your email",
+    "phone_placeholder": "Enter your phone number",
+    "password_placeholder": "Enter your password",
+    "password_confirmation_placeholder": "Confirm Password",
+    "current_password_placeholder": "Enter the current password",
+    "select_placeholder": "Select an option",
+    "save": "Save",
+    "name_surname": "Name surname",
+    "filter": "Filter",
+    "cleare_filter": "Cleare",
+    "sending": "Sending..."
+
+
+
+}
