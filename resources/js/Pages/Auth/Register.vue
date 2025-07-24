@@ -4,14 +4,18 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import Checkbox from '@/Components/Checkbox.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 
 const form = useForm({
     name: '',
     email: '',
+    phone: '',
     password: '',
     password_confirmation: '',
+    agree_terms: ''
+
 });
 
 const submit = () => {
@@ -23,7 +27,7 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Register" />
+        <Head :title="useTrans('page.title')" />
             <div class="login-wrapper pb-70">
                 <div class="container-fluid">
                     <div class="row">
@@ -78,11 +82,25 @@ const submit = () => {
                                                                 type="text"
                                                                 class="form-control"
                                                                 v-model="form.email"
-
                                                                 autofocus
                                                                 autocomplete="email"
                                                             />
                                                             <InputError class="mt-2" :message="form.errors.email" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group mb-3 row">
+                                                        <InputLabel for="phone" class="col-12 col-sm-12 col-md-4 col-form-label" :value="useTrans('form.phone')" />
+                                                        <div class="col-12 col-sm-12 col-md-8 col-lg-8">
+                                                            <TextInput
+                                                                id="phone"
+                                                                type="text"
+                                                                class="form-control"
+                                                                v-model="form.phone"
+                                                                autofocus
+                                                                autocomplete="phone"
+                                                            />
+                                                            <InputError class="mt-2" :message="form.errors.phone" />
                                                         </div>
                                                     </div>
 
@@ -114,6 +132,25 @@ const submit = () => {
                                                                 autocomplete="new-password"
                                                             />
                                                             <InputError  class="mt-2" :message="form.errors.password_confirmation" />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-check row g-0 mt-5">
+                                                        <div class="col-12 col-sm-12 col-md-8 offset-md-4 col-lg-8 offset-lg-4">
+                                                            <div class="custom-checkbox">
+                                                                <!-- <input class="form-check-input" type="checkbox" id="offer"> -->
+                                                                <Checkbox id="flexCheckDefault" v-model="form.agree_terms" class="form-check-input"></Checkbox>
+
+                                                                <span class="checkmark"></span>
+                                                                <div class="d-flex">
+                                                                    <InputLabel for="flexCheckDefault" :value="useTrans('page.agree')"
+                                                                        class="form-check-label" />
+                                                                    <Link :href="useRoute('/login')" class="form-check-label fw-bold ml-2">
+                                                                        {{useTrans('page.terms_conditions')}} </Link>
+                                                                </div>
+                                                                <InputError class="mt-2 opacity-60"
+                                                                    :message="form.errors.agree_terms" />
+                                                            </div>
                                                         </div>
                                                     </div>
 
