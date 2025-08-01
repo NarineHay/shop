@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\CustomResetPasswordToMail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
+use Mail;
 
 class PasswordResetLinkController extends Controller
 {
@@ -40,7 +42,18 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
+
         if ($status == Password::RESET_LINK_SENT) {
+
+            $token = \Illuminate\Support\Facades\DB::table('password_reset_tokens')
+                ->where('email', $request->email)
+                ->latest()
+                ->value('token');
+
+            // Отправляем кастомное письмо
+            // Mail::to($request->email)->send(new CustomResetPasswordToMail($token, $request->email));
+            new CustomResetPasswordToMail($token, $request->email);
+
             return back()->with('status', __($status));
         }
 

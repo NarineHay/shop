@@ -28,26 +28,7 @@ function localizedUrl(lang) {
     return currentPath ? `/${lang}${currentPath}` : `/${lang}`
 }
 
-// const changeLanguage = (lang) => {
 
-//     // localStorage.setItem('locale', lang);
-
-//     const path = window.location.pathname.split('/');
-
-//     // Replace the current locale (first segment) with the new one
-//     path[1] = lang;
-
-//     // Получаем текущие параметры запроса
-//     const searchParams = new URLSearchParams(window.location.search);
-
-//     // Формируем новый URL с параметрами запроса
-//     const newUrl = `${path.join('/')}?${searchParams.toString()}`;
-
-//     // Construct the new URL using the updated path
-
-//     // Navigate to the new URL without reloading the page
-//     router.get(newUrl, {}, { preserveState: true, preserveScroll: true });
-// };
 
 </script>
 
@@ -114,7 +95,7 @@ function localizedUrl(lang) {
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-4 col-sm-4 col-12">
                         <div class="logo">
-                            <a href="index.html"><img src="../../assets/img/logo/logo-sinrato.png" alt="brand-logo"></a>
+                            <a href="index.html"><img src="../../assets/img/logo/logo-3.jpg" alt="brand-logo"></a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12 order-sm-last">

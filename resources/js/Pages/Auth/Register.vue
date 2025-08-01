@@ -19,7 +19,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(useRoute('/register'), {
+    form.post(useRoute('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
 };
@@ -47,7 +47,7 @@ const submit = () => {
                                                 <form @submit.prevent="submit">
                                                     <div class="login-info mb-20">
                                                         <p>{{ useTrans('page.have_account') }}
-                                                            <Link :href="useRoute('/login')" class="fw-bold" >{{ useTrans('page.log_in') }}</Link>
+                                                            <Link :href="useRoute('login')" class="fw-bold" >{{ useTrans('page.log_in') }}</Link>
                                                         </p>
                                                     </div>
 
@@ -145,7 +145,7 @@ const submit = () => {
                                                                 <div class="d-flex">
                                                                     <InputLabel for="flexCheckDefault" :value="useTrans('page.agree')"
                                                                         class="form-check-label" />
-                                                                    <Link :href="useRoute('/login')" class="form-check-label fw-bold ml-2">
+                                                                    <Link :href="useRoute('login')" class="form-check-label fw-bold ml-2">
                                                                         {{useTrans('page.terms_conditions')}} </Link>
                                                                 </div>
                                                                 <InputError class="mt-2 opacity-60"

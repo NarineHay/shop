@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Helpers\CategoryHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Inertia\Middleware;
 
@@ -37,9 +38,10 @@ class HandleInertiaRequests extends Middleware
         $name = request()->route()->getName();
         $file = resource_path('lang/' . $locale . '/' . $name . ".json");
         $formFile = resource_path('lang/' . $locale . "/form.json");
-        // $navbarFile = lang_path($lang . "/navbar.json");
+        $navbarFile = resource_path('lang/' . $locale . "/navbar.json");
 
         $categories = CategoryHelper::getCategoryTree();
+        $user = Auth::user();
 
         return [
             ...parent::share($request),
@@ -47,13 +49,19 @@ class HandleInertiaRequests extends Middleware
             'locale' => $locale,
             'locales' => ['hy', 'ru', 'en'],
             'auth' => [
-                'user' => $request->user(),
+                // 'user' => $request->user(),
+                'user' => $user ? [
+                    'id' => $user->id,
+                    'name' => $user->name,
+                    'email' => $user->email,
+                    'roles' => $user->roles
+                ] : null,
             ],
 
             'translations' => [
                 'form' => File::exists($formFile) ? File::json($formFile) : [],
                 'page' => File::exists($file) ? File::json($file) : [],
-                // 'navbar' => File::exists($navbarFile) ? File::json($navbarFile) : []
+                'navbar' => File::exists($navbarFile) ? File::json($navbarFile) : []
             ],
         ];
     }

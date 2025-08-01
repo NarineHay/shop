@@ -42,8 +42,7 @@ onMounted(() => {
 <template>
     <!-- slider area start -->
     <div class="slider-area">
-        <h1>{{useTrans('page.title')}}</h1>
-        <a :href="useRoute( `/welcome` )"><span  >SPAN</span></a>
+        
          <div class="absolute h-12 w-full flex items-center justify-center">
 
 

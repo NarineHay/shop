@@ -15,7 +15,9 @@ use Inertia\Inertia;
     // ]);
 
 // });
-
+Route::get('/', function () {
+    return redirect('/hy');
+});
 // Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( function()
 {

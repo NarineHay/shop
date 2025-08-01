@@ -1,12 +1,39 @@
+
 <script setup>
 import { onMounted } from 'vue'
+import { initMeanMenu } from '@/main.js'
+import CategoryItem from '@/Components/CategoryItem.vue';
+import { Link, usePage } from '@inertiajs/vue3';
+import { useTrans, useRoute } from '/resources/js/trans';
+
+const page = usePage();
+const categories = page.props.categories;
+const user = page.props.auth.user;
+
+
 
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
 
+  initMeanMenu()
 })
+
+// Текущий путь без локали
+const fullPath = page.url // например: /en/dashboard
+const parts = fullPath.split('/').slice(2)
+
+const currentPath = parts.length ? '/' + parts.join('/') : ''
+
+function localizedUrl(lang) {
+
+    return currentPath ? `/${lang}${currentPath}` : `/${lang}`
+}
+
+
+
 </script>
+
 
 <template>
    <!-- header area start -->
@@ -26,17 +53,55 @@ onMounted(async () => {
                         <div class="box box-right">
                             <ul>
                                 <li class="settings">
-                                    <button type="button" class="ha-toggle">My Account<span class="lnr lnr-chevron-down"></span></button>
-                                    <ul class="box-dropdown ha-dropdown">
-                                        <li><a href="register.html">Register</a></li>
-                                        <li><a href="login.html">Login</a></li>
+                                    <button type="button" class="ha-toggle">{{ useTrans('navbar.my_profile') }}<span class="lnr lnr-chevron-down"></span></button>
+                                    <ul v-if="user" class="box-dropdown ha-dropdown">
+                                        <li>
+                                            <Link :href="useRoute('dashboard')">{{ useTrans('navbar.my_profile') }}</Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                :href="useRoute('logout')"
+                                                method="post"
+                                                class="text-body"
+                                                >{{ useTrans('navbar.logout') }}
+                                            </Link>
+                                        </li>
+                                    </ul>
+                                    <ul v-else class="box-dropdown ha-dropdown">
+                                        <li>
+                                            <Link
+                                                :href="useRoute('register')"
+                                                class="text-center"
+                                                >{{ useTrans('form.register') }}
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link
+                                                :href="useRoute('login')"
+                                                class="text-center"
+                                                >{{ useTrans('form.sign_in') }}</Link
+                                            >
+                                        </li>
                                     </ul>
                                 </li>
                                 <li class="settings">
-                                    <button type="button" class="ha-toggle">Language<span class="lnr lnr-chevron-down"></span></button>
+                                    <button type="button" class="ha-toggle"> {{ $page.props.locale.toUpperCase()}}<span class="lnr lnr-chevron-down"></span></button>
                                     <ul class="box-dropdown ha-dropdown">
-                                        <li><a href="login.html"><img src="../../assets/img/icon/en.png" alt=""> English</a></li>
-                                        <li><a href="login.html"><img src="../../assets/img/icon/ge.png" alt=""> Germany</a></li>
+                                        <li>
+                                            <Link :href="localizedUrl('hy')">
+                                                Armenian
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link :href="localizedUrl('en')">
+                                                English
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link :href="localizedUrl('ru')">
+                                                Russian
+                                            </Link>
+                                        </li>
                                     </ul>
                                 </li>
 
@@ -51,7 +116,7 @@ onMounted(async () => {
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-4 col-sm-4 col-12">
                         <div class="logo">
-                            <a href="index.html"><img src="../../assets/img/logo/logo-3.jpg" alt="brand-logo"></a>
+                            <a href="index.html"><img src="/assets/img/logo/logo-3.jpg" alt="brand-logo"></a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12 order-sm-last">
@@ -155,79 +220,27 @@ onMounted(async () => {
                                 </div>
                                 <nav class="categorie-menus ha-dropdown">
                                     <ul id="menu2">
-                                        <li><a href="shop-grid-left-sidebar.html">Audio & Home Theater <span class="lnr lnr-chevron-right"></span></a>
-                                            <ul class="cat-submenu">
-                                                <li><a href="shop-grid-left-sidebar.html">Home Audio <span class="lnr lnr-chevron-right"></span></a>
-                                                    <ul class="cat-submenu">
-                                                        <li><a href="shop-grid-left-sidebar.html">CD Players & Turntables</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Home Theater Systems</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Receivers & Amplifiers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Speakers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Wireless  Audio</a></li>
+                                        <CategoryItem
+                                            v-for="category in categories"
+                                            :key="category.id"
+                                            :category="category"
+                                        />
+                                        <!-- <li v-for="category in categories" :key="category.id" >
+                                            <a href="shop-grid-left-sidebar.html">{{category.translation.name}}<span class="lnr lnr-chevron-right"></span></a>
+                                            <ul v-if="category.children" class="cat-submenu">
+                                                <li v-for="subCategory in category.children" :key="subCategory.id">
+                                                    <a href="shop-grid-left-sidebar.html">{{subCategory.translation.name}}<span class="lnr lnr-chevron-right"></span></a>
+                                                    <ul  v-if="subCategory.children" class="cat-submenu">
+                                                        <li v-for="subSubCategory in subCategory.children" :key="subSubCategory.id">
+                                                            <a href="shop-grid-left-sidebar.html">{{subSubCategory.translation.name}}</a></li>
+
                                                     </ul>
                                                 </li>
-                                                <li><a href="shop-grid-left-sidebar.html">Blu-ray Disc Players</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Curved TVs<span class="lnr lnr-chevron-right"></span></a>
-                                                    <ul class="cat-submenu">
-                                                        <li><a href="shop-grid-left-sidebar.html">CD Players & Turntables</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Home Theater Systems</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Receivers & Amplifiers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Speakers</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Wireless  Audio</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="shop-grid-left-sidebar.html">Streaming Media Players</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">OLED TVs</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">LED & LCD TVs</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html">Blu-ray Disc Players 4444</a></li>
+
                                             </ul>
-                                        </li>
-                                        <li><a href="shop-grid-left-sidebar.html">Video & Home Theater<span class="lnr lnr-chevron-right"></span></a>
-                                            <ul class="cat-submenu category-mega">
-                                                <li class="cat-mega-title"><a href="#">Security Cameras</a>
-                                                    <ul>
-                                                        <li><a href="shop-grid-left-sidebar.html">DSLR Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Lense Camera</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Digital Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Mirrorless Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Point</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="cat-mega-title"><a href="#">Mirrorless Cameras</a>
-                                                    <ul>
-                                                        <li><a href="shop-grid-left-sidebar.html">DSLR Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Lense Camera</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Digital Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Mirrorless Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Point</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="cat-mega-title"><a href="#">Digital Cameras</a>
-                                                    <ul>
-                                                        <li><a href="shop-grid-left-sidebar.html">DSLR Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Lense Camera</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Digital Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Mirrorless Cameras</a></li>
-                                                        <li><a href="shop-grid-left-sidebar.html">Point</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop-grid-left-sidebar.html">Cellphones & Accessories<span class="lnr lnr-chevron-right"></span></a>
-                                            <ul class="cat-submenu">
-                                                <li><a href="shop-grid-left-sidebar.html">CD Players & Turntables</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Home Theater Systems</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Receivers & Amplifiers</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Speakers</a></li>
-                                                <li><a href="shop-grid-left-sidebar.html">Wireless  Audio</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="shop-grid-left-sidebar.html">Top Item</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Video Games Consoles</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Business & Office</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Headphones & Accessories</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Quadcopters & Accessories</a></li>
-                                        <li><a href="shop-grid-left-sidebar.html">Network Devices</a></li>
-                                        <li class="category-item-parent hidden"><a href="shop-grid-left-sidebar.html">Smart Watches</a></li>
+                                        </li> -->
+                                        <!-- <li class="category-item-parent hidden"><a href="shop-grid-left-sidebar.html">Smart Watches</a></li> -->
                                         <li class="category-item-parent"><a class="more-btn" href="#">More Categories</a></li>
                                     </ul>
                                 </nav>
@@ -348,7 +361,7 @@ onMounted(async () => {
         </div>
     </header>
     <!-- header area end -->
-    <div class="breadcrumb-area">
+    <!-- <div class="breadcrumb-area">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
@@ -363,7 +376,7 @@ onMounted(async () => {
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 </template>
 
 

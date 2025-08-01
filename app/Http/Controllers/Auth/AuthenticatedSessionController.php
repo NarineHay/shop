@@ -38,9 +38,11 @@ class AuthenticatedSessionController extends Controller
         $user = Auth::user();
         $locale = app()->getLocale();
 
-        return $user->hasVerifiedEmail() ?
-            redirect(route('welcome', ['locale' => $locale], absolute: false)) :
-            redirect(route('dashboard', ['locale' => $locale], absolute: false));
+        return  redirect(route('dashboard', ['locale' => $locale], absolute: false));
+
+        // return $user->hasVerifiedEmail() ?
+        //     redirect(route('welcome', ['locale' => $locale], absolute: false)) :
+        //     redirect(route('dashboard', ['locale' => $locale], absolute: false));
     }
 
     /**
