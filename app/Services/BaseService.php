@@ -9,7 +9,7 @@ abstract class BaseService
 
     public function __construct(protected BaseInterface $repository)
     {
-        
+
     }
 
     public function getAll(array $with = []): mixed
@@ -22,9 +22,9 @@ abstract class BaseService
         return $this->repository->getById($id, $with);
     }
 
-    public function create(array $data): mixed
+    public function store(array $data): mixed
     {
-        return $this->repository->create($data);
+        return $this->repository->store($data);
     }
 
     public function update(int $id, array $data): mixed

@@ -31,7 +31,7 @@ abstract class BaseRepository implements BaseInterface
         return $this->model->with($with)->where($conditions)->first();
     }
 
-    public function create(array $data): Model
+    public function store(array $data): Model
     {
         return $this->model->create($data);
     }
