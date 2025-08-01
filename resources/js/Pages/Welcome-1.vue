@@ -76,7 +76,7 @@ function handleImageError() {
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-4 col-sm-4 col-12">
                         <div class="logo">
-                            <a href="index.html"><img src="../../assets/img/logo/logo-3.jpg" alt="brand-logo"></a>
+                            <a href="index.html"><img src="/assets/img/logo/logo-3.jpg" alt="brand-logo"></a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12 order-sm-last">
