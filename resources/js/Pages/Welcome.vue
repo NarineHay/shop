@@ -135,7 +135,7 @@ onMounted(() => {
                                 <div class="feature-icon">
                                     <img src="../../assets/img/icon/wrapper5.png" alt="">
                                 </div>
-                                <div class="feature-content">
+                                <div class="feature-content">we
                                     <h4>Payment Secure</h4>
                                     <p>We ensure secure payment</p>
                                 </div>

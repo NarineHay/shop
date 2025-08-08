@@ -1,6 +1,6 @@
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { initMeanMenu } from '@/main.js'
 import CategoryItem from '@/Components/CategoryItem.vue';
 import { Link, usePage } from '@inertiajs/vue3';
@@ -10,7 +10,10 @@ const page = usePage();
 const categories = page.props.categories;
 const user = page.props.auth.user;
 
-
+const breadcrumbs = computed(() => page.props.breadcrumbs || [])
+const showBreadcrumbs = computed(() => {
+    return breadcrumbs.value.length && route().current() !== 'welcome'
+})
 
 onMounted(async () => {
   const $ = await import('jquery')
@@ -361,22 +364,28 @@ function localizedUrl(lang) {
         </div>
     </header>
     <!-- header area end -->
-    <!-- <div class="breadcrumb-area">
+    <div class="breadcrumb-area"  v-if="showBreadcrumbs">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="breadcrumb-wrap">
                         <nav aria-label="breadcrumb">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Register</li>
+                                <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item" :class="{ active: index === breadcrumbs.length - 1 }">
+                                    <template v-if="crumb.href && index !== breadcrumbs.length - 1">
+                                        <a :href="crumb.href">{{ useTrans(crumb.label) }}</a>
+                                    </template>
+                                    <template v-else>
+                                        {{ useTrans(`breadcrumbs.${crumb.label}`) }}
+                                    </template>
+                                </li>
                             </ul>
                         </nav>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </template>
 
 

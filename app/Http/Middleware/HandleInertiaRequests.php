@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\Breadcrumbs;
 use App\Helpers\CategoryHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -39,6 +40,8 @@ class HandleInertiaRequests extends Middleware
         $file = resource_path('lang/' . $locale . '/' . $name . ".json");
         $formFile = resource_path('lang/' . $locale . "/form.json");
         $navbarFile = resource_path('lang/' . $locale . "/navbar.json");
+        $breadcrumbsFile = resource_path('lang/' . $locale . "/breadcrumbs.json");
+
 
         $categories = CategoryHelper::getCategoryTree();
         $user = Auth::user();
@@ -48,6 +51,7 @@ class HandleInertiaRequests extends Middleware
             'categories' => $categories,
             'locale' => $locale,
             'locales' => ['hy', 'ru', 'en'],
+            'breadcrumbs' => Breadcrumbs::get(),
             'auth' => [
                 // 'user' => $request->user(),
                 'user' => $user ? [
@@ -61,7 +65,9 @@ class HandleInertiaRequests extends Middleware
             'translations' => [
                 'form' => File::exists($formFile) ? File::json($formFile) : [],
                 'page' => File::exists($file) ? File::json($file) : [],
-                'navbar' => File::exists($navbarFile) ? File::json($navbarFile) : []
+                'navbar' => File::exists($navbarFile) ? File::json($navbarFile) : [],
+                'breadcrumbs' => File::exists($breadcrumbsFile) ? File::json($breadcrumbsFile) : []
+
             ],
         ];
     }
