@@ -376,7 +376,7 @@ function localizedUrl(lang) {
                                         <a :href="crumb.href">{{ useTrans(crumb.label) }}</a>
                                     </template>
                                     <template v-else>
-                                        {{ useTrans(`breadcrumbs.${crumb.label}`) }}
+                                        {{ useTrans(crumb.label) }}
                                     </template>
                                 </li>
                             </ul>

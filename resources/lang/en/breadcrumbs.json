@@ -9,5 +9,6 @@
     "password": "Password",
     "request": "Request",
     "verification": "Verification",
-    "notice": "Notice"
+    "notice": "Notice",
+    "reset": "Reset"
 }

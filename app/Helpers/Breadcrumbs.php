@@ -52,14 +52,20 @@ class Breadcrumbs
             foreach ($segments as $index => $segment) {
                 $cumulative .= ($index > 0 ? '.' : '') . $segment;
 
-                $breadcrumbs[] = [
-                    'label' => $segment,
+                $href = null;
+                if (Route::has($cumulative)) {
+                    $route = Route::getRoutes()->getByName($cumulative);
+                    $parameterNames = $route?->parameterNames() ?? [];
 
-                    // 'label' => Str::title(str_replace(['-', '_'], ' ', $segment)),
-                    // 'label' => __('breadcrumbs.' . $segment) !== 'breadcrumbs.' . $segment
-                    //     ? __('breadcrumbs.' . $segment)
-                    //     : Str::title(str_replace(['-', '_'], ' ', $segment)),
-                    'href' => Route::has($cumulative) ? route($cumulative, ['locale' => app()->getLocale()]) : null,
+                    // Если у маршрута нет обязательных параметров — можно строить ссылку
+                    if (empty($parameterNames) || $parameterNames === ['locale']) {
+                        $href = route($cumulative, ['locale' => app()->getLocale()]);
+                    }
+                }
+
+                $breadcrumbs[] = [
+                    'label' => 'breadcrumbs.' . $segment,
+                    'href' => $href,
                 ];
             }
         }

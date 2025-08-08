@@ -7,9 +7,9 @@ import { Head } from '@inertiajs/vue3';
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
-        
+
         <!-- Start of My Account Wrapper -->
-        <div class="my-account-wrapper pb-20">
+        <div class="my-account-wrapper py-20">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12 col-sm-12 col-md-12 col-lg-12">
