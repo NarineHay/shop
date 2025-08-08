@@ -7,5 +7,7 @@
     "register": "Register",
     "login": "Login",
     "password": "Password",
-    "request": "Request"
+    "request": "Request",
+    "verification": "Verification",
+    "notice": "Notice"
 }

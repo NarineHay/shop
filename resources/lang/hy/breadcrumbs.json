@@ -7,5 +7,7 @@
     "register": "Գրանցում",
     "login": "Մուտք",
     "password": "Գաղտնաբառ",
-    "request": "Հարցում"
+    "request": "Հարցում",
+    "verification": "Հաստատում",
+    "notice": "Ծանուցում"
 }
