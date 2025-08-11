@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Web\AboutUsController;
 use App\Http\Controllers\Web\WelcomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,8 @@ Route::get('/', function () {
 Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( function()
 {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
+    Route::get('/about-us', AboutUsController::class)->name('about_us');
+
 
     Route::get('dashboard', function () {
         return Inertia::render('Dashboard');

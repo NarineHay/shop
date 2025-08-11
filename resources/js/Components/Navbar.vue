@@ -348,6 +348,8 @@ function localizedUrl(lang) {
                                             </ul>
                                         </li>
                                         <li><a href="contact-us.html">CONTACT US</a></li>
+                                        <li><a href="contact-us.html">About US</a></li>
+
                                     </ul>
                                 </nav>
                             </div> <!-- </div> end main menu -->
