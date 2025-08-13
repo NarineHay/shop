@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
 
         $name = request()->route()->getName();
         $file = resource_path('lang/' . $locale . '/' . $name . ".json");
+        $appFile = resource_path('lang/' . $locale . "/app.json");
         $formFile = resource_path('lang/' . $locale . "/form.json");
         $navbarFile = resource_path('lang/' . $locale . "/navbar.json");
         $breadcrumbsFile = resource_path('lang/' . $locale . "/breadcrumbs.json");
@@ -58,12 +59,14 @@ class HandleInertiaRequests extends Middleware
                     'id' => $user->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'roles' => $user->roles
+                    'roles' => $user->roles,
+                    'phone' => $user->phone
                 ] : null,
             ],
 
             'translations' => [
                 'form' => File::exists($formFile) ? File::json($formFile) : [],
+                'app' => File::exists($appFile) ? File::json($appFile) : [],
                 'page' => File::exists($file) ? File::json($file) : [],
                 'navbar' => File::exists($navbarFile) ? File::json($navbarFile) : [],
                 'breadcrumbs' => File::exists($breadcrumbsFile) ? File::json($breadcrumbsFile) : []

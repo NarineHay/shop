@@ -348,7 +348,9 @@ function localizedUrl(lang) {
                                             </ul>
                                         </li>
                                         <li><a href="contact-us.html">CONTACT US</a></li>
-                                        <li><a href="contact-us.html">About US</a></li>
+                                        <li>
+                                            <Link :href="useRoute('about_us')">About US</Link>
+                                        </li>
 
                                     </ul>
                                 </nav>

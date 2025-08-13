@@ -1,6 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
+
+import Edit from '@/Pages/Profile/Edit.vue'
 </script>
 
 <template>
@@ -26,9 +28,7 @@ import { Head } from '@inertiajs/vue3';
                                                 <li>
                                                     <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">Orders</button>
                                                 </li>
-                                                <li>
-                                                    <button class="nav-link" id="downloads-tab" data-bs-toggle="tab" data-bs-target="#downloads" type="button" role="tab" aria-controls="downloads" aria-selected="false">Downloads</button>
-                                                </li>
+
                                                 <li>
                                                     <button class="nav-link" id="address-tab" data-bs-toggle="tab" data-bs-target="#address" type="button" role="tab" aria-controls="address" aria-selected="false">Addresses</button>
                                                 </li>
@@ -83,35 +83,6 @@ import { Head } from '@inertiajs/vue3';
                                                     </div>
                                                 </div> <!-- end of tab-pane -->
 
-                                                <div id="downloads" class="tab-pane fade" role="tabpanel" aria-labelledby="downloads-tab">
-                                                    <h3>Downloads</h3>
-                                                    <div class="table-responsive">
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Product</th>
-                                                                    <th>Downloads</th>
-                                                                    <th>Expires</th>
-                                                                    <th>Download</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td>Volga - Ecommerce Bootstrap Template</td>
-                                                                    <td>August 10, 2019</td>
-                                                                    <td>Never</td>
-                                                                    <td><a class="btn btn-secondary" href="#">Download File</a></td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td>Gatcomart - Ecommerce HTML Template</td>
-                                                                    <td>September 11, 2019</td>
-                                                                    <td>Never</td>
-                                                                    <td><a class="btn btn-secondary" href="#">Download File</a></td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div> <!-- end of tab-pane -->
 
                                                 <div id="address" class="tab-pane" role="tabpanel" aria-labelledby="address-tab">
                                                     <p>The following addresses will be used on the checkout page by default.</p>
@@ -123,7 +94,8 @@ import { Head } from '@inertiajs/vue3';
 
                                                 <div id="account-details" class="tab-pane fade" role="tabpanel" aria-labelledby="account-details-tab">
                                                     <h3>Account details </h3>
-                                                    <div class="login-form">
+                                                    <Edit />
+                                                    <!-- <div class="login-form">
                                                         <form action="#">
                                                             <div class="form-group row mb-3 align-items-center">
                                                                 <label class="col-12 col-sm-12 col-md-4 col-lg-3 col-form-label">Title</label>
@@ -212,7 +184,7 @@ import { Head } from '@inertiajs/vue3';
                                                                 <button type="submit" class="btn btn-secondary">Save</button>
                                                             </div>
                                                         </form>
-                                                    </div>
+                                                    </div> -->
                                                 </div> <!-- end of tab-pane -->
                                             </div>
                                         </div>

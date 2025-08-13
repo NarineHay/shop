@@ -19,64 +19,65 @@ import { useTrans, useRoute } from '/resources/js/trans';
                     <div class="row my-4">
                         <div class="col-10 mx-auto">
                             <div class="contact2-title text-center mb-65 ">
-                                <h2>contact us</h2>
-                                <p> Kasaman E. Solutions – Ձեր հուսալի գործընկերը էլեկտրական աքսեսուարների ոլորտում </p>
-                                <p>Kasaman E. Solutions-ը հիմնադրվել է 2023 թվականին՝ նպատակ ունենալով հայաստանյան շուկան ապահովել բարձրորակ, անվտանգ և ժամանակակից էլեկտրական աքսեսուարներով։ Մենք ներմուծում և վաճառում ենք լայն տեսականի՝ խրոցներ, երկարացման լարեր, էլեկտրականության անջատիչներ և այլ անհրաժեշտ պարագաներ։</p>
+                                <h2>{{useTrans('page.b1-h2')}}</h2>
+                                <p> {{useTrans('page.b1-p1')}} </p>
+                                <p> {{useTrans('page.b1-p2')}}</p>
                             </div>
                         </div>
                     </div>
                     <div class="row my-5">
+                        <div class="contact2-title text-center mb-65 ">
+                            <h2 class="text-center">{{useTrans('page.b2-h2')}}</h2>
+                        </div>
+
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="contact-single-info mb-30 text-center">
                                 <div class="contact-icon">
-                                    <i class="fa fa-map-marker"></i>
+                                    <i class="fa-solid fa-shield-halved"></i>
                                 </div>
-                                <h3>Հուսալիություն</h3>
-                                <p>Աշխատում ենք միայն ստուգված մատակարարների հետ և երաշխավորում ենք ապրանքների որակը։</p>
+                                <h3>{{useTrans('page.b2-h3')}}</h3>
+                                <p>{{useTrans('page.b2-p')}}</p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="contact-single-info mb-30 text-center">
                                 <div class="contact-icon">
-                                    <i class="fa fa-phone"></i>
+                                    <i class="fa-regular fa-handshake"></i>
                                 </div>
-                                <h3>Ազնվություն</h3>
-                                <p>Յուրաքանչյուր հաճախորդի հետ շփումը կառուցված է վստահության և թափանցիկելիության վրա։</p>
+                                <h3>{{useTrans('page.b3-h3')}}</h3>
+                                <p>{{useTrans('page.b3-p')}}</p>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-6">
                             <div class="contact-single-info mb-30 text-center">
                                 <div class="contact-icon">
-                                    <i class="fa fa-fax"></i>
+                                    <i class="fa-regular fa-clock"></i>
                                 </div>
-                                <h3>Պատասխանատվություն </h3>
-                                <p> Մեր թիմը հետևում է, որ դուք ստանաք ճիշտ ապրանքը ճիշտ ժամանակին։</p>
+                                <h3>{{useTrans('page.b4-h3')}} </h3>
+                                <p> {{useTrans('page.b4-p')}}</p>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="row my-5">
+                    <div class="row mt-5">
                         <div class="col-12">
-                            <div class="contact2-title text-center mb-65">
-                                <h2>Ինչու ընտրել մեզ</h2>
-                                <ul>
-                                    <li>Մատչելի գներ և բարձր որակ</li>
-                                    <li>Մշտապես թարմացվող տեսականի</li>
-                                    <li>Մասնագիտական խորհրդատվություն յուրաքանչյուր գնորդի համար</li>
-                                    <li>Ճկուն և երկարաժամկետ համագործակցության պայմաններ</li>
-                                    <li></li>
+                            <div class="contact2-title  mb-65">
+                                <h2 class="text-center">{{useTrans('page.b5-h2')}}</h2>
+                                <ul class="about-ul mx-auto col-4 ps-5">
+                                    <li v-for="(item, index) in useTrans('page.b5-ul')" :key="index">
+                                        {{ item }}
+                                    </li>
 
                                 </ul>
                             </div>
                         </div>
                     </div>
 
-                    <div class="row my-5">
+                    <div class="row mb-5">
                         <div class="col-12">
                             <div class="contact2-title text-center mb-65">
-                                <p> Մեր առաքելությունը Kasaman E. Solutions-ը պարզապես վաճառող չէ։ Մենք ձեր վստահելի գործընկերն ենք, որը կանգնած է ձեր կողքին՝ օգնելով ընտրել լավագույն լուծումները ձեր տան, գրասենյակի կամ արտադրական տարածքի համար։ Մեր նպատակն է էլեկտրական աքսեսուարների ձեռքբերումը դարձնել հեշտ, հարմար և վստահելի։
-                                </p>
+                                <p> {{useTrans('page.b6-p')}} </p>
                             </div>
                         </div>
                     </div>
@@ -84,3 +85,12 @@ import { useTrans, useRoute } from '/resources/js/trans';
             </section>
     </GuestLayout>
 </template>
+
+<style scoped>
+    .about-ul{
+        padding-left: 9rem !important;
+    }
+    .about-ul li{
+        list-style-type: circle !important;
+    }
+</style>
