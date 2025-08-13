@@ -52,7 +52,7 @@ const year = new Date().getFullYear()
                             <div class="widget-title">
                                 <div class="footer-logo mb-30">
                                     <a href="index.html">
-                                         <img src="/assets/img/logo/logo-3.jpg" alt="">
+                                         <img src="/assets/img/logo/logo-3.png" alt="">
                                     </a>
                                 </div>
                             </div>

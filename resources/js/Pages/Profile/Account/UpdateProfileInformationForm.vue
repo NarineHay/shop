@@ -4,6 +4,8 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Link, useForm, usePage } from '@inertiajs/vue3';
+import { useTrans, useRoute } from '/resources/js/trans';
+import { useModalStore } from '@/Stores/modalStore'
 
 defineProps({
     mustVerifyEmail: {
@@ -15,31 +17,49 @@ defineProps({
 });
 
 const user = usePage().props.auth.user;
+const modal = useModalStore()
 
 const form = useForm({
     name: user.name,
     email: user.email,
+    phone: user.phone,
+
 });
+
+console.log(form.phone, 'pppphone')
+const submit = () => {
+    form.patch(useRoute('profile.update'), {
+        onSuccess: () => {
+            modal.showSuccess(useTrans('app.messages.success'))
+
+        },
+        onError: () => {
+            modal.showError(useTrans('app.messages.error'))
+        },
+    })
+}
+// @submit.prevent="form.patch(useRoute('profile.update'))"
 </script>
 
 <template>
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">
-                Profile Information
+                {{useTrans('page.account_details.h2')}}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Update your account's profile information and email address.
+               {{useTrans('page.account_details.p')}}
             </p>
         </header>
 
         <form
-            @submit.prevent="form.patch(route('profile.update'))"
+
+            @submit.prevent="submit"
             class="mt-6 space-y-6"
         >
             <div>
-                <InputLabel for="name" value="Name" />
+                <InputLabel for="name" :value="useTrans('form.name')" />
 
                 <TextInput
                     id="name"
@@ -55,7 +75,7 @@ const form = useForm({
             </div>
 
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="email" :value="useTrans('form.email')" />
 
                 <TextInput
                     id="email"
@@ -69,11 +89,25 @@ const form = useForm({
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
+            <div>
+                <InputLabel for="phone" :value="useTrans('form.phone')" />
+
+                <TextInput
+                    id="phone"
+                    type="text"
+                    class="mt-1 block w-full"
+                    v-model="form.phone"
+                    autocomplete="phone"
+                />
+
+                <InputError class="mt-2" :message="form.errors.phone" />
+            </div>
+
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="mt-2 text-sm text-gray-800">
                     Your email address is unverified.
                     <Link
-                        :href="route('verification.send')"
+                        :href="useRoute('verification.send')"
                         method="post"
                         as="button"
                         class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
@@ -91,9 +125,14 @@ const form = useForm({
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
+                    {{useTrans('form.save')}}
+                </PrimaryButton>
 
-                <Transition
+                <!-- <Transition
                     enter-active-class="transition ease-in-out"
                     enter-from-class="opacity-0"
                     leave-active-class="transition ease-in-out"
@@ -105,7 +144,7 @@ const form = useForm({
                     >
                         Saved.
                     </p>
-                </Transition>
+                </Transition> -->
             </div>
         </form>
     </section>

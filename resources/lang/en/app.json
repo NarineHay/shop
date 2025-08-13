@@ -1,0 +1,8 @@
+{
+    "messages": {
+        "success": "The operation was completed successfully.",
+        "password_updated": "Password updated successfully.",
+        "error": "Something went wrong."
+    }
+
+}
