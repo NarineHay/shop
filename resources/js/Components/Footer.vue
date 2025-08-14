@@ -1,4 +1,7 @@
 <script setup>
+import { Link, usePage } from '@inertiajs/vue3';
+import { useTrans, useRoute } from '/resources/js/trans';
+
 const year = new Date().getFullYear()
 </script>
 
@@ -57,9 +60,9 @@ const year = new Date().getFullYear()
                                 </div>
                             </div>
                             <div class="widget-body">
-                                <p>We are a team of designers and developers that create high quality Magento, Prestashop, Opencart.</p>
+                                <p>{{ useTrans('app.footer.left_p') }}</p>
                                 <div class="payment-method">
-                                    <h4>payment</h4>
+                                    <h4>{{ useTrans('app.footer.payment') }}</h4>
                                     <img src="../../assets/img/payment/payment.png" alt="">
                                 </div>
                             </div>
@@ -68,18 +71,18 @@ const year = new Date().getFullYear()
                     <div class="col-lg-2 col-md-6 col-sm-6">
                         <div class="footer-single-widget">
                             <div class="widget-title">
-                                <h4>Information</h4>
+                                <h4>{{ useTrans('app.footer.information') }}</h4>
                             </div>
                             <div class="widget-body">
                                 <div class="footer-useful-link">
                                     <ul>
-                                        <li><a href="about.html">about us</a></li>
-                                        <li><a href="#">Delivery Information</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#">Terms & Conditions</a></li>
-                                        <li><a href="#">Contact Us</a></li>
-                                        <li><a href="#">Returns</a></li>
-                                        <li><a href="#">Site Map</a></li>
+                                        <li>
+                                            <Link :href="useRoute('about_us')" >{{ useTrans('app.about_us') }}</Link>
+                                        </li>
+
+                                        <li><a href="#">{{ useTrans('app.privacy_policy') }}</a></li>
+                                        <li><a href="#">{{ useTrans('app.contact_us') }}</a></li>
+
                                     </ul>
                                 </div>
                             </div>
@@ -88,14 +91,14 @@ const year = new Date().getFullYear()
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="footer-single-widget">
                             <div class="widget-title">
-                                <h4>contact us</h4>
+                                <h4>{{ useTrans('app.contact_us') }}</h4>
                             </div>
                             <div class="widget-body">
                                 <div class="footer-useful-link">
                                     <ul>
-                                        <li><span>Address:</span> 4710-4890 Breckinridge St,Fayetteville, NC 28311</li>
-                                        <li><span>email:</span> support@sinrato.com</li>
-                                        <li><span>Call us:</span> <strong>1-1001-234-5678</strong></li>
+                                        <li><span>{{ useTrans('app.footer.address') }}</span> {{ useTrans('app.footer.address_value') }}</li>
+                                        <li><span>{{ useTrans('app.footer.email') }}</span> support@sinrato.com</li>
+                                        <li><span>{{ useTrans('app.footer.call_us') }}</span> <strong>1-1001-234-5678</strong></li>
                                     </ul>
                                 </div>
                             </div>
@@ -104,13 +107,13 @@ const year = new Date().getFullYear()
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="footer-single-widget">
                             <div class="widget-title">
-                                <h4>Our Twitter Feed</h4>
+                                <h4>{{ useTrans('app.footer.warranty_service') }}</h4>
                             </div>
                             <div class="widget-body">
                                 <div class="twitter-article">
                                     <div class="twitter-text">
-                                        Check out "Alice - Multipurpose Responsive #Magento #Theme" on #Envato by <a href="#">@sinratos</a> #Themeforest <a href="#">https://t.co/DNdhAwzm88</a>
-                                        <span class="tweet-time"><i class="fa fa-twitter"></i><a href="#">30 sep</a></span>
+                                        {{ useTrans('app.footer.support_text') }}
+                                        <span class="tweet-time"><i class="fa fa-tools"></i><a href="#">{{ useTrans('app.footer.support') }}</a></span>
                                     </div>
                                 </div>
                             </div>

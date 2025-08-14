@@ -45,11 +45,11 @@ const submit = () => {
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">
-                {{useTrans('page.account_details.h2')}}
+                {{useTrans('page.account_details.info.h2')}}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-               {{useTrans('page.account_details.p')}}
+               {{useTrans('page.account_details.info.p')}}
             </p>
         </header>
 

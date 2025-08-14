@@ -23,7 +23,9 @@
     "name_surname": "Имя Фамилия",
     "filter": "Фильтр",
     "cleare_filter": "Сбросить",
-    "sending": "Отправка..."
+    "sending": "Отправка...",
+
+    "new_password": "Новый пароль"
 
 
 }

@@ -45,18 +45,17 @@ const updatePassword = () => {
     <section>
         <header>
             <h2 class="text-lg font-medium text-gray-900">
-                Update Password
+                {{useTrans('page.account_details.password.h2')}}
             </h2>
 
             <p class="mt-1 text-sm text-gray-600">
-                Ensure your account is using a long, random password to stay
-                secure.
+               {{useTrans('page.account_details.password.p')}}
             </p>
         </header>
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
             <div>
-                <InputLabel for="current_password" value="Current Password" />
+                <InputLabel for="current_password" :value="useTrans('form.current_password')" />
 
                 <TextInput
                     id="current_password"
@@ -74,7 +73,7 @@ const updatePassword = () => {
             </div>
 
             <div>
-                <InputLabel for="password" value="New Password" />
+                <InputLabel for="password" :value="useTrans('form.new_password')" />
 
                 <TextInput
                     id="password"
@@ -91,7 +90,7 @@ const updatePassword = () => {
             <div>
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    :value="useTrans('form.password_confirmation')"
                 />
 
                 <TextInput
@@ -109,7 +108,7 @@ const updatePassword = () => {
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
+                <PrimaryButton :disabled="form.processing">{{useTrans('form.save')}}</PrimaryButton>
             </div>
         </form>
     </section>
