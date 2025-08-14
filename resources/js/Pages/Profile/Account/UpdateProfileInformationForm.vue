@@ -38,7 +38,7 @@ const submit = () => {
         },
     })
 }
-// @submit.prevent="form.patch(useRoute('profile.update'))"
+
 </script>
 
 <template>
