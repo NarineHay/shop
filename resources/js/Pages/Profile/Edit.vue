@@ -2,6 +2,7 @@
 import DeleteUserForm from './Account/DeleteUserForm.vue';
 import UpdatePasswordForm from './Account/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from './Account/UpdateProfileInformationForm.vue';
+import { useTrans, useRoute } from '/resources/js/trans';
 
 
 defineProps({
@@ -15,6 +16,7 @@ defineProps({
 </script>
 
 <template>
+    <h3> {{useTrans('page.title')}}</h3>
     <div class="py-12">
         <div class="w-100 space-y-6 ">
             <div

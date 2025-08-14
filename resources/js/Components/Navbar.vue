@@ -215,7 +215,7 @@ function localizedUrl(lang) {
                                 <div class="categories-menu-btn ha-toggle">
                                     <div class="left">
                                         <i class="lnr lnr-text-align-left"></i>
-                                        <span>Browse categories</span>
+                                        <span>{{useTrans('navbar.categories')}}</span>
                                     </div>
                                     <div class="right">
                                         <i class="lnr lnr-chevron-down"></i>
@@ -251,106 +251,21 @@ function localizedUrl(lang) {
                             <div class="main-menu">
                                 <nav id="mobile-menu">
                                     <ul>
-                                        <li><a href="#">HOME<span class="lnr lnr-chevron-down"></span></a>
+                                        <!-- <li><a href="#">HOME<span class="lnr lnr-chevron-down"></span></a>
                                             <ul class="dropdown">
                                                 <li><a href="index.html">Home Version 1</a></li>
                                                 <li><a href="index-2.html">Home Version 2</a></li>
                                                 <li><a href="index-3.html">Home Version 3</a></li>
                                                 <li><a href="index-4.html">Home Version 4</a></li>
                                             </ul>
-                                        </li>
-                                        <li><a href="#">SHOP<span class="lnr lnr-chevron-down"></span></a>
-                                            <ul class="dropdown">
-                                                <li><a href="#">Shop Grid Layout <span class="lnr lnr-chevron-right"></span></a>
-                                                    <ul class="dropdown">
-                                                        <li><a href="shop-grid-left-sidebar.html">Shop grid left sidebar</a></li>
-                                                        <li><a href="shop-grid-right-sidebar.html">Shop grid right sightbar</a></li>
-                                                        <li><a href="shop-grid-left-sidebar-4-column.html">shop grid left sidebar 4 col</a></li>
-                                                        <li><a href="shop-grid-right-sidebar-4-column.html">shop grid right sidebar 4 col</a></li>
-                                                        <li><a href="shop-grid-full-width-3-column.html">shop grid full width 3 col</a></li>
-                                                        <li><a href="shop-grid-full-width-4-column.html">shop grid full width 4 col</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="#">Shop List Layout <span class="lnr lnr-chevron-right"></span></a>
-                                                    <ul class="dropdown">
-                                                        <li><a href="shop-list-left-sidebar.html">Shop list left sidebar</a></li>
-                                                        <li><a href="shop-list-right-sidebar.html">Shop list right sidebar</a></li>
-                                                        <li><a href="shop-list-full-width.html">Shop list full width</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li><a href="#">Product Details <span class="lnr lnr-chevron-right"></span></a>
-                                                    <ul class="dropdown">
-                                                        <li><a href="product-details.html">Product Details</a></li>
-                                                        <li><a href="product-details-variable.html">Product Details Variable</a></li>
-                                                        <li><a href="product-details-external.html">Product Details External</a></li>
-                                                        <li><a href="product-details-group.html">Product Details Group</a></li>
-                                                        <li><a href="tab-style-one.html">tab style one</a></li>
-                                                        <li><a href="product-details-gallery-left.html">product details gallery left</a></li>
-                                                        <li><a href="product-details-gallery-right.html">product details gallery right</a></li>
-                                                        <li><a href="sticky-left-sidebar.html">sticky left sidebar</a></li>
-                                                        <li><a href="sticky-right-sidebar.html">sticky right sidebar</a></li>
-                                                        <li><a href="product-details-slider-box.html">product details slider box</a></li>
-                                                        <li><a href="product-details-slider-box.html">product details slider box</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li class="static"><a href="#">Pages<span class="lnr lnr-chevron-down"></span></a>
-                                            <ul class="mega-menu mega-full">
-                                                <li class="mega-title"><a href="#">Column one</a>
-                                                    <ul>
-                                                        <li><a href="shop-grid-left-sidebar.html">Shop grid left sidebar</a></li>
-                                                        <li><a href="shop-grid-right-sidebar.html">Shop grid right sightbar</a></li>
-                                                        <li><a href="shop-grid-full-width-4-column.html">Shop grid full width</a></li>
-                                                        <li><a href="shop-list-full-width.html">Shop list full width</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mega-title"><a href="#">Column two</a>
-                                                    <ul>
-                                                        <li><a href="checkout.html">Check Out</a></li>
-                                                        <li><a href="cart.html">Cart</a></li>
-                                                        <li><a href="wishlist.html">Wishlist</a></li>
-                                                        <li><a href="compare.html">Compare</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mega-title"><a href="#">Column Three</a>
-                                                    <ul>
-                                                        <li><a href="product-details.html">Product Details</a></li>
-                                                        <li><a href="product-details-variable.html">Product Details Variable</a></li>
-                                                        <li><a href="product-details-external.html">Product Details External</a></li>
-                                                        <li><a href="product-details-group.html">Product Details Group</a></li>
-                                                    </ul>
-                                                </li>
-                                                <li class="mega-title"><a href="#">Column Four</a>
-                                                    <ul>
-                                                        <li><a href="login.html">login</a></li>
-                                                        <li><a href="register.html">register</a></li>
-                                                        <li><a href="my-account.html">my account</a></li>
-                                                        <li><a href="contact-us.html">contact us</a></li>
-                                                    </ul>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#">BLOG<span class="lnr lnr-chevron-down"></span></a>
-                                            <ul class="dropdown">
-                                                <li><a href="blog-left-sidebar-3.html">Blog Left Sidebar 3 col</a></li>
-                                                <li><a href="blog-left-sidebar-4.html">Blog left Sidebar 4 col</a></li>
-                                                <li><a href="blog-right-sidebar-3.html">Blog Right Sidebar 3 col</a></li>
-                                                <li><a href="blog-right-sidebar-4.html">Blog Right Sidebar 4 col</a></li>
-                                                <li><a href="blog-full-3-column.html">Blog full width 3 col</a></li>
-                                                <li><a href="blog-full-4-column.html">Blog full width 4 col</a></li>
-                                                <li><a href="blog-full-5-column.html">Blog full width 5 col</a></li>
-                                                <li><a href="blog-details.html">Blog Details</a></li>
-                                                <li><a href="blog-details-audio.html">Blog Details audio</a></li>
-                                                <li><a href="blog-details-gallery.html">Blog Details gallery</a></li>
-                                                <li><a href="blog-details-video.html">Blog Details video</a></li>
-                                                <li><a href="blog-details-right-sidebar.html">Blog Details right sidebar</a></li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="contact-us.html">CONTACT US</a></li>
+                                        </li> -->
+                                        <li><a href="contact-us.html">{{useTrans('navbar.our_services')}}</a></li>
+                                        <li><a href="contact-us.html">{{useTrans('navbar.portfolio')}}</a></li>
                                         <li>
-                                            <Link :href="useRoute('about_us')">About US</Link>
+                                            <Link :href="useRoute('about_us')">{{useTrans('navbar.about_us')}}</Link>
                                         </li>
+                                        <li><a href="contact-us.html">{{useTrans('navbar.contact_us')}}</a></li>
+
 
                                     </ul>
                                 </nav>

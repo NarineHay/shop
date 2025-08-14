@@ -1,8 +1,26 @@
 {
+    "about_us": "About Us",
+    "contact_us": "Contact Us",
+    "privacy_policy": "Privacy Policy",
+
+
     "messages": {
         "success": "The operation was completed successfully.",
         "password_updated": "Password updated successfully.",
         "error": "Something went wrong."
+    },
+
+    "footer": {
+        "left_p": "We are an online electronics store where you will find a wide selection of high-quality devices, gadgets, and accessories.",
+        "information": "Information",
+        "payment": "Payment",
+        "address": "Address: ",
+        "address_value": "Address value",
+        "email": "email: ",
+        "call_us": "Call us: ",
+        "warranty_service": "Warranty & Service",
+        "support_text": "Our support team is always ready to help with setup, repair, or replacement of your devices.",
+        "support": "Support"
     }
 
 }
