@@ -22,7 +22,9 @@
     "name_surname": "Name surname",
     "filter": "Filter",
     "cleare_filter": "Cleare",
-    "sending": "Sending..."
+    "sending": "Sending...",
+
+    "new_password": "New Password"
 
 
 

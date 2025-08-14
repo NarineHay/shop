@@ -1,6 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head } from '@inertiajs/vue3';
+import { Head, Link } from '@inertiajs/vue3';
+import { useTrans, useRoute } from '/resources/js/trans';
 
 import Edit from '@/Pages/Profile/Edit.vue'
 </script>
@@ -26,17 +27,23 @@ import Edit from '@/Pages/Profile/Edit.vue'
                                                     <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="true">Dashboard</button>
                                                 </li> -->
                                                 <li>
-                                                    <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">Orders</button>
+                                                    <button class="nav-link active" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button" role="tab" aria-controls="orders" aria-selected="false">{{useTrans('page.sidebar.orders')}}</button>
                                                 </li>
 
                                                 <li>
-                                                    <button class="nav-link" id="address-tab" data-bs-toggle="tab" data-bs-target="#address" type="button" role="tab" aria-controls="address" aria-selected="false">Addresses</button>
+                                                    <button class="nav-link" id="address-tab" data-bs-toggle="tab" data-bs-target="#address" type="button" role="tab" aria-controls="address" aria-selected="false">{{useTrans('page.sidebar.addresses')}}</button>
                                                 </li>
                                                 <li>
-                                                    <button class="nav-link" id="account-details-tab" data-bs-toggle="tab" data-bs-target="#account-details" type="button" role="tab" aria-controls="account-details" aria-selected="false">Account details</button>
+                                                    <button class="nav-link" id="account-details-tab" data-bs-toggle="tab" data-bs-target="#account-details" type="button" role="tab" aria-controls="account-details" aria-selected="false">{{useTrans('page.sidebar.account_details')}}</button>
                                                 </li>
                                                 <li>
-                                                    <a class="nav-link" href="login.html">logout</a>
+                                                    <Link
+                                                        :href="useRoute('logout')"
+                                                        method="post"
+                                                        class="text-body"
+                                                        >{{ useTrans('navbar.logout') }}
+                                                    </Link>
+                                                    <!-- <a class="nav-link" href="login.html">{{useTrans('page.sidebar.logout')}}</a> -->
                                                 </li>
                                             </ul> <!-- end of dashboard-list -->
                                         </div>
@@ -93,7 +100,7 @@ import Edit from '@/Pages/Profile/Edit.vue'
                                                 </div> <!-- end of tab-pane -->
 
                                                 <div id="account-details" class="tab-pane fade" role="tabpanel" aria-labelledby="account-details-tab">
-                                                    <h3>Account details </h3>
+                                                    
                                                     <Edit />
                                                     <!-- <div class="login-form">
                                                         <form action="#">
