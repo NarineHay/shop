@@ -1,6 +1,6 @@
 
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted, computed } from 'vue'
 import { initMeanMenu } from '@/main.js'
 import CategoryItem from '@/Components/CategoryItem.vue';
 import { Link, usePage } from '@inertiajs/vue3';
@@ -10,7 +10,10 @@ const page = usePage();
 const categories = page.props.categories;
 const user = page.props.auth.user;
 
-
+const breadcrumbs = computed(() => page.props.breadcrumbs || [])
+const showBreadcrumbs = computed(() => {
+    return breadcrumbs.value.length && route().current() !== 'welcome'
+})
 
 onMounted(async () => {
   const $ = await import('jquery')
@@ -116,7 +119,7 @@ function localizedUrl(lang) {
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-4 col-sm-4 col-12">
                         <div class="logo">
-                            <a href="index.html"><img src="/assets/img/logo/logo-3.jpg" alt="brand-logo"></a>
+                            <a href="index.html"><img src="/assets/img/logo/logo-3.png" alt="brand-logo"></a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12 order-sm-last">
@@ -345,6 +348,10 @@ function localizedUrl(lang) {
                                             </ul>
                                         </li>
                                         <li><a href="contact-us.html">CONTACT US</a></li>
+                                        <li>
+                                            <Link :href="useRoute('about_us')">About US</Link>
+                                        </li>
+
                                     </ul>
                                 </nav>
                             </div> <!-- </div> end main menu -->
@@ -361,22 +368,28 @@ function localizedUrl(lang) {
         </div>
     </header>
     <!-- header area end -->
-    <!-- <div class="breadcrumb-area">
+    <div class="breadcrumb-area"  v-if="showBreadcrumbs">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <div class="breadcrumb-wrap">
                         <nav aria-label="breadcrumb">
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Register</li>
+                                <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item" :class="{ active: index === breadcrumbs.length - 1 }">
+                                    <template v-if="crumb.href && index !== breadcrumbs.length - 1">
+                                        <a :href="crumb.href">{{ useTrans(crumb.label) }}</a>
+                                    </template>
+                                    <template v-else>
+                                        {{ useTrans(crumb.label) }}
+                                    </template>
+                                </li>
                             </ul>
                         </nav>
                     </div>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </template>
 
 
