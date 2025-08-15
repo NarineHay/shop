@@ -14,33 +14,22 @@ const year = new Date().getFullYear()
         <div class="newsletter-group">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 px-5">
                         <div class="newsletter-box">
-                            <div class="newsletter-inner">
+                            <div class="newsletter-inner mx-auto">
                                 <div class="newsletter-title">
-                                    <h3>Sign Up For Newsletters</h3>
-                                    <p>Be the First to Know. Sign up for newsletter today</p>
+                                    <h3>{{useTrans('app.footer.sotial_net_text')}}</h3>
+                                    <!-- <p>Be the First to Know. Sign up for newsletter today</p> -->
                                 </div>
-                                <div class="newsletter-box">
-                                    <form id="mc-form">
-                                        <input type="email" id="mc-email" autocomplete="off" class="email-box" placeholder="enter your email">
-                                        <button class="newsletter-btn" type="submit" id="mc-submit">subscribe !</button>
-                                    </form>
+                                <div class="link-follow">
+                                    <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+                                    <a href="https://plus.google.com/discover"><i class="fa fa-google-plus"></i></a>
+                                    <a href="https://twitter.com"><i class="fa fa-twitter"></i></a>
+                                    <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
                                 </div>
-                            </div>
-                            <div class="link-follow">
-                                <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
-                                <a href="https://plus.google.com/discover"><i class="fa fa-google-plus"></i></a>
-                                <a href="https://twitter.com"><i class="fa fa-twitter"></i></a>
-                                <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
                             </div>
                         </div>
-                        <!-- mailchimp-alerts Start -->
-                        <div class="mailchimp-alerts">
-                            <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
-                            <div class="mailchimp-success"></div><!-- mailchimp-success end -->
-                            <div class="mailchimp-error"></div><!-- mailchimp-error end -->
-                        </div><!-- mailchimp-alerts end -->
+
                     </div>
                 </div>
             </div>
@@ -61,10 +50,6 @@ const year = new Date().getFullYear()
                             </div>
                             <div class="widget-body">
                                 <p>{{ useTrans('app.footer.left_p') }}</p>
-                                <div class="payment-method">
-                                    <h4>{{ useTrans('app.footer.payment') }}</h4>
-                                    <img src="../../assets/img/payment/payment.png" alt="">
-                                </div>
                             </div>
                         </div>
                     </div> <!-- single widget end -->
@@ -97,8 +82,8 @@ const year = new Date().getFullYear()
                                 <div class="footer-useful-link">
                                     <ul>
                                         <li><span>{{ useTrans('app.footer.address') }}</span> {{ useTrans('app.footer.address_value') }}</li>
-                                        <li><span>{{ useTrans('app.footer.email') }}</span> support@sinrato.com</li>
-                                        <li><span>{{ useTrans('app.footer.call_us') }}</span> <strong>1-1001-234-5678</strong></li>
+                                        <li><span>{{ useTrans('app.footer.email') }}</span> kasamansolutions@gmail.com</li>
+                                        <li><span>{{ useTrans('app.footer.call_us') }}</span> <strong>+37455522511</strong></li>
                                     </ul>
                                 </div>
                             </div>
@@ -130,12 +115,9 @@ const year = new Date().getFullYear()
                     <div class="col-12">
                         <div class="footer-bottom-content">
                             <div class="footer-copyright">
-                                <p>&copy; 2021 <b>Sinrato</b> Made with <i class="fa fa-heart text-danger"></i> by <a href="https://hasthemes.com/"><b>HasThemes</b></a></p>
+                                <p>&copy; All rights reserved </p>
                             </div>
-                            <div class="footer-custom-link">
-                                <a href="#">Brands</a>
-                                <a href="#">Specials</a>
-                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -87,39 +87,42 @@ onMounted(() => {
                 <div class="col-lg-12">
                     <div class="feature-inner fix">
                         <div class="col">
-                            <div class="feature-item">
+                            <div class="feature-item px-5">
                                 <div class="feature-icon">
-                                    <img src="../../assets/img/icon/wrapper1.png" alt="">
+                                    <!-- <img src="../../assets/img/icon/wrapper1.png" alt=""> -->
+                                       <i class="fa-solid fa-shield-halved about-icons"></i>
                                 </div>
-                                <div class="feature-content">
-                                    <h4>free shipping</h4>
-                                    <p>free shipping on all us order</p>
+                                <div class="feature-content ">
+                                    <h4>{{useTrans('page.about_us.reliability')}}</h4>
+                                    <p>{{useTrans('page.about_us.reliability_p')}}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="feature-item">
+                            <div class="feature-item px-5">
                                 <div class="feature-icon">
-                                    <img src="../../assets/img/icon/wrapper2.png" alt="">
+                                    <!-- <img src="../../assets/img/icon/wrapper2.png" alt=""> -->
+                                    <i class="fa-regular fa-handshake about-icons"></i>
                                 </div>
                                 <div class="feature-content">
-                                    <h4>Support 24/7</h4>
-                                    <p>Contact us 24 hours a day</p>
+                                    <h4>{{useTrans('page.about_us.honesty')}}</h4>
+                                    <p>{{useTrans('page.about_us.honesty_p')}}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col">
-                            <div class="feature-item">
+                            <div class="feature-item px-5">
                                 <div class="feature-icon">
-                                    <img src="../../assets/img/icon/wrapper3.png" alt="">
+                                    <!-- <img src="../../assets/img/icon/wrapper3.png" alt=""> -->
+                                    <i class="fa-regular fa-clock about-icons"></i>
                                 </div>
-                                <div class="feature-content">
-                                    <h4>100% Money Back</h4>
-                                    <p>You have 30 days to Return</p>
+                                <div class="feature-content ">
+                                    <h4>{{useTrans('page.about_us.responsibility')}}</h4>
+                                    <p>{{useTrans('page.about_us.responsibility_p')}}</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="col">
+                        <!-- <div class="col">
                             <div class="feature-item">
                                 <div class="feature-icon">
                                     <img src="../../assets/img/icon/wrapper4.png" alt="">
@@ -140,7 +143,7 @@ onMounted(() => {
                                     <p>We ensure secure payment</p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -1191,5 +1194,10 @@ onMounted(() => {
 .welcome-page {
   background-color: #f9f9f9;
   min-height: 80vh;
+}
+
+.about-icons{
+    color: #ffdd19;
+    font-size: 50px;
 }
 </style>
