@@ -11,16 +11,17 @@
     },
 
     "footer": {
-        "left_p": "We are an online electronics store where you will find a wide selection of high-quality devices, gadgets, and accessories.",
+        "left_p": "We are an online store of electrical accessories where you can find a wide range.",
         "information": "Information",
         "payment": "Payment",
         "address": "Address: ",
         "address_value": "Address value",
         "email": "email: ",
         "call_us": "Call us: ",
-        "warranty_service": "Warranty & Service",
-        "support_text": "Our support team is always ready to help with setup, repair, or replacement of your devices.",
-        "support": "Support"
+        "warranty_service": "Support",
+        "support_text": "Our team is always ready to help you with product selection and other issues.",
+        "support": "Support",
+        "sotial_net_text": "You can also find us on social networks"
     }
 
 }
