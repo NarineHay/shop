@@ -1,5 +1,11 @@
 {
-    "title": "Main"
-
-
+    "title": "Main",
+    "about_us": {
+        "reliability": "Reliability",
+        "reliability_p": "We work only with verified suppliers and guarantee the quality of the products.",
+        "honesty": "Honesty",
+        "honesty_p": "Communication with each customer is built on trust and transparency.",
+        "responsibility": "Responsibility",
+        "responsibility_p": "Our team ensures that you receive the right product at the right time."
+    }
 }
