@@ -5,7 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Traits\DynamicFilterTrait;
 use App\Models\Category;
-
+use App\Services\Categories\CategoryService;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -26,6 +26,10 @@ class CategoryResource extends Resource
 {
     use DynamicFilterTrait;
 
+    public function __construct(protected CategoryService $categoryService)
+    {
+
+    }
     protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -69,7 +73,12 @@ class CategoryResource extends Resource
 
             TextInput::make("translations.{$locale}.slug")
                 ->label('Slug')
-                ->required(),
+                ->required()
+                ->unique(
+                    table: 'category_translations',
+                    column: 'slug',
+                    ignoreRecord: true, // чтобы можно было редактировать без ошибки
+                )
         ]);
     }
 
@@ -136,6 +145,8 @@ class CategoryResource extends Resource
     protected static function getCategoryOptionsIndented($categories = null, $prefix = '', $excludeId = null): array
     {
         $categories = $categories ?? Category::with(['translations', 'children.translations'])->whereNull('parent_id')->get();
+        // $categories = $categories ?? self::$categoryService->getActiveRows(['translations', 'children.translations'])->whereNull('parent_id')->get();
+
 
         return $categories->flatMap(function ($category) use ($prefix, $excludeId) {
             if ($excludeId && $category->id === $excludeId) {
