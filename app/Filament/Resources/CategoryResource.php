@@ -21,6 +21,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
 class CategoryResource extends Resource
 {
@@ -46,6 +47,10 @@ class CategoryResource extends Resource
                 Select::make('parent_id')
                     ->label('Ծնողի կատեգորիա')
                     ->options(fn ($get) => self::getCategoryOptionsIndented(excludeId: $get('id')))
+                    ->getOptionLabelUsing(
+                        fn($value): ?string =>
+                        $value ? (Category::find($value)?->name . ' (#' . $value . ')') : null
+                    )
                     ->searchable()
                     ->preload()
                     ->nullable(),
@@ -74,11 +79,11 @@ class CategoryResource extends Resource
             TextInput::make("translations.{$locale}.slug")
                 ->label('Slug')
                 ->required()
-                ->unique(
-                    table: 'category_translations',
-                    column: 'slug',
-                    ignoreRecord: true, // чтобы можно было редактировать без ошибки
-                )
+                ->rule(function ($record) use ($locale) {
+                    return Rule::unique('category_translations', 'slug')
+                        ->ignore($record?->id, 'category_id'); // чтобы при редактировании slug не ругался
+                        // ->where(fn($query) => $query->where('locale', $locale)); // slug уникален в пределах языка
+                })
         ]);
     }
 
@@ -144,26 +149,48 @@ class CategoryResource extends Resource
 
     protected static function getCategoryOptionsIndented($categories = null, $prefix = '', $excludeId = null): array
     {
-        $categories = $categories ?? Category::with(['translations', 'children.translations'])->whereNull('parent_id')->get();
-        // $categories = $categories ?? self::$categoryService->getActiveRows(['translations', 'children.translations'])->whereNull('parent_id')->get();
+        $categories = $categories ?? Category::with('translations')
+            ->whereNull('parent_id')
+            ->get();
 
-
-        return $categories->flatMap(function ($category) use ($prefix, $excludeId) {
+        return $categories->mapWithKeys(function ($category) use ($prefix, $excludeId) {
             if ($excludeId && $category->id === $excludeId) {
                 return [];
             }
 
             $name = $category->translation('hy')?->name ?? '(без названия)';
-            $options = [$category->id => $prefix . $name];
 
-            if ($category->children->isNotEmpty()) {
-                $childOptions = self::getCategoryOptionsIndented($category->children, $prefix . '— ', $excludeId);
-                $options += $childOptions;
-            }
-
-            return $options;
-        })->toArray();
+            // Только первый слой, без рекурсии
+            return [(string) $category->id => $prefix . $name];
+        })->all();
     }
+
+
+    // ==========  bazmaki nerdrvats categorianeri hamar ==========================
+    // protected static function getCategoryOptionsIndented($categories = null, $prefix = '', $excludeId = null): array
+    // {
+    //     $categories = $categories ?? Category::with(['translations', 'children.translations'])->whereNull('parent_id')->get();
+    //     // $categories = $categories ?? self::$categoryService->getActiveRows(['translations', 'children.translations'])->whereNull('parent_id')->get();
+
+
+    //     return $categories->mapWithKeys(function ($category) use ($prefix, $excludeId) {
+    //         if ($excludeId && $category->id === $excludeId) {
+    //             return [];
+    //         }
+
+    //         $name = $category->translation('hy')?->name ?? '(без названия)';
+    //         $options = [$category->id => $prefix . $name];
+
+    //         if ($category->children->isNotEmpty()) {
+    //             $childOptions = self::getCategoryOptionsIndented($category->children, $prefix . '— ', $excludeId);
+    //             $options += $childOptions;
+    //         }
+
+    //         return $options;
+    //     })->toArray();
+    // }
+
+
 
     protected static function renderIndentedName($record, string $locale = 'hy'): string
     {
