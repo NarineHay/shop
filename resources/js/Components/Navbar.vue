@@ -47,8 +47,8 @@ function localizedUrl(lang) {
                     <div class="col-lg-8 col-12">
                         <div class="header-top-left">
                             <ul>
-                                <li><span>Email: </span>support@sinrato.com</li>
-                                <li>Free Shipping for all Order of $99</li>
+                                <li><span>Email: </span>kasamansolutions@gmail.com</li>
+
                             </ul>
                         </div>
                     </div>
@@ -127,24 +127,6 @@ function localizedUrl(lang) {
                             <form action="method">
                                 <div class="top-cat hm1">
                                     <div class="search-form">
-                                         <select>
-                                            <optgroup label="Electronics">
-                                                <option value="volvo">Laptop</option>
-                                                <option value="saab">watch</option>
-                                                <option value="saab">air cooler</option>
-                                                <option value="saab">audio</option>
-                                                <option value="saab">speakers</option>
-                                                <option value="saab">amplifires</option>
-                                            </optgroup>
-                                            <optgroup label="Fashion">
-                                                <option value="mercedes">Womens tops</option>
-                                                <option value="audi">Jeans</option>
-                                                <option value="audi">Shirt</option>
-                                                <option value="audi">Pant</option>
-                                                <option value="audi">Watch</option>
-                                                <option value="audi">Handbag</option>
-                                            </optgroup>
-                                        </select>
                                     </div>
                                 </div>
                                 <input type="text" class="top-cat-field" placeholder="Search entire store here">
@@ -271,7 +253,7 @@ function localizedUrl(lang) {
                                 </nav>
                             </div> <!-- </div> end main menu -->
                             <div class="header-call-action">
-                                <p><span class="lnr lnr-phone"></span>Hotline : <strong>1-001-234-5678</strong></p>
+                                <p><span class="lnr lnr-phone"></span>Hotline : <strong>+37455522511</strong></p>
                             </div>
                         </div>
                     </div>

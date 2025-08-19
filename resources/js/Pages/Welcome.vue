@@ -177,17 +177,7 @@ onMounted(() => {
             <div class="section-title product-spacing hm-11">
                 <h3><span>our</span> product</h3>
                 <div class="boxx-tab">
-                    <ul class="nav my-tab" role="tablist">
-                        <li role="presentation">
-                            <button class="active" type="button" id="one-tab" data-bs-toggle="tab" data-bs-target="#one" role="tab" aria-controls="one" aria-selected="true">Camera, Photo & Video</button>
-                        </li>
-                        <li role="presentation">
-                            <button data-bs-toggle="tab" type="button" id="two-tab" data-toggle="tab" data-bs-target="#two" role="tab" aria-controls="two" aria-selected="false">Audio & Home Theater</button>
-                        </li>
-                        <li role="presentation">
-                            <!-- <button data-bs-toggle="tab" type="button" id="three-tab" data-bs-toggle="tab" data-bs-target="#three" role="tab" aria-controls="three" aria-selected="false">Cellphones & Accessories</button> -->
-                        </li>
-                    </ul>
+                   
                 </div>
             </div>
             <div class="tab-content">
