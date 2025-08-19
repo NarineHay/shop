@@ -27,10 +27,13 @@ class CategoryResource extends Resource
 {
     use DynamicFilterTrait;
 
-    public function __construct(protected CategoryService $categoryService)
-    {
+    protected static $categoryService;
 
+    public function __construct(CategoryService $categoryService)
+    {
+        self::$categoryService = $categoryService;
     }
+
     protected static ?string $model = Category::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -47,10 +50,10 @@ class CategoryResource extends Resource
                 Select::make('parent_id')
                     ->label('Ծնողի կատեգորիա')
                     ->options(fn ($get) => self::getCategoryOptionsIndented(excludeId: $get('id')))
-                    ->getOptionLabelUsing(
-                        fn($value): ?string =>
-                        $value ? (Category::find($value)?->name . ' (#' . $value . ')') : null
-                    )
+                    // ->getOptionLabelUsing(
+                    //     fn($value): ?string =>
+                    //     $value ? (Category::find($value)?->name . ' (#' . $value . ')') : null
+                    // )
                     ->searchable()
                     ->preload()
                     ->nullable(),
@@ -80,19 +83,19 @@ class CategoryResource extends Resource
                 ->label('Slug')
                 ->required()
                 ->rule(function ($record) use ($locale) {
-    $translationId = $record?->translations
-        ?->firstWhere('locale', $locale)
-        ?->id;
+                    $translationId = $record?->translations
+                        ?->firstWhere('locale', $locale)
+                        ?->id;
 
-    $rule = Rule::unique('category_translations', 'slug')
-        ->where(fn ($query) => $query->where('locale', $locale));
+                    $rule = Rule::unique('category_translations', 'slug')
+                        ->where(fn ($query) => $query->where('locale', $locale));
 
-    if ($translationId) {
-        $rule->ignore($translationId);
-    }
+                    if ($translationId) {
+                        $rule->ignore($translationId);
+                    }
 
-    return $rule;
-})
+                    return $rule;
+                })
         ]);
     }
 
@@ -158,9 +161,9 @@ class CategoryResource extends Resource
 
     protected static function getCategoryOptionsIndented($categories = null, $prefix = '', $excludeId = null): array
     {
-        $categories = $categories ?? Category::with('translations')
-            ->whereNull('parent_id')
-            ->get();
+        $categoryService = app(CategoryService::class);
+
+        $categories = $categories ?? $categoryService->getActiveRows(['translations'])->whereNull('parent_id');
 
         return $categories->mapWithKeys(function ($category) use ($prefix, $excludeId) {
             if ($excludeId && $category->id === $excludeId) {
