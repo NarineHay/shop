@@ -3,8 +3,13 @@ import { Link, usePage } from '@inertiajs/vue3'
 import { onMounted, computed  } from 'vue'
 // layout для гостей
 import Layout from '@/Layouts/GuestLayout.vue'
-import sliderImg1 from '../../assets/img/slider/slider1-home1.jpg';
-import sliderImg2 from '../../assets/img/slider/slider2-home1.jpg';
+import sliderImg1 from '../../assets/img/slider/banner-1.png';
+import sliderImg2 from '../../assets/img/slider/banner-2.png';
+import sliderImg3 from '../../assets/img/slider/banner-3.png';
+import sliderImg4 from '../../assets/img/slider/banner-4.png';
+import sliderImg7 from '../../assets/img/slider/banner-7.png';
+import sliderImg8 from '../../assets/img/slider/banner-8.png';
+
 import { useTrans, useRoute } from '/resources/js/trans';
 
 
@@ -49,13 +54,13 @@ onMounted(() => {
     </div>
         <div class="hero-slider-active slick-dot-style slider-arrow-style">
             <div class="single-slider d-flex align-items-center"
-            :style="{ backgroundImage: `url(${sliderImg1})` }">
+            :style="{ backgroundImage: `url(${sliderImg4})` }">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 col-sm-8">
                             <div class="slider-text">
-                                <h1>New Range Of<br>sumsang Camera</h1>
-                                <p>sumsang EOS600D/Kiss X5</p>
+                                <h1>Trusted quality Low prices<br></h1>
+                                <p>Fast delivery and affordable prices</p>
                                 <a class="btn-1 home-btn" href="#">shop now</a>
                             </div>
                         </div>
@@ -63,19 +68,34 @@ onMounted(() => {
                 </div>
             </div>
             <div class="single-slider d-flex align-items-center"
-            :style="{ backgroundImage: `url(${sliderImg2})` }">
+            :style="{ backgroundImage: `url(${sliderImg7})` }">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-sm-6 col-sm-8">
                             <div class="slider-text">
-                                <h1>Game, Consoles &amp;<br>much more</h1>
-                                <p>Sega Saturn Disc Drive Replacement</p>
+                                <h1>The best home electrical solutions</h1>
+                                <p>Modern design, high quality, affordable price</p>
                                 <a class="btn-1 home-btn" href="#">shop now</a>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="single-slider d-flex align-items-center"
+            :style="{ backgroundImage: `url(${sliderImg8})` }">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6 col-sm-8">
+                            <div class="slider-text">
+                                <h1>Turn on the quality.</h1>
+                                <p>Switches, lamps, plugs, extension cords - all in one place</p>
+                                <a class="btn-1 home-btn" href="#">shop now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
     <!-- slider area end -->
@@ -891,12 +911,12 @@ onMounted(() => {
             <div class="row">
                 <div class="col-lg-6 col-md-6">
                     <div class="single-banner-statics">
-                        <a href="shop-grid-left-sidebar.html"><img src="../../assets/img/banner/img1-middle-sinrato1.jpg" alt=""></a>
+                        <a href="shop-grid-left-sidebar.html"><img src="/assets/img/banner/b-1.png" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-6">
                     <div class="single-banner-statics">
-                        <a href="shop-grid-left-sidebar.html"><img src="../../assets/img/banner/img2-middle-sinrato1.jpg" alt=""></a>
+                        <a href="shop-grid-left-sidebar.html"><img src="/assets/img/banner/b-2.png" alt=""></a>
                     </div>
                 </div>
             </div>
