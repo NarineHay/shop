@@ -6,6 +6,7 @@ use App\Filament\Resources\ProductResource\RelationManagers\ImagesRelationManage
 use App\Filament\Traits\DynamicFilterTrait;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\Categories\CategoryService;
 use Filament\Forms\Components\{Group, Select, Tabs, TextInput, Textarea, Toggle};
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -29,9 +30,15 @@ class ProductResource extends Resource
             Group::make([
                 Select::make('category_id')
                     ->label('Կատեգորիա')
-                    ->options(fn () => Category::with('translations')->get()->mapWithKeys(
-                        fn ($cat) => [$cat->id => $cat->translation('hy')?->name ?? '(без названия)']
-                    ))
+                    // ->options(fn () => Category::with('translations')->where('active', 1)->get()->mapWithKeys(
+                    //     fn ($cat) => [$cat->id => $cat->translation('hy')?->name ?? '(без названия)']
+                    // ))
+                    ->options(fn (CategoryService $service) =>
+                        $service->getActiveRows(['translations'])
+                            ->mapWithKeys(
+                                fn ($cat) => [$cat->id => $cat->translation('hy')?->name ?? '(без названия)']
+                            )
+                    )
                     ->searchable()
                     ->preload()
                     ->required(),
