@@ -80,10 +80,19 @@ class CategoryResource extends Resource
                 ->label('Slug')
                 ->required()
                 ->rule(function ($record) use ($locale) {
-                    return Rule::unique('category_translations', 'slug')
-                        ->ignore($record?->id, 'category_id'); // чтобы при редактировании slug не ругался
-                        // ->where(fn($query) => $query->where('locale', $locale)); // slug уникален в пределах языка
-                })
+    $translationId = $record?->translations
+        ?->firstWhere('locale', $locale)
+        ?->id;
+
+    $rule = Rule::unique('category_translations', 'slug')
+        ->where(fn ($query) => $query->where('locale', $locale));
+
+    if ($translationId) {
+        $rule->ignore($translationId);
+    }
+
+    return $rule;
+})
         ]);
     }
 
