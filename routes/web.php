@@ -39,4 +39,6 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
 // test
+// test 2
+
 require __DIR__.'/auth.php';
