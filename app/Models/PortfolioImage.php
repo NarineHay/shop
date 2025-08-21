@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class PortfolioImage extends Model
 {
@@ -26,6 +27,12 @@ class PortfolioImage extends Model
                 static::where('portfolio_id', $image->portfolio_id)
                     ->where('id', '!=', $image->id)
                     ->update(['is_main' => false]);
+            }
+        });
+
+        static::deleting(function ($model) {
+            if ($model->path) {
+                Storage::disk('public')->delete($model->path);
             }
         });
     }

@@ -20,6 +20,7 @@ use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Validation\Rule;
 
 class PortfolioResource extends Resource
 {
@@ -54,7 +55,21 @@ class PortfolioResource extends Resource
             TextInput::make("translations.{$locale}.slug")
                 ->label('Slug')
                 ->required()
-                ->default(fn($record) => $record?->translation($locale)?->slug),
+                ->rule(function ($record) use ($locale) {
+                    $translationId = $record?->translations
+                        ?->firstWhere('locale', $locale)
+                        ?->id;
+
+                    $rule = Rule::unique('portfolio_translations', 'slug')
+                        ->where(fn ($query) => $query->where('locale', $locale));
+
+                    if ($translationId) {
+                        $rule->ignore($translationId);
+                    }
+
+                    return $rule;
+                }),
+                // ->default(fn($record) => $record?->translation($locale)?->slug),
 
 
             Textarea::make("translations.{$locale}.description")

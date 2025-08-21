@@ -9,4 +9,5 @@ class ImagesRelationManager extends BaseImageRelationManager
 {
     protected static string $imageDirectory = 'portfolio';
     protected static string $imageModel = PortfolioImage::class;
+    protected static string $ownerKeyName = 'portfolio_id';
 }
