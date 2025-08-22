@@ -53,7 +53,14 @@ class Portfolio extends Model
                 }
                 $image->delete();
             }
+
+            $folderPath = "portfolio/{$portfolio->id}";
+            if (Storage::exists($folderPath)) {
+                Storage::deleteDirectory($folderPath);
+            }
+
         });
     }
 
 }
+
