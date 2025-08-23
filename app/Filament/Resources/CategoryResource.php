@@ -117,8 +117,16 @@ class CategoryResource extends Resource
                     ->label('Ծնողի կատեգորիա')
                     ->getStateUsing(fn ($record) => $record->parent?->translation('hy')?->name ?? '—'),
 
+                // ToggleColumn::make('active')
+                //     ->label('Ակտիվ'),
+
                 ToggleColumn::make('active')
-                    ->label('Ակտիվ'),
+                    ->label('Ակտիվ')
+                    ->afterStateUpdated(function ($record, $state) {
+                        // при изменении статуса категории
+                        // обновляем все подкатегории рекурсивно
+                        self::updateChildrenState($record, $state);
+                    }),
             ])
             ->filters(self::makeDynamicFilters([
                 'name' => [
@@ -148,6 +156,14 @@ class CategoryResource extends Resource
                 DeleteBulkAction::make(),
             ])
             ->defaultSort('id', 'desc');
+    }
+
+    protected static function updateChildrenState(Category $category, bool $state): void
+    {
+        foreach ($category->children as $child) {
+            $child->update(['active' => $state]);
+            self::updateChildrenState($child, $state); // рекурсия
+        }
     }
 
     public static function getPages(): array
