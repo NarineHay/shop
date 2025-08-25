@@ -3,12 +3,6 @@ import { Link, usePage } from '@inertiajs/vue3'
 import { onMounted, computed  } from 'vue'
 // layout для гостей
 import Layout from '@/Layouts/GuestLayout.vue'
-import sliderImg1 from '../assets/img/slider/banner-1.png';
-import sliderImg2 from '../../../assets/img/slider/banner-2.png';
-import sliderImg3 from '../../../assets/img/slider/banner-3.png';
-import sliderImg4 from '../../../assets/img/slider/banner-4.png';
-import sliderImg7 from '../../../assets/img/slider/banner-7.png';
-import sliderImg8 from '../../../assets/img/slider/banner-8.png';
 import SliderArea from './Home/SliderArea.vue';
 import { useTrans, useRoute } from '/resources/js/trans';
 
