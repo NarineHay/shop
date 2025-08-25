@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('category_translations', function (Blueprint $table) {
+        Schema::create('portfolio_translations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('portfolio_id')->constrained()->cascadeOnDelete();
             $table->string('locale', 2); // ru, hy, en
             $table->string('name');
             $table->string('slug');
+            $table->longText('description');
+            $table->longText('technologies');
             $table->timestamps();
 
-            // $table->unique(['category_id', 'locale']);
-            $table->unique(['locale', 'slug'], 'category_translations_locale_slug_unique');
+            $table->unique(['locale', 'slug'], 'portfolio_translations_locale_slug_unique');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('category_translations');
+        Schema::dropIfExists('portfolio_translations');
     }
 };
