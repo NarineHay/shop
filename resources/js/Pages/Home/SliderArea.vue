@@ -1,7 +1,7 @@
 <script setup>
-import sliderImg4 from '../../assets/img/slider/banner-4.png';
-import sliderImg7 from '../../assets/img/slider/banner-7.png';
-import sliderImg8 from '../../assets/img/slider/banner-8.png';
+import sliderImg4 from '../../../assets/img/slider/banner-4.png';
+import sliderImg7 from '../../../assets/img/slider/banner-7.png';
+import sliderImg8 from '../../../assets/img/slider/banner-8.png';
 
 import { useTrans, useRoute } from '/resources/js/trans';
 
