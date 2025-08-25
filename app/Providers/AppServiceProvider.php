@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App;
+use App\Interfaces\BaseInterface;
 use App\Interfaces\Categories\CategoryInterface;
+use App\Interfaces\Portfolio\PortfolioInterface;
 use App\Interfaces\Products\ProductInterface;
 use App\Interfaces\Users\UserInterface;
 use App\Mail\CustomResetPasswordToMail;
@@ -16,6 +18,8 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use App\Mail\VerifyEmail as CustomVerifyEmail;
+use App\Repositories\BaseRepository;
+use App\Repositories\Portfolio\PortfolioRepository;
 use Inertia\Inertia;
 
 class AppServiceProvider extends ServiceProvider
@@ -28,6 +32,8 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CategoryInterface::class, CategoryRepository::class);
         $this->app->bind(ProductInterface::class, ProductRepository::class);
         $this->app->bind(UserInterface::class, UserRepository::class);
+        $this->app->bind(PortfolioInterface::class, PortfolioRepository::class);
+
 
     }
 
