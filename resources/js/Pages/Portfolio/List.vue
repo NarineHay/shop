@@ -13,12 +13,8 @@ import { useTrans, useRoute } from '/resources/js/trans';
 
 
 const props = defineProps({
-
     portfolio: Array,
-})
-onMounted(() => {
-    console.log(888888)
-  console.log(props.portfolio, 11111)
+    locale: String
 })
 
 </script>
@@ -33,7 +29,7 @@ onMounted(() => {
                             <div class="blog-wrapper-inner">
                                 <div class="row">
                                         <div v-for="item in props.portfolio" class="col-sm-6 col-lg-4">
-                                            <Portfolio :portfolio='item' />
+                                            <Portfolio :portfolio='item' :locale="props.locale" />
 
                                         </div>
 

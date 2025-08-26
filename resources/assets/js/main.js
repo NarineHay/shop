@@ -867,10 +867,10 @@
 		});
 
 		// sticky sidebar
-		// $('.is-stickyy').stickySidebar({
-		// 	topSpacing: 100,
-		// 	bottomSpacing: -20
-		//   });
+		$('.is-stickyy').stickySidebar({
+			topSpacing: 100,
+			bottomSpacing: -20
+		  });
 
 		/*---- Countdown Activation ----*/
 		$('[data-countdown]').each(function() {
