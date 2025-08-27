@@ -13,19 +13,15 @@ import { useTrans, useRoute } from '/resources/js/trans';
 
 
 const props = defineProps({
-
     portfolio: Array,
-})
-onMounted(() => {
-    console.log(888888)
-  console.log(props.portfolio, 11111)
+    locale: String
 })
 
 </script>
 
 <template>
     <GuestLayout>
-        <Head :title="useTrans('page.title')" />
+        <Head :title="useTrans('app.portfolio')" />
             <div class="blog-area-wrapper pt-30 pb-65">
                 <div class="container-fluid">
                     <div class="row">
@@ -33,7 +29,7 @@ onMounted(() => {
                             <div class="blog-wrapper-inner">
                                 <div class="row">
                                         <div v-for="item in props.portfolio" class="col-sm-6 col-lg-4">
-                                            <Portfolio :portfolio='item' />
+                                            <Portfolio :portfolio='item' :locale="props.locale" />
 
                                         </div>
 

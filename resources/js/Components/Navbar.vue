@@ -242,7 +242,9 @@ function localizedUrl(lang) {
                                             </ul>
                                         </li> -->
                                         <li><a href="contact-us.html">{{useTrans('navbar.our_services')}}</a></li>
-                                        <li><a href="contact-us.html">{{useTrans('navbar.portfolio')}}</a></li>
+                                        <li>
+                                            <Link :href="useRoute('portfolio')">{{useTrans('navbar.portfolio')}}</Link>
+                                        </li>
                                         <li>
                                             <Link :href="useRoute('about_us')">{{useTrans('navbar.about_us')}}</Link>
                                         </li>

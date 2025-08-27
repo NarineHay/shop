@@ -2,7 +2,7 @@
     "about_us": "About Us",
     "contact_us": "Contact Us",
     "privacy_policy": "Privacy Policy",
-
+    "portfolio": "Portfolio",
 
     "messages": {
         "success": "The operation was completed successfully.",
@@ -22,6 +22,11 @@
         "support_text": "Our team is always ready to help you with product selection and other issues.",
         "support": "Support",
         "sotial_net_text": "You can also find us on social networks"
+    },
+
+    "buttons": {
+        "show_more": "Show more",
+        "shop_now": "Shop now"
     }
 
 }

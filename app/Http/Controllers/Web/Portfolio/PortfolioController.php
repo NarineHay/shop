@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web\Portfolio;
 
 use App\Http\Controllers\Controller;
+use App\Models\Portfolio;
 use App\Services\BaseService;
 use App\Services\Portfolio\PortfolioService;
 use Illuminate\Http\Request;
@@ -23,5 +24,17 @@ class PortfolioController extends Controller
                         'portfolio' => $portfolio
                     ]
                 );
+    }
+
+    public function show(Request $request, $locale, $id)
+    {
+        $portfolio = $this->service->getById($id, ['translations', 'images']);
+
+        return Inertia::render(
+            'Portfolio/SinglePortfolio',
+            [
+                'portfolio' => $portfolio
+            ]
+        );
     }
 }

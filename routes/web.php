@@ -26,6 +26,8 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
     Route::get('/about-us', AboutUsController::class)->name('about_us');
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
+    Route::get('/single-portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.single_portfolio');
+
 
 
     Route::get('dashboard', function () {

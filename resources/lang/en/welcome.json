@@ -7,5 +7,20 @@
         "honesty_p": "Communication with each customer is built on trust and transparency.",
         "responsibility": "Responsibility",
         "responsibility_p": "Our team ensures that you receive the right product at the right time."
+    },
+
+    "slider_area": {
+        "slider_1": {
+            "h1": "Trusted quality Low prices",
+            "p": "Fast delivery and affordable prices"
+        },
+        "slider_2": {
+            "h1": "The best home electrical solutions",
+            "p": "Modern design, high quality, affordable price"
+        },
+        "slider_3": {
+            "h1": "Turn on the quality.",
+            "p": "Switches, lamps, plugs, extension cords - all in one place"
+        }
     }
 }
