@@ -30,7 +30,7 @@ const mainImage = computed(() => {
        <div class="blogg-content card-body fixed-content">
       <!-- Кнопка Show more -->
       <span class="post-date ">
-        <Link :href="route('single_portfolio', [props.locale, portfolio.id])">Show more</Link>
+        <Link :href="route('portfolio.single_portfolio', [props.locale, portfolio.id])">{{useTrans('app.buttons.show_more')}}</Link>
       </span>
 
       <!-- Название с фиксированной высотой -->
@@ -69,7 +69,8 @@ const mainImage = computed(() => {
   overflow: hidden;
 }
 .post-date{
-    width: 100px;
+    width: fit-content;
+    padding: 8px;
     text-align: center;
     font-weight: bold;
 }
