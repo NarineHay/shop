@@ -1,13 +1,13 @@
 
 <script setup>
 import { onMounted, computed } from 'vue'
-import { initMeanMenu } from '@/main.js'
 
 import { Link, usePage } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 
 const props = defineProps({
     portfolio: Object,
+    locale: String
 })
 
 const mainImage = computed(() => {
@@ -29,7 +29,9 @@ const mainImage = computed(() => {
 
        <div class="blogg-content card-body fixed-content">
       <!-- Кнопка Show more -->
-      <span class="post-date ">Show more</span>
+      <span class="post-date ">
+        <Link :href="route('single_portfolio', [props.locale, portfolio.id])">Show more</Link>
+      </span>
 
       <!-- Название с фиксированной высотой -->
       <div class="title-wrapper">

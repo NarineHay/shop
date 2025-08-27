@@ -895,10 +895,12 @@ export function initMeanMenu() {
 		});
 
 		// sticky sidebar
-		// $('.is-stickyy').stickySidebar({
-		// 	topSpacing: 100,
-		// 	bottomSpacing: -20
-		//   });
+        if ($('.is-stickyy').length > 0) {
+            $('.is-stickyy').stickySidebar({
+                topSpacing: 100,
+                bottomSpacing: -20
+            });
+        }
 
 		/*---- Countdown Activation ----*/
 		$('[data-countdown]').each(function() {
