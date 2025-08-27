@@ -90,28 +90,31 @@ export function initMeanMenu() {
 
 
 		// home slider
-		var heroSlider = $('.hero-slider-active');
-		heroSlider.slick({
-		    arrows: true,
-		    autoplay: false,
-		    autoplaySpeed: 5000,
-		    dots: true,
-		    pauseOnFocus: false,
-		    pauseOnHover: false,
-		    fade: true,
-		    infinite: true,
-		    prevArrow: '<button type="button" class="slick-prev"><i class="fa fa-angle-left"></i></button>',
-			nextArrow: '<button type="button" class="slick-next"><i class="fa fa-angle-right"></i></button>',
-		    slidesToShow: 1,
-		    responsive: [
-		        {
-					breakpoint: 767,
-					settings: {
-						dots: true,
-					}
-		        }
-		    ]
-		});
+		// var heroSlider = $('.hero-slider-active');
+		// heroSlider.slick({
+		//     arrows: true,
+		//     autoplay: false,
+		//     autoplaySpeed: 5000,
+		//     dots: true,
+		//     pauseOnFocus: false,
+		//     pauseOnHover: false,
+		//     fade: true,
+		//     infinite: true,
+		//     // prevArrow: '<button type="button" class="slick-prev"><i class="fa fa-angle-left"></i></button>',
+		// 	// nextArrow: '<button type="button" class="slick-next"><i class="fa fa-angle-right"></i></button>',
+        //     prevArrow: '<button type="button" class="slick-prev"><span class="arrow-left"></span></button>',
+        //     nextArrow: '<button type="button" class="slick-next"><span class="arrow-right"></span></button>',
+
+        //     slidesToShow: 1,
+		//     responsive: [
+		//         {
+		// 			breakpoint: 767,
+		// 			settings: {
+		// 				dots: true,
+		// 			}
+		//         }
+		//     ]
+		// });
 
 		// product slider
 		var product = $('.product-gallary-active');
