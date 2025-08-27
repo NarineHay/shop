@@ -31,7 +31,7 @@ onMounted(() => {
 
 <template>
     <GuestLayout>
-        <Head :title="useTrans('page.title')" />
+        <Head :title="useTrans('app.portfolio')" />
             <div class="product-details-main-wrapper pb-50">
                 <div class="container-fluid">
                     <div class="row">
@@ -55,7 +55,7 @@ onMounted(() => {
                                         <p>{{portfolio.translation_lang.description}}</p>
                                     </div>
                                     <div v-if="portfolio.translation_lang.technologies" class="pro-details-list pt-5">
-                                        <h4>Technologies</h4>
+                                        <h4>{{useTrans('page.technologies')}}</h4>
                                         <p>{{portfolio.translation_lang.technologies}}</p>
                                     </div>
 

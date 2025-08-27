@@ -21,7 +21,7 @@ const props = defineProps({
 
 <template>
     <GuestLayout>
-        <Head :title="useTrans('page.title')" />
+        <Head :title="useTrans('app.portfolio')" />
             <div class="blog-area-wrapper pt-30 pb-65">
                 <div class="container-fluid">
                     <div class="row">
