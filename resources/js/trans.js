@@ -1,5 +1,6 @@
 import { usePage } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
+import { computed } from 'vue'
 // export function useTrans(value) {
 //     const array = usePage().props.translations;
 //     array[value] != null ? array[value] : value;
@@ -30,3 +31,6 @@ export function useRoute(name, params = {}, absolute = true) {
   const locale = usePage().props.locale ?? 'hy'
   return route(name, { locale, ...params }, absolute)
 }
+
+
+export const currentLocale = computed(() => usePage().props.locale)

@@ -25,7 +25,8 @@
     },
 
     "buttons": {
-        "show_more": "Show more"
+        "show_more": "Show more",
+        "shop_now": "Shop now"
     }
 
 }
