@@ -32,7 +32,18 @@ class PortfolioImage extends Model
 
         static::deleting(function ($model) {
             if ($model->path) {
-                Storage::disk('public')->delete($model->path);
+                $disk = Storage::disk('public');
+
+                // Удаляем сам файл
+                $disk->delete($model->path);
+
+                // Получаем папку из пути
+                $directory = dirname($model->path);
+
+                // Проверяем, остались ли файлы в папке
+                if (empty($disk->files($directory)) && empty($disk->directories($directory))) {
+                    $disk->deleteDirectory($directory);
+                }
             }
         });
     }

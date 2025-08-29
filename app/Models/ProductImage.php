@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class ProductImage extends Model
 {
@@ -28,6 +29,25 @@ class ProductImage extends Model
                     ->update(['is_main' => false]);
             }
         });
+
+        static::deleting(function ($model) {
+            if ($model->path) {
+                $disk = Storage::disk('public');
+
+                // Удаляем сам файл
+                $disk->delete($model->path);
+
+                // Получаем папку из пути
+                $directory = dirname($model->path);
+
+                // Проверяем, остались ли файлы в папке
+                if (empty($disk->files($directory)) && empty($disk->directories($directory))) {
+                    $disk->deleteDirectory($directory);
+                }
+            }
+        });
+
+
     }
 
 

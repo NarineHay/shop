@@ -17,6 +17,7 @@ use Filament\Forms\Components\Tabs\Tab;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Validation\Rule;
 
 class ProductResource extends Resource
 {
@@ -72,7 +73,20 @@ class ProductResource extends Resource
             TextInput::make("translations.{$locale}.slug")
                 ->label('Slug')
                 ->required()
-                ->default(fn($record) => $record?->translation($locale)?->slug),
+                ->rule(function ($record) use ($locale) {
+                    $translationId = $record?->translations
+                            ?->firstWhere('locale', $locale)
+                            ?->id;
+
+                    $rule = Rule::unique('product_translations', 'slug')
+                        ->where(fn($query) => $query->where('locale', $locale));
+
+                    if ($translationId) {
+                        $rule->ignore($translationId);
+                    }
+
+                    return $rule;
+                }),
 
             Textarea::make("translations.{$locale}.description")
                 ->label('Նկարագրություն')
