@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\ProductResource\RelationManagers;
 
+use App\Filament\Resources\RelationManagers\BaseImageRelationManager;
 use App\Models\ProductImage;
 use Filament\Tables;
 use Filament\Forms;
@@ -14,62 +15,68 @@ use Filament\Tables\Actions\{CreateAction, EditAction, DeleteAction, Action};
 use Filament\Tables\Columns\{ImageColumn, IconColumn};
 use Filament\Tables\Table;
 
-class ImagesRelationManager extends RelationManager
+class ImagesRelationManager extends BaseImageRelationManager
 {
-    protected static string $relationship = 'images';
 
-    public function form(Form $form): Form
-    {
-        return $form->schema([
-            FileUpload::make('path')
-                ->label('Պատկեր')
-                ->image()
-                ->directory('products')
-                ->preserveFilenames()
-                ->required(),
+    protected static string $imageDirectory = 'products';
+    protected static string $imageModel = ProductImage::class;
+    protected static string $ownerKeyName = 'product_id';
 
-            Toggle::make('is_main')->label('Գլխավոր պատկեր'),
-        ]);
-    }
 
-    public function table(Table $table): Table
-    {
-        return $table
-            ->columns([
-                ImageColumn::make('path_url')->label('Նախադիտում')->circular(),
-                IconColumn::make('is_main')->label('Գլխավոր')->boolean(),
-            ])
-            ->headerActions([
-                CreateAction::make(),
-            ])
-            ->actions([
-                EditAction::make(),
-                DeleteAction::make(),
-                Action::make('setAsMain')
-                    ->label('Դարձրեք այն գլխավորը')
-                    ->icon('heroicon-o-star')
-                    ->requiresConfirmation()
-                    ->visible(fn (Model $record) => !$record->is_main)
-                    ->action(function (Model $record) {
-                        ProductImage::where('product_id', $record->product_id)->update(['is_main' => false]);
-                        $record->update(['is_main' => true]);
-                    }),
-            ]);
-    }
+    // protected static string $relationship = 'images';
 
-    public static function getNavigationLabel(): string
-    {
-        return 'Պատկեր';
-    }
+    // public function form(Form $form): Form
+    // {
+    //     return $form->schema([
+    //         FileUpload::make('path')
+    //             ->label('Պատկեր')
+    //             ->image()
+    //             ->directory('products')
+    //             ->preserveFilenames()
+    //             ->required(),
 
-    // Также можешь переопределить заголовок страницы, если нужно:
-    public static function getModelLabel(): string
-    {
-        return 'Պատկեր';
-    }
+    //         Toggle::make('is_main')->label('Գլխավոր պատկեր'),
+    //     ]);
+    // }
 
-    public static function getPluralModelLabel(): string
-    {
-        return 'Պատկերներ';
-    }
+    // public function table(Table $table): Table
+    // {
+    //     return $table
+    //         ->columns([
+    //             ImageColumn::make('path_url')->label('Նախադիտում')->circular(),
+    //             IconColumn::make('is_main')->label('Գլխավոր')->boolean(),
+    //         ])
+    //         ->headerActions([
+    //             CreateAction::make(),
+    //         ])
+    //         ->actions([
+    //             EditAction::make(),
+    //             DeleteAction::make(),
+    //             Action::make('setAsMain')
+    //                 ->label('Դարձրեք այն գլխավորը')
+    //                 ->icon('heroicon-o-star')
+    //                 ->requiresConfirmation()
+    //                 ->visible(fn (Model $record) => !$record->is_main)
+    //                 ->action(function (Model $record) {
+    //                     ProductImage::where('product_id', $record->product_id)->update(['is_main' => false]);
+    //                     $record->update(['is_main' => true]);
+    //                 }),
+    //         ]);
+    // }
+
+    // public static function getNavigationLabel(): string
+    // {
+    //     return 'Պատկեր';
+    // }
+
+    // // Также можешь переопределить заголовок страницы, если нужно:
+    // public static function getModelLabel(): string
+    // {
+    //     return 'Պատկեր';
+    // }
+
+    // public static function getPluralModelLabel(): string
+    // {
+    //     return 'Պատկերներ';
+    // }
 }
