@@ -4,10 +4,12 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers\ImagesRelationManager;
 use App\Filament\Traits\DynamicFilterTrait;
+use App\Models\Attribute;
+use App\Models\AttributeValue;
 use App\Models\Category;
 use App\Models\Product;
 use App\Services\Categories\CategoryService;
-use Filament\Forms\Components\{Group, Select, Tabs, TextInput, Textarea, Toggle};
+use Filament\Forms\Components\{Group, Repeater, Select, Tabs, TextInput, Textarea, Toggle};
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -59,6 +61,28 @@ class ProductResource extends Resource
                     self::langTab('en', 'English'),
                 ]),
             ]),
+            Tabs::make('Attributes')
+                ->tabs(
+                    Attribute::with('values.translations')
+                        ->get()
+                        ->map(fn($attribute) => Tab::make($attribute->translation('hy')?->name ?? '—')
+                            ->schema([
+                                Select::make("attribute_value_ids.{$attribute->id}")
+                                    ->label($attribute->translation('hy')?->name ?? '—')
+                                    ->multiple()
+                                    ->options(
+                                        $attribute->values
+                                            ->mapWithKeys(fn($val) => [
+                                                $val->id => $val->translation('hy')?->name ?? '—'
+                                            ])
+                                    )
+                                    ->preload()
+                                    ->searchable(),
+                            ])
+                        )
+                        ->toArray()
+            )
+
         ]);
     }
 
