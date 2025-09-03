@@ -14,5 +14,7 @@ interface BaseInterface
     public function delete(int $id): bool;
     public function getActiveRows(array $with = []): mixed;
     public function getByFilter(array $conditions = [], array $with = []): mixed;
+    public function getMoreRows(int|string $field, array $conditions = [], array $with = []): mixed;
+
 
 }

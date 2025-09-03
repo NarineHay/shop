@@ -6,7 +6,7 @@ export const useModalStore = defineStore('modal', () => {
     const successMessage = ref('')
     const errorMessage = ref('')
     const visible = ref(false)
-console.log()
+
     function showSuccess(message) {
         successMessage.value = message
         errorMessage.value = ''

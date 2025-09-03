@@ -5,7 +5,9 @@ import { initMeanMenu } from '@/main.js'
 import CategoryItem from '@/Components/CategoryItem.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
+import { useCompareStore } from '@/Stores/compare';
 
+const compare = useCompareStore();
 const page = usePage();
 const categories = page.props.categories;
 const user = page.props.auth.user;
@@ -29,10 +31,14 @@ const parts = fullPath.split('/').slice(2)
 const currentPath = parts.length ? '/' + parts.join('/') : ''
 
 function localizedUrl(lang) {
-
     return currentPath ? `/${lang}${currentPath}` : `/${lang}`
 }
 
+
+const compareUrl = computed(() => {
+  if (compare.ids.length === 0) return useRoute('compare')
+  return `${useRoute('compare')}?${compare.ids.map(id => `ids[]=${id}`).join('&')}`
+})
 
 
 </script>
@@ -138,7 +144,10 @@ function localizedUrl(lang) {
                         <div class="mini-cart-option">
                             <ul>
                                 <li class="compare">
-                                    <a class="ha-toggle" href="compare.html"><span class="lnr lnr-sync"></span>Product compare</a>
+                                    <Link :href="compareUrl" class="ha-toggle" href="compare.html">
+                                        <span v-if="compare.count" class="count ">{{ compare.count }}</span>
+                                        <span class="lnr lnr-sync"></span>Product compare
+                                    </Link>
                                 </li>
                                 <li class="wishlist">
                                     <a class="ha-toggle" href="wishlist.html"><span class="lnr lnr-heart"></span><span class="count">1</span>wishlist</a>
