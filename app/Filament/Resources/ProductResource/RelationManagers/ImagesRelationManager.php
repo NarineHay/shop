@@ -19,8 +19,16 @@ class ImagesRelationManager extends BaseImageRelationManager
 {
 
     protected static string $imageDirectory = 'products';
-    protected static string $imageModel = ProductImage::class;
+    protected static string $imageModel = ProductImage
+
+
+
+    ::class;
+
     protected static string $ownerKeyName = 'product_id';
+
+
+
 
 
     // protected static string $relationship = 'images';

@@ -59,4 +59,13 @@ abstract class BaseRepository implements BaseInterface
             ->where($conditions)
             ->get();
     }
+
+    public function getMoreRows(int|string $field, array $conditions = [], array $with = []): Collection
+    {
+        return $this->model->with($with)
+            ->whereIn($field, $conditions)
+            ->get();
+    }
+
+
 }

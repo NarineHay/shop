@@ -46,4 +46,9 @@ abstract class BaseService
     {
         return $this->repository->getByFilter($with);
     }
+
+    public function getMoreRows(int|string $field, array $conditions = [], array $with = []): mixed
+    {
+        return $this->repository->getMoreRows($field, $conditions, $with);
+    }
 }
