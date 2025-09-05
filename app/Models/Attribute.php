@@ -9,6 +9,8 @@ class Attribute extends Model
 {
     protected $guarded = [];
 
+    protected $appends = ['translation_lang'];
+
     public function translations(): HasMany
     {
         return $this->hasMany(AttributeTranslation::class);
@@ -23,5 +25,12 @@ class Attribute extends Model
     {
         $locale = $locale ?: app()->getLocale();
         return $this->translations->firstWhere('locale', $locale);
+    }
+
+    public function getTranslationLangAttribute()
+    {
+        return $this->translations
+            ? $this->translations->firstWhere('locale', app()->getLocale())
+            : null;
     }
 }
