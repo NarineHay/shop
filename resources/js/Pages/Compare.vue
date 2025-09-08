@@ -138,10 +138,10 @@ const getProductImage = (product) => {
                                                         <td v-for="p in localProducts" :key="p.id">
                                                             <a
                                                             href="cart.html"
-                                                            class="btn btn-secondary mb-2 mb-lg-0 mr-xl-2"
-                                                            >Add to Cart</a
+                                                            class="btn btn-secondary mb-2 mb-lg-0 mr-xl-2 mr-2"
+                                                            >{{useTrans('app.buttons.add_to_cart')}}</a
                                                             >
-                                                            <a href="#" class="btn btn-secondary" @click.prevent="removeProduct(p.id)">Remove</a>
+                                                            <a href="#" class="btn btn-secondary" @click.prevent="removeProduct(p.id)">{{useTrans('app.buttons.remove')}}</a>
                                                         </td>
 
                                                     </tr>
