@@ -6,8 +6,12 @@ import CategoryItem from '@/Components/CategoryItem.vue';
 import { Link, usePage } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 import { useCompareStore } from '@/Stores/compare';
+import { useCartStore } from '@/Stores/cart';
+
 
 const compare = useCompareStore();
+const cart = useCartStore();
+
 const page = usePage();
 const categories = page.props.categories;
 const user = page.props.auth.user;
@@ -144,7 +148,7 @@ const compareUrl = computed(() => {
                         <div class="mini-cart-option">
                             <ul>
                                 <li class="compare">
-                                    <Link :href="compareUrl" class="ha-toggle" href="compare.html">
+                                    <Link :href="compareUrl" class="ha-toggle" >
                                         <span v-if="compare.count" class="count ">{{ compare.count }}</span>
                                         <span class="lnr lnr-sync"></span>Product compare
                                     </Link>
@@ -153,7 +157,7 @@ const compareUrl = computed(() => {
                                     <a class="ha-toggle" href="wishlist.html"><span class="lnr lnr-heart"></span><span class="count">1</span>wishlist</a>
                                 </li>
                                 <li class="my-cart">
-                                    <button type="button" class="ha-toggle"><span class="lnr lnr-cart"></span><span class="count">2</span>my cart</button>
+                                    <button type="button" class="ha-toggle"><span class="lnr lnr-cart"></span><span class="count">{{ cart.count }}</span>my cart</button>
                                     <ul class="mini-cart-drop-down ha-dropdown">
                                         <li class="mb-30">
                                             <div class="cart-img">

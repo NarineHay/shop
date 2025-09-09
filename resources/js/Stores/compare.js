@@ -13,15 +13,14 @@ export const useCompareStore = defineStore('compare', {
         },
         add(productId) {
 
-            console.log('Добавляем в compare:', productId); // 👈 лог
+
             if (this.list.includes(productId)) {
                 console.log('Уже в списке');
                 return;
             }
             if (this.list.length >= 3) {
                 const modal = useModalStore();
-                console.log('Список полон');
-                modal.showSuccess('dddddddddddddddddd')
+
 
                 return;
             }
