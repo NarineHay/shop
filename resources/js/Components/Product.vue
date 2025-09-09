@@ -2,12 +2,15 @@
 import { computed } from 'vue';
 import { Link } from '@inertiajs/vue3';
 import { useCompareStore } from '@/Stores/compare';
+import { useCartStore } from '@/Stores/cart';
+
 
 const props = defineProps({
     product: Object
 });
 
 const compare = useCompareStore();
+const cart = useCartStore();
 
 // сортируем картинки: сначала главная, потом остальные
 const sortedImages = computed(() => {
@@ -58,7 +61,7 @@ const sortedImages = computed(() => {
             <div class="price-box mt-2">
                 <span class="regular-price">{{product.price}} ֏</span>
             </div>
-            <button class="btn-cart" type="button">add to cart</button>
+            <button class="btn-cart" type="button" @click.prevent="cart.add(product.id)">add to cart</button>
         </div>
     </div>
 
