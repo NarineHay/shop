@@ -4,7 +4,7 @@ import { onMounted } from 'vue'
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
-  await import('../../../assets/js/main.js')
+
 })
 </script>
 
@@ -39,13 +39,7 @@ onMounted(async () => {
                                         <li><a href="login.html"><img src="../../assets/img/icon/ge.png" alt=""> Germany</a></li>
                                     </ul>
                                 </li>
-                                <li class="currency">
-                                    <button type="button" class="ha-toggle">Currency<span class="lnr lnr-chevron-down"></span></button>
-                                    <ul class="box-dropdown ha-dropdown">
-                                        <li><a href="login.html">€ Euro</a></li>
-                                        <li><a href="login.html">$ US Doller</a></li>
-                                    </ul>
-                                </li>
+
                             </ul>
                         </div>
                     </div>
@@ -57,7 +51,7 @@ onMounted(async () => {
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-4 col-sm-4 col-12">
                         <div class="logo">
-                            <a href="index.html"><img src="../../assets/img/logo/logo-sinrato.png" alt="brand-logo"></a>
+                            <a href="index.html"><img src="../../assets/img/logo/logo-3.png" alt="brand-logo"></a>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12 order-sm-last">
@@ -354,7 +348,22 @@ onMounted(async () => {
         </div>
     </header>
     <!-- header area end -->
-
+    <div class="breadcrumb-area">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="breadcrumb-wrap">
+                        <nav aria-label="breadcrumb">
+                            <ul class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Register</li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 

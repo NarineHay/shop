@@ -21,6 +21,7 @@ export const useCompareStore = defineStore('compare', {
             if (this.list.length >= 3) {
                 const modal = useModalStore();
 
+
                 return;
             }
             this.list.push(productId);

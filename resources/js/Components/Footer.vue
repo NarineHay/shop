@@ -1,40 +1,35 @@
 <script setup>
+import { Link, usePage } from '@inertiajs/vue3';
+import { useTrans, useRoute } from '/resources/js/trans';
+
 const year = new Date().getFullYear()
 </script>
 
 <template>
+    <div class="scroll-top not-visible">
+        <i class="fa fa-angle-up"></i>
+    </div>
     <footer>
         <!-- news-letter area start -->
         <div class="newsletter-group">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 px-5">
                         <div class="newsletter-box">
-                            <div class="newsletter-inner">
+                            <div class="newsletter-inner mx-auto">
                                 <div class="newsletter-title">
-                                    <h3>Sign Up For Newsletters</h3>
-                                    <p>Be the First to Know. Sign up for newsletter today</p>
+                                    <h3>{{useTrans('app.footer.sotial_net_text')}}</h3>
+                                    <!-- <p>Be the First to Know. Sign up for newsletter today</p> -->
                                 </div>
-                                <div class="newsletter-box">
-                                    <form id="mc-form">
-                                        <input type="email" id="mc-email" autocomplete="off" class="email-box" placeholder="enter your email">
-                                        <button class="newsletter-btn" type="submit" id="mc-submit">subscribe !</button>
-                                    </form>
+                                <div class="link-follow">
+                                    <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
+                                    <a href="https://plus.google.com/discover"><i class="fa fa-google-plus"></i></a>
+                                    <a href="https://twitter.com"><i class="fa fa-twitter"></i></a>
+                                    <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
                                 </div>
-                            </div>
-                            <div class="link-follow">
-                                <a href="https://www.facebook.com"><i class="fa fa-facebook"></i></a>
-                                <a href="https://plus.google.com/discover"><i class="fa fa-google-plus"></i></a>
-                                <a href="https://twitter.com"><i class="fa fa-twitter"></i></a>
-                                <a href="https://www.youtube.com"><i class="fa fa-youtube"></i></a>
                             </div>
                         </div>
-                        <!-- mailchimp-alerts Start -->
-                        <div class="mailchimp-alerts">
-                            <div class="mailchimp-submitting"></div><!-- mailchimp-submitting end -->
-                            <div class="mailchimp-success"></div><!-- mailchimp-success end -->
-                            <div class="mailchimp-error"></div><!-- mailchimp-error end -->
-                        </div><!-- mailchimp-alerts end -->
+
                     </div>
                 </div>
             </div>
@@ -49,34 +44,30 @@ const year = new Date().getFullYear()
                             <div class="widget-title">
                                 <div class="footer-logo mb-30">
                                     <a href="index.html">
-                                         <img src="../../assets/img/logo/logo-sinrato.png" alt="">
+                                         <img src="/assets/img/logo/logo-3.png" alt="">
                                     </a>
                                 </div>
                             </div>
                             <div class="widget-body">
-                                <p>We are a team of designers and developers that create high quality Magento, Prestashop, Opencart.</p>
-                                <div class="payment-method">
-                                    <h4>payment</h4>
-                                    <img src="../../assets/img/payment/payment.png" alt="">
-                                </div>
+                                <p>{{ useTrans('app.footer.left_p') }}</p>
                             </div>
                         </div>
                     </div> <!-- single widget end -->
                     <div class="col-lg-2 col-md-6 col-sm-6">
                         <div class="footer-single-widget">
                             <div class="widget-title">
-                                <h4>Information</h4>
+                                <h4>{{ useTrans('app.footer.information') }}</h4>
                             </div>
                             <div class="widget-body">
                                 <div class="footer-useful-link">
                                     <ul>
-                                        <li><a href="about.html">about us</a></li>
-                                        <li><a href="#">Delivery Information</a></li>
-                                        <li><a href="#">Privacy Policy</a></li>
-                                        <li><a href="#">Terms & Conditions</a></li>
-                                        <li><a href="#">Contact Us</a></li>
-                                        <li><a href="#">Returns</a></li>
-                                        <li><a href="#">Site Map</a></li>
+                                        <li>
+                                            <Link :href="useRoute('about_us')" >{{ useTrans('app.about_us') }}</Link>
+                                        </li>
+
+                                        <li><a href="#">{{ useTrans('app.privacy_policy') }}</a></li>
+                                        <li><a href="#">{{ useTrans('app.contact_us') }}</a></li>
+
                                     </ul>
                                 </div>
                             </div>
@@ -85,14 +76,14 @@ const year = new Date().getFullYear()
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="footer-single-widget">
                             <div class="widget-title">
-                                <h4>contact us</h4>
+                                <h4>{{ useTrans('app.contact_us') }}</h4>
                             </div>
                             <div class="widget-body">
                                 <div class="footer-useful-link">
                                     <ul>
-                                        <li><span>Address:</span> 4710-4890 Breckinridge St,Fayetteville, NC 28311</li>
-                                        <li><span>email:</span> support@sinrato.com</li>
-                                        <li><span>Call us:</span> <strong>1-1001-234-5678</strong></li>
+                                        <li><span>{{ useTrans('app.footer.address') }}</span> {{ useTrans('app.footer.address_value') }}</li>
+                                        <li><span>{{ useTrans('app.footer.email') }}</span> kasamansolutions@gmail.com</li>
+                                        <li><span>{{ useTrans('app.footer.call_us') }}</span> <strong>+37455522511</strong></li>
                                     </ul>
                                 </div>
                             </div>
@@ -101,13 +92,13 @@ const year = new Date().getFullYear()
                     <div class="col-lg-3 col-md-6 col-sm-6">
                         <div class="footer-single-widget">
                             <div class="widget-title">
-                                <h4>Our Twitter Feed</h4>
+                                <h4>{{ useTrans('app.footer.warranty_service') }}</h4>
                             </div>
                             <div class="widget-body">
                                 <div class="twitter-article">
                                     <div class="twitter-text">
-                                        Check out "Alice - Multipurpose Responsive #Magento #Theme" on #Envato by <a href="#">@sinratos</a> #Themeforest <a href="#">https://t.co/DNdhAwzm88</a>
-                                        <span class="tweet-time"><i class="fa fa-twitter"></i><a href="#">30 sep</a></span>
+                                        {{ useTrans('app.footer.support_text') }}
+                                        <span class="tweet-time"><i class="fa fa-tools"></i><a href="#">{{ useTrans('app.footer.support') }}</a></span>
                                     </div>
                                 </div>
                             </div>
@@ -124,12 +115,9 @@ const year = new Date().getFullYear()
                     <div class="col-12">
                         <div class="footer-bottom-content">
                             <div class="footer-copyright">
-                                <p>&copy; 2021 <b>Sinrato</b> Made with <i class="fa fa-heart text-danger"></i> by <a href="https://hasthemes.com/"><b>HasThemes</b></a></p>
+                                <p>&copy; All rights reserved </p>
                             </div>
-                            <div class="footer-custom-link">
-                                <a href="#">Brands</a>
-                                <a href="#">Specials</a>
-                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -271,7 +259,7 @@ const year = new Date().getFullYear()
         </div>
     </div>
     <!-- Quick view modal end -->
-    
+
 </template>
 
 

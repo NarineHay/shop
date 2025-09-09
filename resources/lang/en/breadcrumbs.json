@@ -1,0 +1,17 @@
+{
+    "welcome": "Home",
+    "dashboard": "Dashboard",
+    "account": "My Account",
+    "profile": "Profile",
+    "edit": "Edit",
+    "register": "Register",
+    "login": "Login",
+    "password": "Password",
+    "request": "Request",
+    "verification": "Verification",
+    "notice": "Notice",
+    "reset": "Reset",
+    "about_us": "About Us",
+    "portfolio": "Portfolio",
+    "single_portfolio": "Portfolio"
+}

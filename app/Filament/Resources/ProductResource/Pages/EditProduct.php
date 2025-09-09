@@ -10,6 +10,8 @@ class EditProduct extends EditRecord
 {
     protected static string $resource = ProductResource::class;
     protected array $translations = [];
+    protected array $attributeValuesToSync = [];
+
 
     // Перед заполнением формы подтягиваем переводы в нужном формате
     protected function mutateFormDataBeforeFill(array $data): array
@@ -23,6 +25,15 @@ class EditProduct extends EditRecord
             ];
         })->toArray();
 
+        // Уже выбранные attribute_values
+        $attributeValueIds = $this->record->attributeValues
+            ->groupBy('attribute_id') // группируем все значения по атрибуту
+            ->map(fn($group) => $group->pluck('id')->toArray()) // достаем все id
+            ->toArray();
+
+        $data['attribute_value_ids'] = $attributeValueIds;
+
+
         return $data;
     }
 
@@ -31,6 +42,12 @@ class EditProduct extends EditRecord
     {
         $this->translations = $data['translations'] ?? [];
         unset($data['translations']);
+
+        $this->attributeValuesToSync = collect($data['attribute_value_ids'] ?? [])
+            ->flatten()
+            ->filter()
+            ->toArray();
+        unset($data['attribute_value_ids']);
 
         return $data;
     }
@@ -57,6 +74,11 @@ class EditProduct extends EditRecord
 
                 ]);
             }
+        }
+
+        // Атрибуты
+        if (!empty($this->attributeValuesToSync)) {
+            $this->record->attributeValues()->sync($this->attributeValuesToSync);
         }
     }
     protected function getHeaderActions(): array

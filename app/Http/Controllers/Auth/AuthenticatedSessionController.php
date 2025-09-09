@@ -33,7 +33,16 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        // return redirect()->intended(route('dashboard', ['locale' => app()->getLocale()], absolute: false));
+
+        $user = Auth::user();
+        $locale = app()->getLocale();
+
+        return  redirect(route('dashboard', ['locale' => $locale], absolute: false));
+
+        // return $user->hasVerifiedEmail() ?
+        //     redirect(route('welcome', ['locale' => $locale], absolute: false)) :
+        //     redirect(route('dashboard', ['locale' => $locale], absolute: false));
     }
 
     /**

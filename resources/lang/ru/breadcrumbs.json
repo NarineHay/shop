@@ -1,0 +1,18 @@
+{
+    "welcome": "Главный",
+    "dashboard": "Панель управления",
+    "account": "Личный кабинет",
+    "profile": "Профиль",
+    "edit": "Редактировать",
+    "register": "Регистрация",
+    "login": "Вход",
+    "password": "Пароль",
+    "request": "Запрос",
+    "verification": "Подтверждение",
+    "notice": "Уведомление",
+    "reset": "Сброс",
+    "about_us": "О нас",
+    "portfolio": "Портфолио",
+    "single_portfolio": "Портфолио"
+
+}

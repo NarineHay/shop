@@ -1,0 +1,32 @@
+{
+    "about_us": "About Us",
+    "contact_us": "Contact Us",
+    "privacy_policy": "Privacy Policy",
+    "portfolio": "Portfolio",
+
+    "messages": {
+        "success": "The operation was completed successfully.",
+        "password_updated": "Password updated successfully.",
+        "error": "Something went wrong."
+    },
+
+    "footer": {
+        "left_p": "We are an online store of electrical accessories where you can find a wide range.",
+        "information": "Information",
+        "payment": "Payment",
+        "address": "Address: ",
+        "address_value": "Address value",
+        "email": "email: ",
+        "call_us": "Call us: ",
+        "warranty_service": "Support",
+        "support_text": "Our team is always ready to help you with product selection and other issues.",
+        "support": "Support",
+        "sotial_net_text": "You can also find us on social networks"
+    },
+
+    "buttons": {
+        "show_more": "Show more",
+        "shop_now": "Shop now"
+    }
+
+}

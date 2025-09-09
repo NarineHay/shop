@@ -1,0 +1,30 @@
+{
+
+    "create": "Ստեղծել",
+    "name": "Անուն ազգանուն",
+    "email": "Էլ․հասցե",
+    "phone": "Հեռախոս",
+    "location": "Մարզ",
+    "password": "Գաղտնաբառ",
+    "password_confirmation": "Հաստատեք գաղտնաբառը",
+    "current_password": "Ընթացիկ գաղտնաբառ",
+    "sign_in": "Մուտք",
+    "register": "Գրանցվել",
+
+    "name_placeholder": "Մուտքագրեք ձեր անունը և ազգանունը",
+    "email_placeholder": "Մուտքագրեք ձեր Էլ․հասցեն",
+    "phone_placeholder": "Մուտքագրեք ձեր հեռախոսահամարը",
+    "password_placeholder": "Մուտքագրեք ձեր գաղտնաբառը",
+    "password_confirmation_placeholder": "Հաստատեք գաղտնաբառը",
+    "current_password_placeholder": "Մուտքագրեք ընթացիկ գաղտնաբառը",
+    "select_placeholder": "Ընտրեք տարբերակը",
+    "save": "Պահպանել",
+    "name_surname": "Անուն Ազգանուն",
+    "filter": "Ֆիլտր",
+    "cleare_filter": "Չեղարկել",
+    "sending": "Ուղարկում...",
+
+    "new_password": "Նոր գաղտնաբառ"
+
+
+}
