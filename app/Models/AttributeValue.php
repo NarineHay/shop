@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AttributeValue extends Model
 {
-        protected $guarded = [];
+    protected $guarded = [];
+    protected $appends = ['translation_lang'];
 
 
     public function attribute(): BelongsTo
@@ -36,5 +37,12 @@ class AttributeValue extends Model
     {
         $locale = $locale ?: app()->getLocale();
         return $this->translations()->where('locale', $locale)->first();
+    }
+
+    public function getTranslationLangAttribute()
+    {
+        return $this->translations
+            ? $this->translations->firstWhere('locale', app()->getLocale())
+            : null;
     }
 }
