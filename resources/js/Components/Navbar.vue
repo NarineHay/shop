@@ -155,8 +155,11 @@ const compareUrl = computed(() => {
                                 </li>
 
                                 <li class="my-cart">
-                                    <button type="button" class="ha-toggle"><span class="lnr lnr-cart"></span><span class="count">{{ cart.count }}</span>my cart</button>
-                                    
+                                    <!-- <button type="button" class="ha-toggle"><span class="lnr lnr-cart"></span><span class="count">{{ cart.count }}</span>my cart</button> -->
+                                    <Link :href="useRoute('cart')" class="ha-toggle" >
+                                        <span v-if="cart.count" class="count ">{{ cart.count }}</span>
+                                        <span class="lnr lnr-cart"></span>my cart
+                                    </Link>
                                 </li>
                             </ul>
                         </div>

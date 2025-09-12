@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\AboutUsController;
+use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CompareController;
 use App\Http\Controllers\Web\Portfolio\PortfolioController;
 use App\Http\Controllers\Web\WelcomeController;
@@ -29,7 +30,9 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
     Route::get('/single-portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.single_portfolio');
     Route::get('/compare', CompareController::class)->name('compare');
+    Route::get('/cart', CartController::class)->name('cart');
 
+    // Route::post('/products/prices', [ProductController::class, 'getPrices']); // цены для localStorage корзины
 
 
     Route::get('dashboard', function () {

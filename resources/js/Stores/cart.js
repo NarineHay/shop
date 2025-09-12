@@ -45,8 +45,10 @@ export const useCartStore = defineStore('cart', {
                     return
                 }
 
-                const response = await axios.post(`/api/products/info`, { ids })
+                const response = await axios.post(`/api/products/prices`, { ids })
                 this.products = response.data // [{id, name, price, ...}]
+
+                console.log(this.products, 555555)
             } catch (e) {
                 console.error('Ошибка загрузки информации о товарах:', e)
             }
