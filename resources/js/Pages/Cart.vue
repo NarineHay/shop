@@ -6,7 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Checkbox from "@/Components/Checkbox.vue";
-import { Head, Link, useForm } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import { useTrans, useRoute } from "/resources/js/trans";
 import { useCartStore } from '@/Stores/cart';
 
@@ -18,8 +18,13 @@ const props = defineProps({
 
 const cart = useCartStore()
 
+const page = usePage();
+const user = page.props.auth.user;
+
+
 onMounted(() => {
-    if (cart.userId) {
+
+    if (user) {
         cart.loadFromServer()  // авторизованные
     } else {
         cart.fetchProducts()   // неавторизованные, подтягиваем цены
@@ -31,15 +36,6 @@ onMounted(() => {
   console.log('👉 cart.totalPrice:', cart.totalPrice)
   console.log('👉 cart.count:', cart.count)
 })
-
-
-watch(
-  () => cart.products,
-  (newVal) => {
-    console.log('✅ cart.products обновились:', newVal)
-  },
-  { deep: true }
-)
 
 
 </script>
@@ -56,157 +52,82 @@ watch(
                             <div class="row">
                                 <div class="col-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="section-title">
-                                        <h3>Shopping Cart</h3>
+                                        <h3>{{useTrans('page.shopping_cart')}}</h3>
                                     </div>
-                                    <form action="#">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered">
-  <thead>
-    <tr>
-      <td>Image</td>
-      <td>Product Name</td>
-      <td>Model</td>
-      <td>Quantity</td>
-      <td>Unit Price</td>
-      <td>Total</td>
-    </tr>
-  </thead>
-  <tbody>
-    <tr v-for="product in cart.products" :key="product.id">
-      <td>
-        <a :href="`/product/${product.slug}`">
-          <img :src="product.image" alt="Cart Product Image" class="img-thumbnail">
-        </a>
-      </td>
-      <td>
-        <a :href="`/product/${product.slug}`">{{ product.name }}</a>
-        <span v-if="product.options?.delivery_date">Delivery Date: {{ product.options.delivery_date }}</span>
-        <span v-if="product.options?.color">Color: {{ product.options.color }}</span>
-        <span v-if="product.options?.reward_points">Reward Points: {{ product.options.reward_points }}</span>
-      </td>
-      <td>{{ product.model }}</td>
-      <td>
-        <div class="input-group btn-block">
-          <div class="product-qty me-3">
-            <input type="text" v-model="product.quantity">
-            <span class="dec qtybtn" @click="cart.decrease(product)"> <i class="fa fa-minus"></i> </span>
-            <span class="inc qtybtn" @click="cart.increase(product)"> <i class="fa fa-plus"></i> </span>
-          </div>
-          <span class="input-group-btn">
-            <button type="submit" class="btn btn-primary" @click="cart.update(product)"><i class="fa fa-refresh"></i></button>
-            <button type="button" class="btn btn-danger pull-right" @click="cart.remove(product)"><i class="fa fa-times-circle"></i></button>
-          </span>
-        </div>
-      </td>
-      <td>{{ product.price }} ֏</td>
-      <td>{{ product.total }} ֏</td>
-    </tr>
-  </tbody>
-</table>
 
-                                            <!-- <table class="table table-bordered">
+                                    <div class="table-responsive">
+                                            <table class="table table-bordered">
                                                 <thead>
                                                     <tr>
-                                                        <td>Image</td>
-                                                        <td>Product Name</td>
-                                                        <td>Model</td>
-                                                        <td>Quantity</td>
-                                                        <td>Unit Price</td>
-                                                        <td>Total</td>
+                                                    <td>{{useTrans('page.image')}}</td>
+                                                    <td>{{useTrans('page.product_name')}}</td>
+                                                    <td>{{useTrans('page.params')}}</td>
+                                                    <td>{{useTrans('page.quantity')}}</td>
+                                                    <td>{{useTrans('page.unit_price')}}</td>
+                                                    <td>{{useTrans('page.total')}}</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
+                                                    <tr v-for="item in cart.list" :key="item.id">
                                                         <td>
-                                                            <a href="product-details.html"><img src="/assets/img/product/pro-layout-img5.jpg" alt="Cart Product Image" title="Compete Track Tote" class="img-thumbnail"></a>
+                                                            <img :src="cart.getProductImage(item.id)" class="img-thumbnail" width="80" />
                                                         </td>
-                                                        <td>
-                                                            <a href="product-details.html">Compete Track Tote</a>
-                                                            <span>Delivery Date: 2019-09-22</span>
-                                                            <span>Color: Brown</span>
-                                                            <span>Reward Points: 300</span>
-                                                        </td>
-                                                        <td>3</td>
-                                                        <td>
-                                                            <div class="input-group btn-block">
-                                                                <div class="product-qty me-3">
-                                                                    <input type="text" value="0">
-                                                                <span class="dec qtybtn"><i class="fa fa-minus"></i></span><span class="inc qtybtn"><i class="fa fa-plus"></i></span></div>
-                                                                <span class="input-group-btn">
-                                                                    <button type="submit" class="btn btn-primary"><i class="fa fa-refresh"></i></button>
-                                                                    <button type="button" class="btn btn-danger pull-right"><i class="fa fa-times-circle"></i></button>
+                                                        <td>{{ cart.getProductName(item.id) }}</td>
+                                                        <td>{{ JSON.stringify(item.params) }}</td>
+                                                        <!-- <td>
+                                                            <button @click="cart.decreaseQty(item.id, item.params)" class="btn btn-warning pull-left">-</button>
+                                                            {{ item.qty }}
+                                                            <button @click="cart.increaseQty(item.id, item.params)" class="btn btn-warning pull-right">+</button>
+                                                            <button @click="cart.remove(item.id, item.params)" type="button" class="btn btn-danger "><i class="fa fa-times-circle"></i></button>
+                                                        </td> -->
+                                                        <td  >
+                                                            <div class="d-flex justify-content-center align-items-center">
+                                                                <!-- Кнопка "-" -->
+                                                                <button
+                                                                @click="cart.decreaseQty(item.id, item.params)"
+                                                                class="btn btn-warning rounded-start "
+                                                                style="width:36px; height:36px; padding:0;"
+                                                                >-</button>
+
+                                                                <!-- Цифра -->
+                                                                <span class="d-flex justify-content-center align-items-center border-top border-bottom"
+                                                                    style="width:40px; height:36px;">
+                                                                {{ item.qty }}
                                                                 </span>
+
+                                                                <!-- Кнопка "+" -->
+                                                                <button
+                                                                @click="cart.increaseQty(item.id, item.params)"
+                                                                class="btn btn-warning rounded-end"
+                                                                style="width:36px; height:36px; padding:0;"
+                                                                >+</button>
+
+                                                                <!-- Удаление -->
+                                                                <button
+                                                                @click="cart.remove(item.id, item.params)"
+                                                                class="btn btn-danger ms-2"
+                                                                style="width:36px; height:36px; padding:0 6px;"
+                                                                >
+                                                                <i class="fa fa-times-circle"></i>
+                                                                </button>
                                                             </div>
                                                         </td>
-                                                        <td>$200.00</td>
-                                                        <td>$200.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <a href="product-details.html"><img src="/assets/img/product/pro-layout-img4.jpg" alt="Cart Product Image" title="Rival Field Messenger 6" class="img-thumbnail"></a>
-                                                        </td>
-                                                        <td>
-                                                            <a href="product-details.html">Rival Field Messenger 6</a>
-                                                            <span>Color: Dark Blue</span>
-                                                        </td>
-                                                        <td>10</td>
-                                                        <td>
-                                                            <div class="input-group btn-block">
-                                                                <div class="product-qty me-3">
-                                                                    <input type="text" value="0">
-                                                                <span class="dec qtybtn"><i class="fa fa-minus"></i></span><span class="inc qtybtn"><i class="fa fa-plus"></i></span></div>
-                                                                <span class="input-group-btn">
-                                                                    <button type="submit" data-toggle="tooltip" data-direction="top" class="btn btn-primary" data-original-title="Update"><i class="fa fa-refresh"></i></button>
-                                                                    <button type="button" data-toggle="tooltip" data-direction="top" class="btn btn-danger pull-right" data-original-title="Remove"><i class="fa fa-times-circle"></i></button>
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td>$480.00</td>
-                                                        <td>$480.00</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <a href="product-details.html"><img src="/assets/img/product/pro-layout-img3.jpg" alt="Cart Product Image" title="Fusion Backpack" class="img-thumbnail"></a>
-                                                        </td>
-                                                        <td>
-                                                            <a href="product-details.html">Fusion Backpack</a>
-                                                            <span>Select: White</span>
-                                                            <span>Color: Brown</span>
-                                                            <span>Reward Points: 200</span>
-                                                        </td>
-                                                        <td>2</td>
-                                                        <td>
-                                                            <div class="input-group btn-block">
-                                                                <div class="product-qty me-3">
-                                                                    <input type="text" value="0">
-                                                                <span class="dec qtybtn"><i class="fa fa-minus"></i></span><span class="inc qtybtn"><i class="fa fa-plus"></i></span></div>
-                                                                <span class="input-group-btn">
-                                                                    <button type="submit" data-toggle="tooltip" data-direction="top" class="btn btn-primary" data-original-title="Update"><i class="fa fa-refresh"></i></button>
-                                                                    <button type="button" data-toggle="tooltip" data-direction="top" class="btn btn-danger pull-right" data-original-title="Remove"><i class="fa fa-times-circle"></i></button>
-                                                                </span>
-                                                            </div>
-                                                        </td>
-                                                        <td>$180.00</td>
-                                                        <td>$180.00</td>
+                                                        <td>{{ cart.getProduct(item.id)?.price }} ֏</td>
+                                                        <td>{{ (cart.getProduct(item.id)?.price || 0) * item.qty }} ֏</td>
                                                     </tr>
                                                 </tbody>
-                                            </table> -->
-                                        </div>
-                                    </form>
-
+                                        </table>
+                                    </div>
 
                                     <div class="cart-amount-wrapper">
                                         <div class="row">
                                             <div class="col-12 col-sm-12 col-md-4 offset-md-8">
                                                 <table class="table table-bordered">
                                                     <tbody>
+
                                                         <tr>
-                                                            <td><strong>Sub-Total:</strong></td>
-                                                            <td>$860.00</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td><strong>Total:</strong></td>
-                                                            <td><span class="color-primary">$860.00</span></td>
+                                                            <td><strong>{{useTrans('page.total')}}:</strong></td>
+                                                            <td><span class="color-primary">{{ cart.totalPrice }} ֏</span></td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -215,8 +136,8 @@ watch(
                                     </div>
 
                                     <div class="cart-button-wrapper d-flex justify-content-between mt-4">
-                                        <a href="shop-grid-left-sidebar.html" class="btn btn-secondary">Continue Shopping</a>
-                                        <a href="checkout.html" class="btn btn-secondary dark align-self-end">Checkout</a>
+                                        <a href="shop-grid-left-sidebar.html" class="btn btn-secondary">{{useTrans('app.buttons.continue_shopping')}}</a>
+                                        <a href="checkout.html" class="btn btn-secondary dark align-self-end">{{useTrans('app.buttons.checkout')}}</a>
                                     </div>
                                 </div>
                             </div>
@@ -229,5 +150,20 @@ watch(
     </GuestLayout>
 </template>
 
+<style scoped>
+.qty-btn {
+  transition: background-color 0.2s, color 0.2s;
+}
 
+.qty-btn:hover {
+  background-color: #ffc107; /* чуть ярче */
+  color: #fff;
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+</style>
 

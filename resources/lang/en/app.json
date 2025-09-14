@@ -28,8 +28,9 @@
         "show_more": "Show more",
         "shop_now": "Shop now",
         "add_to_cart": "Add To Cart",
-        "remove": "Remove"
-
+        "remove": "Remove",
+        "checkout": "Checkout",
+        "continue_shopping": "Continue Shopping"
 
     }
 
