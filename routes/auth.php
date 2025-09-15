@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Cart\CartController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\CustomVerifyEmailController;
@@ -71,7 +72,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
     });
+
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::post('/cart/merge', [CartController::class, 'merge']);
+    Route::post('/cart/increase/{itemId}', [CartController::class, 'increase']);
+    Route::post('/cart/decrease/{itemId}', [CartController::class, 'decrease']);
+    Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove']);
+    Route::delete('/cart/clear', [CartController::class, 'clear']);
 });
 
 Route::prefix('{locale}')

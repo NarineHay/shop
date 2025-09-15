@@ -7,6 +7,8 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
+import { useCartStore } from '@/Stores/cart'
+
 
 defineProps({
     canResetPassword: {
@@ -17,15 +19,32 @@ defineProps({
     },
 });
 
+const cart = useCartStore()
+
 const form = useForm({
     email: '',
     password: '',
     remember: false,
 });
 
+// const submit = () => {
+//     form.post(useRoute('login'), {
+//         onFinish: () => form.reset('password'),
+//     });
+// };
+
 const submit = () => {
     form.post(useRoute('login'), {
-        onFinish: () => form.reset('password'),
+        onSuccess: async () => {
+            form.reset('password')
+
+            // если есть товары в localStorage — слить с сервером
+            if (cart.list.length > 0) {
+                await axios.post(`/cart/merge`, { items: cart.list })
+                 localStorage.removeItem('cart_products') // очистили localStorage
+                await cart.loadFromServer() // обновляем корзину после merge
+            }
+        },
     });
 };
 </script>
