@@ -28,7 +28,9 @@
         "show_more": "Դիտել ավելին",
         "shop_now": "Գնել հիմա",
         "add_to_cart": "Զամբյուղ",
-        "remove": "Ջնջել"
+        "remove": "Ջնջել",
+        "checkout": "Վճարել",
+        "continue_shopping": "Շարունակել գնումները"
 
 
     }

@@ -3,7 +3,7 @@
 import { onMounted, computed } from 'vue'
 import { initMeanMenu } from '@/main.js'
 import CategoryItem from '@/Components/CategoryItem.vue';
-import { Link, usePage } from '@inertiajs/vue3';
+import { Link, usePage, useForm  } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 import { useCompareStore } from '@/Stores/compare';
 import { useCartStore } from '@/Stores/cart';
@@ -13,6 +13,8 @@ const compare = useCompareStore();
 const cart = useCartStore();
 
 const page = usePage();
+const form = useForm()
+
 const categories = page.props.categories;
 const user = page.props.auth.user;
 
@@ -24,6 +26,12 @@ const showBreadcrumbs = computed(() => {
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
+
+  if (user) {
+    cart.setUser(user.id)   // авторизованный → тянем корзину из БД
+  } else {
+    cart.fetchProducts()    // гость → localStorage + цены
+  }
 
   initMeanMenu()
 })
@@ -44,6 +52,17 @@ const compareUrl = computed(() => {
   return `${useRoute('compare')}?${compare.ids.map(id => `ids[]=${id}`).join('&')}`
 })
 
+function doLogout() {
+    form.post(useRoute('logout'), {
+        onSuccess: () => {
+        // После успешного logout вызываем очистку
+        cart.logout()
+        },
+        onError: () => {
+        // при ошибке можно логировать
+        }
+    })
+}
 
 </script>
 
@@ -73,11 +92,12 @@ const compareUrl = computed(() => {
                                         </li>
                                         <li>
                                             <Link
-                                                :href="useRoute('logout')"
+                                                @click="doLogout"
                                                 method="post"
                                                 class="text-body"
                                                 >{{ useTrans('navbar.logout') }}
                                             </Link>
+                                            <!-- <div  @click="doLogout" class="text-body">{{ useTrans('navbar.logout') }}</div> -->
                                         </li>
                                     </ul>
                                     <ul v-else class="box-dropdown ha-dropdown">
@@ -129,7 +149,7 @@ const compareUrl = computed(() => {
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-4 col-sm-4 col-12">
                         <div class="logo">
-                            <a href="index.html"><img src="/assets/img/logo/logo-3.png" alt="brand-logo"></a>
+                             <Link :href="useRoute('welcome')"><img src="/assets/img/logo/logo-3.png" alt="brand-logo"></Link>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12 order-sm-last">
@@ -153,47 +173,13 @@ const compareUrl = computed(() => {
                                         <span class="lnr lnr-sync"></span>Product compare
                                     </Link>
                                 </li>
-                                <li class="wishlist">
-                                    <a class="ha-toggle" href="wishlist.html"><span class="lnr lnr-heart"></span><span class="count">1</span>wishlist</a>
-                                </li>
+
                                 <li class="my-cart">
-                                    <button type="button" class="ha-toggle"><span class="lnr lnr-cart"></span><span class="count">{{ cart.count }}</span>my cart</button>
-                                    <ul class="mini-cart-drop-down ha-dropdown">
-                                        <li class="mb-30">
-                                            <div class="cart-img">
-                                                <a href="product-details.html"><img alt="" src="../../assets/img/cart/cart-1.jpg"></a>
-                                            </div>
-                                            <div class="cart-info">
-                                                <h4><a href="product-details.html">Koss Porta Pro On Ear  Headphones </a></h4>
-                                                <span> <span>1 x </span>£165.00</span>
-                                            </div>
-                                            <div class="del-icon">
-                                                <i class="fa fa-times-circle"></i>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="subtotal-text">Sub-total: </div>
-                                            <div class="subtotal-price">£48.94</div>
-                                        </li>
-                                        <li>
-                                            <div class="subtotal-text">Eco Tax (-2.00): </div>
-                                            <div class="subtotal-price">£1.51</div>
-                                        </li>
-                                        <li>
-                                            <div class="subtotal-text">Vat (20%): </div>
-                                            <div class="subtotal-price">£9.79</div>
-                                        </li>
-                                        <li>
-                                            <div class="subtotal-text">Total: </div>
-                                            <div class="subtotal-price"><span>£60.24</span></div>
-                                        </li>
-                                        <li class="mt-30">
-                                            <a class="cart-button" href="cart.html">view cart</a>
-                                        </li>
-                                        <li>
-                                            <a class="cart-button" href="checkout.html">checkout</a>
-                                        </li>
-                                    </ul>
+                                    <!-- <button type="button" class="ha-toggle"><span class="lnr lnr-cart"></span><span class="count">{{ cart.count }}</span>my cart</button> -->
+                                    <Link :href="cart.count > 0 ? useRoute('cart') : ''" class="ha-toggle" >
+                                        <span v-if="cart.count" class="count ">{{ cart.count }}</span>
+                                        <span class="lnr lnr-cart"></span>my cart
+                                    </Link>
                                 </li>
                             </ul>
                         </div>
