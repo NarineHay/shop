@@ -3,6 +3,8 @@ import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import { Link } from '@inertiajs/vue3';
 import Navbar from '@/Components/Navbar.vue'
 import Footer from '@/Components/Footer.vue'
+import ResultModal from '@/Components/ResultModal.vue'
+
 </script>
 
 <template>
@@ -10,6 +12,8 @@ import Footer from '@/Components/Footer.vue'
     <Navbar />
     <main>
       <slot />
+            <ResultModal />
+
     </main>
     <Footer />
   </div>

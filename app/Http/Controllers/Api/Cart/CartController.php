@@ -88,25 +88,25 @@ class CartController extends Controller
             //     ->where('attributes', json_encode($item['params'] ?? null))
             //     ->first();
 
-                $cartItem = $cart->items->first(function($cartItem) use ($item) {
-    return $cartItem->product_id == $item['id'] &&
-           json_encode($cartItem->attributes ?? []) === json_encode($item['params'] ?? []);
-});
+            $cartItem = $cart->items->first(function($cartItem) use ($item) {
+                return $cartItem->product_id == $item['id'] &&
+                    json_encode($cartItem->attributes ?? []) === json_encode($item['params'] ?? []);
+            });
 
-           if ($cartItem) {
-            // Берём максимум между количеством из localStorage и текущим количеством в БД
-            $cartItem->quantity = max($cartItem->quantity, $item['qty']);
-            $cartItem->save();
-        } else {
-            // Создаём новый элемент
-            $cart->items()->create([
-                'product_id' => $item['id'],
-                'quantity' => $item['qty'],
-                'price' => $item['price'] ?? 0,
-                'discount' => $item['discount'] ?? null,
-                'attributes' => $item['params'] ?? null,
-            ]);
-        }
+            if ($cartItem) {
+                // Берём максимум между количеством из localStorage и текущим количеством в БД
+                $cartItem->quantity = max($cartItem->quantity, $item['qty']);
+                $cartItem->save();
+            } else {
+                // Создаём новый элемент
+                $cart->items()->create([
+                    'product_id' => $item['id'],
+                    'quantity' => $item['qty'],
+                    'price' => $item['price'] ?? 0,
+                    'discount' => $item['discount'] ?? null,
+                    'attributes' => $item['params'] ?? null,
+                ]);
+            }
         }
 
         // $cart->load('items.product');
