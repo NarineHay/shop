@@ -16,7 +16,7 @@ class ProductService extends BaseService
 
     public function getBySlug(string $slug): Product
     {
-     
+
         $product = $this->repository->findBySlug($slug);
 
         // например, какая-то бизнес-логика
@@ -24,6 +24,15 @@ class ProductService extends BaseService
 
         return $product;
     }
+
+    public function releatedProducts ($product_id, $category_id): mixed
+    {
+        $products = $this->repository->releatedProducts($product_id, $category_id);
+
+        return $products;
+    }
+
+
 
     // public function getFeatured(): mixed
     // {

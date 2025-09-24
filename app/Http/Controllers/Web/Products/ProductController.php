@@ -14,17 +14,17 @@ class ProductController extends Controller
     {
     }
 
-    public function show(string $locale, string $slug)
+    public function show(string $locale, string $category_slug, string $slug)
     {
 
         $product = $this->service->getBySlug($slug);
-        $attributes = AttributesHelper::getAll();
+        $releatedProducts = $this->service->releatedProducts( $product->id, $product->category_id);
 
         return Inertia::render(
             'Products/SingleProduct',
             [
                 'product' => $product,
-                'attributes' => $attributes
+                'releatedProducts' => $releatedProducts
             ]
         );
     }

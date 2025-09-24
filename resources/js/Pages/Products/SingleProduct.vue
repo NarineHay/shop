@@ -2,33 +2,28 @@
 import { onMounted, computed, ref  } from 'vue'
 
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import Checkbox from '@/Components/Checkbox.vue'
-import Portfolio from '@/Components/SinglePortfolioItem.vue'
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 import { initProductLargeSlider } from '@/product-large-slider'
 import { useCartStore } from '@/Stores/cart'
 import { useModalStore } from '@/Stores/modalStore'
 import { useCompareStore } from '@/Stores/compare';
+import Product from '@/Components/Product.vue';
 
 const props = defineProps({
     product: Object,
+    releatedProducts: Array
 })
 
 const product = props.product
 const cartStore = useCartStore()
 const modal = useModalStore()
 const compare = useCompareStore();
-
 // выбранные значения атрибутов
 const selectedAttributes = ref({})
 // выбранное количество
 const qty = ref(1)
-console.log(product,7777888)
+
 // группируем attribute_values по attribute_id
 const groupedAttributes = computed(() => {
     const groups = {}
@@ -93,387 +88,104 @@ onMounted(() => {
     <GuestLayout>
         <Head :title="useTrans('app.portfolio')" />
             <div class="product-details-main-wrapper pb-50">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-5">
-                    <div class="product-large-slider mb-4">
-                        <div v-for="(img, index) in product.images" :key="index"  class="pro-large-img">
-                            <img :src="img.path_url" alt="" />
-
-                        </div>
-
-
-                    </div>
-                    <div class="pro-nav">
-                        <div v-for="(img, index) in product.images" :key="index" class="pro-nav-thumb">
-                            <img :src="img.path_url" alt="" />
-                        </div>
-
-                    </div>
-                </div>
-                <div class="col-lg-7">
-                    <div class="product-details-inner">
-                        <div class="product-details-contentt">
-                            <div class="pro-details-name mb-10">
-                                <h3>{{product.translation_lang.name}}</h3>
-                            </div>
-
-                            <div class="price-box mb-15">
-                                <span class="regular-price"><span class="special-price">{{product.price}}</span></span>
-
-                            </div>
-                            <div class="product-detail-sort-des pb-4">
-                                <p>{{product.translation_lang.description}}</p>
-                            </div>
-                            <!-- <div class="pro-details-list pt-4">
-                                <ul>
-                                    <li><span>Ex Tax :</span>£60.24</li>
-                                    <li><span>Brands :</span><a href="#">Canon</a></li>
-                                    <li><span>Product Code :</span>Digital</li>
-                                    <li><span>Reward Points :</span>200</li>
-                                    <li><span>Availability :</span>In Stock</li>
-                                </ul>
-                            </div> -->
-                            <!-- <div class="product-availabily-option mt-15 mb-15">
-                                <h3>Available Options</h3>
-                                <div class="color-optionn">
-                                    <h4><sup>*</sup>color</h4>
-                                    <ul>
-                                        <li>
-                                            <a class="c-black" href="#" title="Black"></a>
-                                        </li>
-                                        <li>
-                                            <a class="c-blue" href="#" title="Blue"></a>
-                                        </li>
-                                        <li>
-                                            <a class="c-brown" href="#" title="Brown"></a>
-                                        </li>
-                                        <li>
-                                            <a class="c-gray" href="#" title="Gray"></a>
-                                        </li>
-                                        <li>
-                                            <a class="c-red" href="#" title="Red"></a>
-                                        </li>
-                                    </ul>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <div class="product-large-slider mb-4">
+                                <div v-for="(img, index) in product.images" :key="index"  class="pro-large-img">
+                                    <img :src="img.path_url" alt="" />
                                 </div>
-                            </div> -->
-                            <div class="product-availabily-option mt-15 mb-15" v-if="product.attribute_values.length">
-                                <h3>Available Options</h3>
-                                <div v-for="(values, attributeId) in groupedAttributes" :key="attributeId" class="attribute-group mb-3">
-                                    <h4>
-                                        <sup>*</sup>{{ values[0].attribute.translation_lang.name }}
-                                        <span v-if="values.length > 1">(обязательно)</span>
-                                    </h4>
-                                    <div class="attribute-values">
-                                        <div
-                                            v-for="val in values"
-                                            :key="val.id"
-                                            class="attribute-square"
-                                            :class="{ active: selectedAttributes[val.attribute_id] === val.id, 'color-square': val.attribute.slug === 'color' }"
-                                            :style="val.attribute.slug === 'color' ? { backgroundColor: val.code } : {}"
-                                            @click="selectAttribute(val.attribute_id, val.id)"
-                                            :title="val.translation_lang.name"
-                                        >
-                                            <template v-if="val.attribute.slug !== 'color'">
-                                            {{ val.translation_lang.name }}
-                                            </template>
+                            </div>
+                            <div class="pro-nav">
+                                <div v-for="(img, index) in product.images" :key="index" class="pro-nav-thumb">
+                                    <img :src="img.path_url" alt="" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-7">
+                            <div class="product-details-inner">
+                                <div class="product-details-contentt">
+                                    <div class="pro-details-name mb-10">
+                                        <h3>{{product.translation_lang.name}}</h3>
+                                    </div>
+
+                                    <div class="price-box mb-15">
+                                        <span class="regular-price"><span class="special-price">{{product.price}}</span></span>
+
+                                    </div>
+                                    <div class="product-detail-sort-des pb-4">
+                                        <p>{{product.translation_lang.description}}</p>
+                                    </div>
+
+                                    <div class="product-availabily-option mt-15 mb-15" v-if="product.attribute_values.length">
+                                        <h3>Available Options</h3>
+                                        <div v-for="(values, attributeId) in groupedAttributes" :key="attributeId" class="attribute-group mb-3">
+                                            <h4>
+                                                <sup>*</sup>{{ values[0].attribute.translation_lang.name }}
+                                                <span v-if="values.length > 1">(обязательно)</span>
+                                            </h4>
+                                            <div class="attribute-values">
+                                                <div
+                                                    v-for="val in values"
+                                                    :key="val.id"
+                                                    class="attribute-square"
+                                                    :class="{ active: selectedAttributes[val.attribute_id] === val.id, 'color-square': val.attribute.slug === 'color' }"
+                                                    :style="val.attribute.slug === 'color' ? { backgroundColor: val.code } : {}"
+                                                    @click="selectAttribute(val.attribute_id, val.id)"
+                                                    :title="val.translation_lang.name"
+                                                >
+                                                    <template v-if="val.attribute.slug !== 'color'">
+                                                    {{ val.translation_lang.name }}
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="pro-quantity-box mb-30">
+                                        <div class="qty-boxx">
+                                            <label>qty :</label>
+                                            <!-- <input type="text" placeholder="0"> -->
+                                            <input type="number" v-model.number="qty" min="1" class="qty-input" />
+
+                                            <button class="btn-cart lg-btn"
+                                            :disabled="!allRequiredSelected"
+                                            :class="['btn-cart', { 'disabled': !allRequiredSelected }]"
+                                            @click.prevent="addToCart">add to cart</button>
                                         </div>
                                     </div>
-                                </div>
+                                    <div class="useful-links mb-4">
+                                        <ul>
 
-                            </div>
-                            <div class="pro-quantity-box mb-30">
-                                <div class="qty-boxx">
-                                    <label>qty :</label>
-                                    <!-- <input type="text" placeholder="0"> -->
-                                    <input type="number" v-model.number="qty" min="1" class="qty-input" />
+                                            <li>
+                                                <a href="#" @click.prevent="compare.add(product.id)"><i class="fa fa-refresh"></i>compare this product</a>
+                                            </li>
+                                        </ul>
+                                    </div>
 
-                                    <button class="btn-cart lg-btn"
-                                    :disabled="!allRequiredSelected"
-                                    :class="['btn-cart', { 'disabled': !allRequiredSelected }]"
-                                    @click.prevent="addToCart">add to cart</button>
                                 </div>
                             </div>
-                            <div class="useful-links mb-4">
-                                <ul>
-
-                                    <li>
-                                        <a href="#" @click.prevent="compare.add(product.id)"><i class="fa fa-refresh"></i>compare this product</a>
-                                    </li>
-                                </ul>
-                            </div>
-
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!--  Start related-product -->
-    <div class="related-product-area mb-40">
-        <div class="container-fluid">
-            <div class="section-title">
-                <h3><span>Related</span> product </h3>
+            <!--  Start related-product -->
+            <div v-if="props.releatedProducts.length > 0" class="related-product-area mb-40">
+                <div class="container-fluid">
+                    <div class="section-title">
+                        <h3><span>Related</span> product </h3>
+                    </div>
+                    <div class="flash-sale-active4 owl-carousel owl-arrow-style">
+                        <template v-for="relProduct in props.releatedProducts" :key="relProduct.id" >
+                            <Product :product="relProduct" />
+                        </template>
+
+                    </div>
+                </div>
             </div>
-            <div class="flash-sale-active4 owl-carousel owl-arrow-style">
-                <div class="product-item mb-30">
-                    <div class="product-thumb">
-                        <a href="product-details.html">
-                            <img src="/assets/img/product/product-1.jpg" class="pri-img" alt="">
-                            <img src="/assets/img/product/product-2.jpg" class="sec-img" alt="">
-                        </a>
-                        <div class="box-label">
-                            <div class="label-product label_new">
-                                <span>new</span>
-                            </div>
-                            <div class="label-product label_sale">
-                                <span>-20%</span>
-                            </div>
-                        </div>
-                        <div class="action-links">
-                            <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                            <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                            <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                        </div>
-                    </div>
-                    <div class="product-caption">
-                        <div class="manufacture-product">
-                            <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                        </div>
-                        <div class="product-name">
-                            <h4><a href="product-details.html">jony XB10 Portable Speaker</a></h4>
-                        </div>
-                        <div class="ratings">
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span><i class="lnr lnr-star"></i></span>
-                        </div>
-                        <div class="price-box">
-                            <span class="regular-price"><span class="special-price">£65.00</span></span>
-                            <span class="old-price"><del>£90.00</del></span>
-                        </div>
-                        <button class="btn-cart" type="button">add to cart</button>
-                    </div>
-                </div><!-- </div> end single item -->
-                <div class="product-item mb-30">
-                    <div class="product-thumb">
-                        <a href="product-details.html">
-                            <img src="/assets/img/product/product-6.jpg" class="pri-img" alt="">
-                            <img src="/assets/img/product/product-8.jpg" class="sec-img" alt="">
-                        </a>
-                        <div class="box-label">
-                            <div class="label-product label_new">
-                                <span>new</span>
-                            </div>
-                            <div class="label-product label_sale">
-                                <span>-20%</span>
-                            </div>
-                        </div>
-                        <div class="action-links">
-                            <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                            <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                            <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                        </div>
-                    </div>
-                    <div class="product-caption">
-                        <div class="manufacture-product">
-                            <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                        </div>
-                        <div class="product-name">
-                            <h4><a href="product-details.html">jony XB10 Portable Speaker</a></h4>
-                        </div>
-                        <div class="ratings">
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span><i class="lnr lnr-star"></i></span>
-                        </div>
-                        <div class="price-box">
-                            <span class="regular-price"><span class="special-price">£65.00</span></span>
-                            <span class="old-price"><del>£90.00</del></span>
-                        </div>
-                        <button class="btn-cart" type="button">add to cart</button>
-                    </div>
-                </div><!-- </div> end single item -->
-                <div class="product-item mb-30">
-                    <div class="product-thumb">
-                        <a href="product-details.html">
-                            <img src="/assets/img/product/product-3.jpg" class="pri-img" alt="">
-                            <img src="/assets/img/product/product-4.jpg" class="sec-img" alt="">
-                        </a>
-                        <div class="box-label">
-                            <div class="label-product label_new">
-                                <span>new</span>
-                            </div>
-                            <div class="label-product label_sale">
-                                <span>-20%</span>
-                            </div>
-                        </div>
-                        <div class="action-links">
-                            <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                            <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                            <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                        </div>
-                    </div>
-                    <div class="product-caption">
-                        <div class="manufacture-product">
-                            <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                        </div>
-                        <div class="product-name">
-                            <h4><a href="product-details.html">jony XB10 Portable Speaker</a></h4>
-                        </div>
-                        <div class="ratings">
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span><i class="lnr lnr-star"></i></span>
-                        </div>
-                        <div class="price-box">
-                            <span class="regular-price"><span class="special-price">£65.00</span></span>
-                            <span class="old-price"><del>£90.00</del></span>
-                        </div>
-                        <button class="btn-cart" type="button">add to cart</button>
-                    </div>
-                </div><!-- </div> end single item -->
-                <div class="product-item mb-30">
-                    <div class="product-thumb">
-                        <a href="product-details.html">
-                            <img src="/assets/img/product/product-10.jpg" class="pri-img" alt="">
-                            <img src="/assets/img/product/product-12.jpg" class="sec-img" alt="">
-                        </a>
-                        <div class="box-label">
-                            <div class="label-product label_new">
-                                <span>new</span>
-                            </div>
-                            <div class="label-product label_sale">
-                                <span>-20%</span>
-                            </div>
-                        </div>
-                        <div class="action-links">
-                            <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                            <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                            <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                        </div>
-                    </div>
-                    <div class="product-caption">
-                        <div class="manufacture-product">
-                            <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                        </div>
-                        <div class="product-name">
-                            <h4><a href="product-details.html">jony XB10 Portable Speaker</a></h4>
-                        </div>
-                        <div class="ratings">
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span><i class="lnr lnr-star"></i></span>
-                        </div>
-                        <div class="price-box">
-                            <span class="regular-price"><span class="special-price">£65.00</span></span>
-                            <span class="old-price"><del>£90.00</del></span>
-                        </div>
-                        <button class="btn-cart" type="button">add to cart</button>
-                    </div>
-                </div><!-- </div> end single item -->
-                <div class="product-item mb-30">
-                    <div class="product-thumb">
-                        <a href="product-details.html">
-                            <img src="/assets/img/product/product-11.jpg" class="pri-img" alt="">
-                            <img src="/assets/img/product/product-14.jpg" class="sec-img" alt="">
-                        </a>
-                        <div class="box-label">
-                            <div class="label-product label_new">
-                                <span>new</span>
-                            </div>
-                            <div class="label-product label_sale">
-                                <span>-20%</span>
-                            </div>
-                        </div>
-                        <div class="action-links">
-                            <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                            <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                            <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                        </div>
-                    </div>
-                    <div class="product-caption">
-                        <div class="manufacture-product">
-                            <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                        </div>
-                        <div class="product-name">
-                            <h4><a href="product-details.html">jony XB10 Portable Speaker</a></h4>
-                        </div>
-                        <div class="ratings">
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span><i class="lnr lnr-star"></i></span>
-                        </div>
-                        <div class="price-box">
-                            <span class="regular-price"><span class="special-price">£65.00</span></span>
-                            <span class="old-price"><del>£90.00</del></span>
-                        </div>
-                        <button class="btn-cart" type="button">add to cart</button>
-                    </div>
-                </div><!-- </div> end single item -->
-                <div class="product-item mb-30">
-                    <div class="product-thumb">
-                        <a href="product-details.html">
-                            <img src="/assets/img/product/product-13.jpg" class="pri-img" alt="">
-                            <img src="/assets/img/product/product-12.jpg" class="sec-img" alt="">
-                        </a>
-                        <div class="box-label">
-                            <div class="label-product label_new">
-                                <span>new</span>
-                            </div>
-                            <div class="label-product label_sale">
-                                <span>-20%</span>
-                            </div>
-                        </div>
-                        <div class="action-links">
-                            <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                            <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                            <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                        </div>
-                    </div>
-                    <div class="product-caption">
-                        <div class="manufacture-product">
-                            <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                        </div>
-                        <div class="product-name">
-                            <h4><a href="product-details.html">jony XB10 Portable Speaker</a></h4>
-                        </div>
-                        <div class="ratings">
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span class="yellow"><i class="lnr lnr-star"></i></span>
-                            <span><i class="lnr lnr-star"></i></span>
-                        </div>
-                        <div class="price-box">
-                            <span class="regular-price"><span class="special-price">£65.00</span></span>
-                            <span class="old-price"><del>£90.00</del></span>
-                        </div>
-                        <button class="btn-cart" type="button">add to cart</button>
-                    </div>
-                </div><!-- </div> end single item -->
-            </div>
-        </div>
-    </div>
-    <!--  end related-product -->
-
-
+            <!--  end related-product -->
     </GuestLayout>
-
-
-
-
 </template>
 
 <style scoped>

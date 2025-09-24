@@ -3,9 +3,11 @@
 namespace App\Repositories\Products;
 
 use App\Interfaces\Products\ProductInterface;
+use App\Models\Category;
 use App\Models\Product;
 use App\Repositories\BaseRepository;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class ProductRepository extends BaseRepository implements ProductInterface
 {
@@ -27,5 +29,21 @@ class ProductRepository extends BaseRepository implements ProductInterface
             })
             ->with('translations', 'attributeValues.translations', 'attributeValues.attribute.translations', 'images')
             ->firstOrFail();
+    }
+
+    public function releatedProducts ($product_id, $category_id): Collection
+    {
+        $category = Category::findOrFail($category_id );
+        $parent_id = $category->parent_id ?? $category->id; // если parent нет, берём саму категорию
+
+        return $this->model
+            ->whereHas('category', function($q) use ($parent_id) {
+                $q->where('parent_id', $parent_id)
+                ->orWhere('id', $parent_id);
+            })
+            ->where('id', '!=', $product_id)
+            ->with(['category.translations', 'images'])
+            ->get();
+
     }
 }

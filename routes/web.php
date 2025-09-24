@@ -32,11 +32,11 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     Route::get('/single-portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.single_portfolio');
     Route::get('/compare', CompareController::class)->name('compare');
     Route::get('/cart', CartController::class)->name('cart');
-  
+
 
     Route::prefix('products')->name('products.')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
-        Route::get('/{slug}', [ProductController::class, 'show'])->name('show');
+        Route::get('/{category_slug}/{slug}', [ProductController::class, 'show'])->name('show');
     });
 
     // Route::post('/products/prices', [ProductController::class, 'getPrices']); // цены для localStorage корзины
