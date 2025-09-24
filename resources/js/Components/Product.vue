@@ -9,6 +9,7 @@ const props = defineProps({
     product: Object
 });
 
+
 const compare = useCompareStore();
 const cart = useCartStore();
 
@@ -32,7 +33,9 @@ const sortedImages = computed(() => {
 <template>
     <div  class="product-item">
         <div class="product-thumb">
-            <a href="product-details.html">
+            <!-- <a href="product-details.html"> -->
+                    <Link :href="route('products.show', {locale:$page.props.locale, category_slug:product.category.translation.slug, slug:product.translation_lang.slug })">
+
                 <img
                     v-for="(img, index) in sortedImages"
                     :key="img.id || img.path_url"
@@ -40,22 +43,26 @@ const sortedImages = computed(() => {
                     :class="index === 0 ? 'pri-img' : 'sec-img'"
                     alt=""
                 >
-            </a>
-            <div class="box-label">
+                </Link>
+            <!-- </a> -->
+            <!-- <div class="box-label">
                 <div class="label-product label_new">
                     <span>new</span>
                 </div>
-            </div>
+            </div> -->
 
             <div class="action-links">
-                <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
+                <!-- <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a> -->
                 <a href="#" title="Compare" @click.prevent="compare.add(product.id)"><i class="lnr lnr-sync"></i></a>
-                <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
+                <!-- <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a> -->
             </div>
         </div>
         <div class="product-caption ">
             <div class="product-name">
-                <h4><a href="product-details.html">{{product.translation_lang?.name}}</a></h4>
+                <h4>
+                    <!-- <a href="product-details.html">{{product.translation_lang?.name}}</a> -->
+                    <Link :href="route('products.show', {locale:$page.props.locale, category_slug:product.category.translation.slug, slug:product.translation_lang.slug })">{{product.translation_lang?.name}}</Link>
+                </h4>
             </div>
 
             <div class="price-box mt-2">

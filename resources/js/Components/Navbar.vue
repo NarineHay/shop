@@ -1,9 +1,9 @@
 
 <script setup>
-import { onMounted, computed } from 'vue'
+import { onMounted, computed,watch } from 'vue'
 import { initMeanMenu } from '@/main.js'
 import CategoryItem from '@/Components/CategoryItem.vue';
-import { Link, usePage, useForm  } from '@inertiajs/vue3';
+import { Link, usePage, useForm, router  } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 import { useCompareStore } from '@/Stores/compare';
 import { useCartStore } from '@/Stores/cart';
@@ -37,14 +37,33 @@ onMounted(async () => {
 })
 
 // Текущий путь без локали
-const fullPath = page.url // например: /en/dashboard
-const parts = fullPath.split('/').slice(2)
+// const fullPath = page.url // например: /en/dashboard
+// const parts = fullPath.split('/').slice(2)
 
-const currentPath = parts.length ? '/' + parts.join('/') : ''
+// const currentPath = parts.length ? '/' + parts.join('/') : ''
+
+// function localizedUrl(lang) {
+//     return currentPath ? `/${lang}${currentPath}` : `/${lang}`
+// }
+
 
 function localizedUrl(lang) {
-    return currentPath ? `/${lang}${currentPath}` : `/${lang}`
+  const props = page.props
+
+  if (props.product && props.product.translations) {
+    const t = props.product.translations.find(tr => tr.locale === lang)
+    // if (t) return `/${lang}/${t.category_slug}/${t.slug}`
+    if (t) return `/${lang}/products/${t.slug}`
+
+  }
+
+  const parts = page.url.split('/').filter(Boolean)
+  parts.shift() // убираем текущую локаль
+  const path = parts.join('/')
+  return path ? `/${lang}/${path}` : `/${lang}`
 }
+
+
 
 
 const compareUrl = computed(() => {
@@ -135,6 +154,19 @@ function doLogout() {
                                                 Russian
                                             </Link>
                                         </li>
+                                        <!-- <li>
+                                            <button @click="switchLang('en')" >EN</button>
+
+                                        </li>
+                                        <li>
+
+<button @click="switchLang('ru')">RU</button>
+
+                                        </li>
+                                        <li>
+
+<button @click="switchLang('am')">AM</button>
+                                        </li> -->
                                     </ul>
                                 </li>
 

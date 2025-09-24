@@ -11,8 +11,8 @@ export const useModalStore = defineStore('modal', () => {
         successMessage.value = message
         errorMessage.value = ''
         visible.value = true
+        console.log('shooooow')
         setTimeout(() => (visible.value = false), 3000)
-        console.log('sooooooow -->', message)
     }
 
     function showError(message) {
