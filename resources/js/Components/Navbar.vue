@@ -52,8 +52,10 @@ function localizedUrl(lang) {
 
   if (props.product && props.product.translations) {
     const t = props.product.translations.find(tr => tr.locale === lang)
+    const p = props.product
+    console.log(t, 44444444444)
     // if (t) return `/${lang}/${t.category_slug}/${t.slug}`
-    if (t) return `/${lang}/products/${t.slug}`
+    if (t) return `/${lang}/products/${p.category.translation.slug}/${t.slug}`
 
   }
 
@@ -64,12 +66,11 @@ function localizedUrl(lang) {
 }
 
 
-
-
 const compareUrl = computed(() => {
   if (compare.ids.length === 0) return useRoute('compare')
   return `${useRoute('compare')}?${compare.ids.map(id => `ids[]=${id}`).join('&')}`
 })
+
 
 function doLogout() {
     form.post(useRoute('logout'), {

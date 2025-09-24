@@ -27,7 +27,7 @@ class ProductRepository extends BaseRepository implements ProductInterface
         return $this->model->whereHas('translations', function ($query) use ($slug) {
                 $query->where('slug', $slug);
             })
-            ->with('translations', 'attributeValues.translations', 'attributeValues.attribute.translations', 'images')
+            ->with('translations', 'attributeValues.translations', 'attributeValues.attribute.translations', 'images', 'category.translations')
             ->firstOrFail();
     }
 
