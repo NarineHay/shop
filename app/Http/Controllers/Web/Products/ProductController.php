@@ -14,6 +14,24 @@ class ProductController extends Controller
     {
     }
 
+    public function index()
+    {
+        $products = $this->service->getActiveRows( ['category.translations', 'images', 'attributeValues.attribute']);
+
+        $attributes = AttributesHelper::getAll();
+
+        return Inertia::render(
+            'Products/Index',
+            [
+                'products' => $products,
+                'attributes' => $attributes
+            ]
+        );
+    }
+
+
+
+
     public function show(string $locale, string $category_slug, string $slug)
     {
 

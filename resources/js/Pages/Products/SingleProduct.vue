@@ -86,7 +86,7 @@ onMounted(() => {
 
 <template>
     <GuestLayout>
-        <Head :title="useTrans('app.portfolio')" />
+        <Head :title="useTrans('page.title')" />
             <div class="product-details-main-wrapper pb-50">
                 <div class="container-fluid">
                     <div class="row">
@@ -118,7 +118,7 @@ onMounted(() => {
                                     </div>
 
                                     <div class="product-availabily-option mt-15 mb-15" v-if="product.attribute_values.length">
-                                        <h3>Available Options</h3>
+                                        <h3>{{useTrans('page.properties')}}</h3>
                                         <div v-for="(values, attributeId) in groupedAttributes" :key="attributeId" class="attribute-group mb-3">
                                             <h4>
                                                 <sup>*</sup>{{ values[0].attribute.translation_lang.name }}
@@ -144,21 +144,21 @@ onMounted(() => {
                                     </div>
                                     <div class="pro-quantity-box mb-30">
                                         <div class="qty-boxx">
-                                            <label>qty :</label>
+                                            <label>{{useTrans('page.qty')}} :</label>
                                             <!-- <input type="text" placeholder="0"> -->
                                             <input type="number" v-model.number="qty" min="1" class="qty-input" />
 
                                             <button class="btn-cart lg-btn"
                                             :disabled="!allRequiredSelected"
                                             :class="['btn-cart', { 'disabled': !allRequiredSelected }]"
-                                            @click.prevent="addToCart">add to cart</button>
+                                            @click.prevent="addToCart">{{useTrans('app.buttons.add_to_cart')}}</button>
                                         </div>
                                     </div>
                                     <div class="useful-links mb-4">
                                         <ul>
 
                                             <li>
-                                                <a href="#" @click.prevent="compare.add(product.id)"><i class="fa fa-refresh"></i>compare this product</a>
+                                                <a href="#" @click.prevent="compare.add(product.id)"><i class="fa fa-refresh"></i>{{useTrans('page.compare')}}</a>
                                             </li>
                                         </ul>
                                     </div>
@@ -174,7 +174,7 @@ onMounted(() => {
             <div v-if="props.releatedProducts.length > 0" class="related-product-area mb-40">
                 <div class="container-fluid">
                     <div class="section-title">
-                        <h3><span>Related</span> product </h3>
+                        <h3><span>{{useTrans('page.similar')}}</span> {{useTrans('page.products')}} </h3>
                     </div>
                     <div class="flash-sale-active4 owl-carousel owl-arrow-style">
                         <template v-for="relProduct in props.releatedProducts" :key="relProduct.id" >

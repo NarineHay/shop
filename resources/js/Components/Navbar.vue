@@ -22,7 +22,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs || [])
 const showBreadcrumbs = computed(() => {
     return breadcrumbs.value.length && route().current() !== 'welcome'
 })
-
+console.log(breadcrumbs, 'breadcrumbs')
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
