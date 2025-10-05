@@ -35,7 +35,7 @@ class ProductService extends BaseService
 
 
 // ProductService.php
-    public function getFilteredProducts(array $filters = [], int $perPage = 1, ?string $category_slug = null)
+    public function getFilteredProducts(array $filters = [], int $perPage = 9, ?string $category_slug = null)
     {
 
         $query = $this->repository->queryActiveRows([
