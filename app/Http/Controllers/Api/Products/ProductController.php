@@ -17,7 +17,7 @@ class ProductController extends Controller
     {
         $ids = $request->input('ids', []);
 
-        $products = $this->service->getMoreRows('id', $ids, ['images','attributeValues']);
+        $products = $this->service->getMoreRows('id', $ids, ['category.translations', 'images','attributeValues']);
 
 
         return response()->json($products);
