@@ -42,6 +42,13 @@ abstract class BaseService
         return $this->repository->getActiveRows($with);
     }
 
+
+    public function queryActiveRows(array $with = []): mixed
+    {
+        return $this->repository->queryActiveRows($with);
+    }
+
+
     public function getByFilter(array $conditions = [], array $with = []): mixed
     {
         return $this->repository->getByFilter($with);

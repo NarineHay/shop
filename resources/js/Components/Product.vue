@@ -34,7 +34,7 @@ const sortedImages = computed(() => {
     <div  class="product-item">
         <div class="product-thumb">
             <!-- <a href="product-details.html"> -->
-                    <Link :href="route('products.show', {locale:$page.props.locale, category_slug:product.category.translation.slug, slug:product.translation_lang.slug })">
+                    <Link :href="route('products.product_show', {locale:$page.props.locale, category_slug:product.category.translation.slug, slug:product.translation_lang.slug })">
 
                 <img
                     v-for="(img, index) in sortedImages"
@@ -61,7 +61,7 @@ const sortedImages = computed(() => {
             <div class="product-name">
                 <h4>
                     <!-- <a href="product-details.html">{{product.translation_lang?.name}}</a> -->
-                    <Link :href="route('products.show', {locale:$page.props.locale, category_slug:product.category.translation.slug, slug:product.translation_lang.slug })">{{product.translation_lang?.name}}</Link>
+                    <Link :href="route('products.product_show', {locale:$page.props.locale, category_slug:product.category.translation.slug, slug:product.translation_lang.slug })">{{product.translation_lang?.name}}</Link>
                 </h4>
             </div>
 

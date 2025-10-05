@@ -35,7 +35,8 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         $locale = in_array(request()->segment(1), ['hy', 'ru', 'en']) ? request()->segment(1) : 'hy';
-
+        app()->setLocale($locale);
+        
         $name = request()->route()->getName();
         $file = resource_path('lang/' . $locale . '/' . $name . ".json");
         $appFile = resource_path('lang/' . $locale . "/app.json");
