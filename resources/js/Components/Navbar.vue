@@ -22,7 +22,7 @@ const breadcrumbs = computed(() => page.props.breadcrumbs || [])
 const showBreadcrumbs = computed(() => {
     return breadcrumbs.value.length && route().current() !== 'welcome'
 })
-
+console.log(breadcrumbs, 'breadcrumbs')
 onMounted(async () => {
   const $ = await import('jquery')
   window.$ = window.jQuery = $.default
@@ -51,11 +51,12 @@ function localizedUrl(lang) {
   const props = page.props
 
   if (props.product && props.product.translations) {
-    const t = props.product.translations.find(tr => tr.locale === lang)
     const p = props.product
-    console.log(t, 44444444444)
-    // if (t) return `/${lang}/${t.category_slug}/${t.slug}`
-    if (t) return `/${lang}/products/${p.category.translation.slug}/${t.slug}`
+
+    const productSlug = p.translations.find(tr => tr.locale === lang)?.slug || 'default-slug'
+    const categorySlug = p.category.translations.find(t => t.locale === lang)?.slug || 'default-category'
+
+    if (productSlug) return `/${lang}/products/${categorySlug}/${productSlug}`
 
   }
 

@@ -26,6 +26,16 @@ abstract class BaseRepository implements BaseInterface
         return $this->model->with($with)->findOrFail($id);
     }
 
+    public function getBySlug(string $slug, array $with = []): Model
+    {
+
+        return $this->model->whereHas('translations', function ($query) use ($slug) {
+                $query->where('slug', $slug);
+            })
+            ->with($with)
+            ->firstOrFail();
+    }
+
     public function findBy(array $conditions, array $with = []): ?Model
     {
         return $this->model->with($with)->where($conditions)->first();
@@ -53,6 +63,12 @@ abstract class BaseRepository implements BaseInterface
             ->get();
     }
 
+    public function queryActiveRows(array $with = [])
+    {
+        return $this->model->with($with)
+            ->where('active', 1);
+    }
+
     public function getByFilter(array $conditions = [], array $with = []): Collection
     {
         return $this->model->with($with)
@@ -66,6 +82,10 @@ abstract class BaseRepository implements BaseInterface
             ->whereIn($field, $conditions)
             ->get();
     }
+
+
+
+
 
 
 }

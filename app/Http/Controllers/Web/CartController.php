@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Web;
 
+use App\Helpers\AttributesHelper;
 use App\Http\Controllers\Controller;
 use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
@@ -16,13 +17,13 @@ class CartController extends Controller
     {
         // $products = $this->service->getMoreRows('id', $request->ids, ['category.translations', 'images', 'attributeValues.attribute']);
 
-        // $attributes = AttributesHelper::getAll();
+        $attributes = AttributesHelper::getAll();
 
         return Inertia::render(
             'Cart',
             [
                 // 'products' => $products,
-                // 'attributes' => $attributes
+                'attributes' => $attributes
             ]
         );
     }
