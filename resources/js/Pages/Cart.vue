@@ -10,18 +10,16 @@ import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
 import { useTrans, useRoute } from "/resources/js/trans";
 import { useCartStore } from '@/Stores/cart';
 
+
 const props = defineProps({
-  //   categories: Array,
-  products: Array,
   attributes: Array
 });
 
 const cart = useCartStore()
-
 const page = usePage();
 const user = page.props.auth.user;
 
-
+console.log(cart, 444)
 onMounted(() => {
 
     if (user) {
@@ -30,14 +28,20 @@ onMounted(() => {
         cart.fetchProducts()   // неавторизованные, подтягиваем цены
     }
 
-      console.log('👉 cart.list:', cart.list)
-  console.log('👉 cart.products:', cart.products)
-  console.log('👉 cart.all:', cart.all)
-  console.log('👉 cart.totalPrice:', cart.totalPrice)
-  console.log('👉 cart.count:', cart.count)
+    console.log('👉 attributes:', JSON.stringify(props.attributes, null, 2))
 })
 
 
+function getAttributeName(attrId) {
+    const attr = props.attributes.find(a => a.id === Number(attrId))
+    return attr?.translation_lang?.name || '—'
+}
+
+function getAttributeValueName(attrId, valueId) {
+    const attr = props.attributes.find(a => a.id === Number(attrId))
+    const value = attr?.values?.find(v => v.id === Number(valueId))
+    return value?.translation_lang?.name || '—'
+}
 </script>
 
 <template>
@@ -59,27 +63,32 @@ onMounted(() => {
                                             <table class="table table-bordered">
                                                 <thead>
                                                     <tr>
-                                                    <td>{{useTrans('page.image')}}</td>
-                                                    <td>{{useTrans('page.product_name')}}</td>
-                                                    <td>{{useTrans('page.params')}}</td>
-                                                    <td>{{useTrans('page.quantity')}}</td>
-                                                    <td>{{useTrans('page.unit_price')}}</td>
-                                                    <td>{{useTrans('page.total')}}</td>
+                                                        <td>{{useTrans('page.image')}}</td>
+                                                        <td>{{useTrans('page.product_name')}}</td>
+                                                        <td>{{useTrans('page.params')}}</td>
+                                                        <td>{{useTrans('page.quantity')}}</td>
+                                                        <td>{{useTrans('page.unit_price')}}</td>
+                                                        <td>{{useTrans('page.total')}}</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for="item in cart.list" :key="item.id">
                                                         <td>
-                                                            <img :src="cart.getProductImage(item.id)" class="img-thumbnail" width="80" />
+{{$page.props.locale}}
+                                                             <Link :href="cart.getProductLink(item.id, $page.props.locale)">
+                                                                <img :src="cart.getProductImage(item.id)" class="img-thumbnail" width="80" />
+                                                            </Link>
                                                         </td>
                                                         <td>{{ cart.getProductName(item.id) }}</td>
-                                                        <td>{{ JSON.stringify(item.params) }}</td>
-                                                        <!-- <td>
-                                                            <button @click="cart.decreaseQty(item.id, item.params)" class="btn btn-warning pull-left">-</button>
-                                                            {{ item.qty }}
-                                                            <button @click="cart.increaseQty(item.id, item.params)" class="btn btn-warning pull-right">+</button>
-                                                            <button @click="cart.remove(item.id, item.params)" type="button" class="btn btn-danger "><i class="fa fa-times-circle"></i></button>
-                                                        </td> -->
+                                                        <td>
+                                                            <div v-if="item.params && Object.keys(item.params).length">
+                                                                <div v-for="(valueId, attrId) in item.params" :key="attrId">
+                                                                    {{ getAttributeName(attrId) }}:
+                                                                    {{ getAttributeValueName(attrId, valueId) }}
+                                                                </div>
+                                                            </div>
+                                                        </td>
+
                                                         <td  >
                                                             <div class="d-flex justify-content-center align-items-center">
                                                                 <!-- Кнопка "-" -->

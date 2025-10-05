@@ -51,29 +51,18 @@ class Category extends Model
             : null;
     }
 
-    // public function getDepth(): int
-    // {
-    //     $depth = 0;
-    //     $parent = $this->parent;
 
-    //     while ($parent) {
-    //         $depth++;
-    //         $parent = $parent->parent;
-    //     }
-
-    //     return $depth;
-    // }
 
     public function getDepth(): int
-{
-    $depth = 0;
-    $parent = $this->parent;
+    {
+        $depth = 0;
+        $parent = $this->parent;
 
-    while ($parent instanceof self) {
-        $depth++;
-        $parent = $parent->parent;
+        while ($parent instanceof self) {
+            $depth++;
+            $parent = $parent->parent;
+        }
+
+        return $depth;
     }
-
-    return $depth;
-}
 }

@@ -18,6 +18,7 @@ export const useCartStore = defineStore('cart', {
         list: JSON.parse(localStorage.getItem('cart_products') || '[]'),
         userId: null,
         products: [], // актуальные данные о товарах из базы
+
     }),
 
     actions: {
@@ -167,6 +168,31 @@ export const useCartStore = defineStore('cart', {
             if (!prod || !prod.images?.length) return '/assets/img/no-image.png'
             const main = prod.images.find(img => img.is_main)
             return main?.path_url || prod.images[0].path_url
+        },
+        getProductLink: (state) => (id, locale = 'hy') => {
+            const prod = state.products.find(p => p.id === id)
+            if (!prod) return '#'
+
+            // Получаем правильный slug категории для нужной локали
+            let categorySlug = 'default-category'
+            if (prod.category?.translations?.length) {
+                const translation = prod.category.translations.find(t => t.locale === locale)
+                if (translation) categorySlug = translation.slug || translation.name?.toLowerCase().replace(/\s+/g, '-')
+            }
+
+            // Получаем slug продукта для нужной локали
+            let productSlug = 'no-slug'
+            if (prod.translations?.length) {
+                const translation = prod.translations.find(t => t.locale === locale)
+                if (translation) productSlug = translation.slug || translation.name?.toLowerCase().replace(/\s+/g, '-')
+            }
+
+            return route('products.product_show', {
+                locale: locale,
+                category_slug: categorySlug,
+                slug: productSlug
+            })
         }
+
     }
 })
