@@ -14,4 +14,16 @@ class CategoryService extends BaseService
     }
 
 
+    public function children($slug){
+        return $this->repository->getBySlug($slug)->children;
+    }
+
+    public function getChildrenBySlug(string $slug)
+    {
+        return $this->repository->getChildrenBySlug($slug);
+    }
+
+
+
+
 }

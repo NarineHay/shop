@@ -4,27 +4,38 @@ namespace App\Http\Controllers\Web\Products;
 
 use App\Helpers\AttributesHelper;
 use App\Http\Controllers\Controller;
+use App\Services\Categories\CategoryService;
 use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public function __construct(protected ProductService $service)
+    public function __construct(
+            protected ProductService $service,
+            protected CategoryService $categoryService
+
+        )
     {
     }
 
-    public function index()
+    public function index(string $locale, string $category_slug)
     {
-        $products = $this->service->getActiveRows( ['category.translations', 'images', 'attributeValues.attribute']);
 
+        // $products = $this->service->queryActiveRows( ['category.translations', 'images', 'attributeValues.attribute'])->paginate(2);
+        $filters = request()->only(['categories', 'attributes', 'price_min', 'price_max']);
+
+        $products = $this->service->getFilteredProducts($filters, 1, $category_slug);
         $attributes = AttributesHelper::getAll();
+        $categorychildren = $this->categoryService->getChildrenBySlug($category_slug);
 
         return Inertia::render(
             'Products/Index',
             [
                 'products' => $products,
-                'attributes' => $attributes
+                'attributes' => $attributes,
+                'categorychildren' => $categorychildren,
+                'filters' => $filters
             ]
         );
     }

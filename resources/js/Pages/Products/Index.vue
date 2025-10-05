@@ -1,8 +1,8 @@
 <script setup>
-import { onMounted, computed, ref  } from 'vue'
+import { onMounted, computed, ref, watch  } from 'vue'
 
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, router } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 import { useCartStore } from '@/Stores/cart'
 import { useModalStore } from '@/Stores/modalStore'
@@ -11,15 +11,58 @@ import Product from '@/Components/Product.vue';
 
 const props = defineProps({
     products: Array,
-    releatedProducts: Array
+    attributes: Array,
+    categorychildren: Array,
+    filters: Object
 })
 
-const product = props.product
+const products = computed(() => props.products?.data || [])
+const forPages = props.products
+const attributes = props.attributes
+const categorychildren = props.categorychildren
+const selectedCategories = ref(props.filters.categories || [])
+const selectedAttributes = ref(props.filters.attributes || [])
+const priceMin = ref(props.filters.price_min || 0)
+const priceMax = ref(props.filters.price_max || 10000)
+
+
 const cartStore = useCartStore()
 const modal = useModalStore()
 const compare = useCompareStore();
-// выбранные значения атрибутов
 
+
+const priceMinMax = ref([0, 10000])
+
+watch(priceMinMax, (val) => {
+  priceMin.value = val[0]
+  priceMax.value = val[1]
+})
+
+
+function applyFilter () {
+
+
+  router.get(route('products', {
+      locale: route().params.locale,
+      category_slug: route().params.category_slug
+    }),
+    {
+      categories: selectedCategories.value,
+      attributes: selectedAttributes.value,
+      price_min: priceMin.value,
+      price_max: priceMax.value
+    },
+    { preserveState: true, replace: true })
+  // сюда фильтрацию products или запрос к серверу
+}
+
+const resetFilter = () => {
+   selectedCategories.value = []
+   selectedAttributes.value = []
+   priceMin.value = 0
+   priceMax.value = 10000
+   applyFilter() // ✅ правильная функция
+}
 
 </script>
 
@@ -27,270 +70,208 @@ const compare = useCompareStore();
     <GuestLayout>
         <Head :title="useTrans('page.title')" />
             <div class="main-wrapper pt-35">
-       <div class="container-fluid">
-           <div class="row">
-               <div class="col-lg-3">
-                    <div class="shop-sidebar-inner mb-30">
-                        <!-- filter-price-content start -->
-                        <div class="single-sidebar mb-45">
-                            <div class="sidebar-inner-title mb-25">
-                                <h3>Fillter by price</h3>
-                            </div>
-                             <div class="sidebar-content-box">
-                                 <div class="filter-price-content">
-                                     <form action="#" method="post">
-                                         <div id="price-slider" class="price-slider ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all"><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 16.6667%; width: 79.1667%;"></div><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 0%;"></span><span class="ui-slider-handle ui-state-default ui-corner-all" tabindex="0" style="left: 100%;"></span><div class="ui-slider-range ui-widget-header ui-corner-all" style="left: 0%; width: 100%;"></div></div>
-                                         <div class="filter-price-wapper">
-                                             <div class="filter-price-cont">
-                                                 <div class="input-type">
-                                                     <input id="min-price" readonly="" type="text">
-                                                 </div>
-                                                 <div class="input-type">
-                                                     <input id="max-price" readonly="" type="text">
-                                                 </div>
-                                             </div>
-                                         </div>
-                                     </form>
-                                 </div>
-                             </div>
-                        </div>
-                         <!-- filte price end -->
-                         <!-- categories filter start -->
-                         <div class="single-sidebar mb-45">
-                             <div class="sidebar-inner-title mb-25">
-                                 <h3>Categories</h3>
-                             </div>
-                             <div class="sidebar-content-box">
-                                 <div class="filter-attribute-container">
-                                     <ul>
-                                         <li><a class="active" href="shop-grid-left-sidebar.html">Categories 1 (05)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">Categories 2 (03)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">Categories 3 (10)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">Categories 4 (02)</a></li>
-                                     </ul>
-                                 </div>
-                             </div>
-                         </div>
-                         <!-- categories filter end -->
-                         <!-- categories filter start -->
-                         <div class="single-sidebar mb-45">
-                             <div class="sidebar-inner-title mb-25">
-                                 <h3>Manufacturer</h3>
-                             </div>
-                             <div class="sidebar-content-box">
-                                 <div class="filter-attribute-container">
-                                     <ul>
-                                         <li><a class="active" href="shop-grid-left-sidebar.html">Christian Dior (2)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">ferragamo (7)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">hermes (7)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">louis vuitton (6)</a></li>
-                                     </ul>
-                                 </div>
-                             </div>
-                         </div>
-                         <!-- categories filter end -->
-                         <!-- categories filter start -->
-                         <div class="single-sidebar mb-45">
-                             <div class="sidebar-inner-title mb-25">
-                                 <h3>Select by color</h3>
-                             </div>
-                             <div class="sidebar-content-box">
-                                 <div class="filter-attribute-container">
-                                     <ul>
-                                         <li><a class="active" href="shop-grid-left-sidebar.html">Black (2)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">blue (7)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">brown (7)</a></li>
-                                         <li><a href="shop-grid-left-sidebar.html">white (6)</a></li>
-                                     </ul>
-                                 </div>
-                             </div>
-                         </div>
-                    </div>
-                     <!-- sidebar promote picture start -->
-                     <div class="single-sidebar mb-30">
-                         <div class="sidebar-thumb">
-                             <a href="#"><img src="/assets/img/banner/img-static-sidebar.jpg" alt=""></a>
-                         </div>
-                     </div>
-                     <!-- sidebar promote picture end -->
-               </div>
-               <div class="col-lg-9 order-first order-lg-last">
-                    <div class="product-shop-main-wrapper mb-50">
-                        <div class="shop-baner-img mb-70">
-                            <a href="#"><img src="/assets/img/banner/category-image.webp" alt=""></a>
-                        </div>
-                        <div class="shop-top-bar mb-30">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="top-bar-left">
-                                        <div class="product-view-mode">
-                                            <a class="active" href="#" data-target="column_3"><span>3-col</span></a>
-                                            <a href="#" data-target="grid"><span>4-col</span></a>
-                                            <a href="#" data-target="list"><span>list</span></a>
-                                        </div>
-                                        <div class="product-page">
-                                            <p>Showing 1 to 9 of 9 (1 Pages)</p>
-                                        </div>
-                                    </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="shop-sidebar-inner mb-30">
+                                <!-- filter-price-content start -->
+
+                                <div class="single-sidebar mb-45">
+                                <div class="sidebar-inner-title mb-25">
+                                    <h3>{{useTrans('page.filters')}}</h3>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="top-bar-right">
-                                        <div class="per-page">
-                                            <p>Show : </p>
-                                            <select class="nice-select" name="sortby" style="display: none;">
-                                                <option value="trending">10</option>
-                                                <option value="sales">20</option>
-                                                <option value="sales">30</option>
-                                                <option value="rating">40</option>
-                                                <option value="date">50</option>
-                                                <option value="price-asc">60</option>
-                                                <option value="price-asc">70</option>
-                                                <option value="price-asc">100</option>
-                                            </select><div class="nice-select" tabindex="0"><span class="current">10</span><ul class="list"><li data-value="trending" class="option selected">10</li><li data-value="sales" class="option">20</li><li data-value="sales" class="option">30</li><li data-value="rating" class="option">40</li><li data-value="date" class="option">50</li><li data-value="price-asc" class="option">60</li><li data-value="price-asc" class="option">70</li><li data-value="price-asc" class="option">100</li></ul></div>
+                                <div class="sidebar-content-box">
+
+                                    <!-- ===== Цена ===== -->
+                                    <div class="single-sidebar mb-25">
+                                    <div class="sidebar-inner-title mb-25">
+                                        <h3>{{useTrans('page.price')}}</h3>
+                                    </div>
+                                    <div class="filter-price-content">
+                                        <div class="d-flex gap-2">
+                                        <div class="custom-checkbox w-100">
+                                            <label class="form-check-label">{{useTrans('page.min')}}</label>
+                                            <input
+                                            type="number"
+                                            class="form-control mt-1 rounded border-gray-300 text-sm focus:ring-indigo-500"
+                                            v-model="priceMin"
+                                            min="0"
+                                            placeholder="0"
+                                            />
                                         </div>
-                                        <div class="product-short">
-                                            <p>Sort By : </p>
-                                            <select class="nice-select" name="sortby" style="display: none;">
-                                                <option value="trending">Relevance</option>
-                                                <option value="sales">Name (A - Z)</option>
-                                                <option value="sales">Name (Z - A)</option>
-                                                <option value="rating">Price (Low &gt; High)</option>
-                                                <option value="date">Rating (Lowest)</option>
-                                                <option value="price-asc">Model (A - Z)</option>
-                                                <option value="price-asc">Model (Z - A)</option>
-                                            </select><div class="nice-select" tabindex="0"><span class="current">Relevance</span><ul class="list"><li data-value="trending" class="option selected">Relevance</li><li data-value="sales" class="option">Name (A - Z)</li><li data-value="sales" class="option">Name (Z - A)</li><li data-value="rating" class="option">Price (Low &gt; High)</li><li data-value="date" class="option">Rating (Lowest)</li><li data-value="price-asc" class="option">Model (A - Z)</li><li data-value="price-asc" class="option">Model (Z - A)</li></ul></div>
+                                        <div class="custom-checkbox w-100">
+                                            <label class="form-check-label">{{useTrans('page.max')}}</label>
+                                            <input
+                                            type="number"
+                                            class="form-control mt-1 rounded border-gray-300 text-sm focus:ring-indigo-500"
+                                            v-model="priceMax"
+                                            min="0"
+                                            placeholder="9999"
+                                            />
+                                        </div>
                                         </div>
                                     </div>
+                                    </div>
+
+                                    <!-- ===== Категории ===== -->
+                                    <div class="single-sidebar mb-25">
+                                    <div class="sidebar-inner-title mb-25">
+                                        <h3>{{useTrans('page.categories')}}</h3>
+                                    </div>
+                                    <div class="sidebar-content-box">
+                                        <ul>
+                                        <li v-for="item in categorychildren" :key="item.id" class="mb-2">
+                                            <div class="custom-checkbox">
+                                            <input
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                :id="'cat-' + item.id"
+                                                v-model="selectedCategories"
+                                                :value="item.id"
+                                            />
+                                            <span class="checkmark"></span>
+                                            <label class="form-check-label ml-2" :for="'cat-' + item.id">
+                                                {{ item.translation.name }}
+                                            </label>
+                                            </div>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                    </div>
+
+                                    <!-- ===== Атрибуты ===== -->
+                                    <div v-for="attribute in attributes" :key="attribute.id" class="single-sidebar mb-25">
+                                    <div class="sidebar-inner-title mb-25">
+                                        <h3>{{ attribute.translation_lang.name }}</h3>
+                                    </div>
+                                    <div class="sidebar-content-box">
+                                        <ul>
+                                        <li v-for="value in attribute.values" :key="value.id" class="mb-2">
+                                            <div class="custom-checkbox">
+                                            <input
+                                                type="checkbox"
+                                                class="form-check-input"
+                                                :id="'attr-' + value.id"
+                                                v-model="selectedAttributes"
+                                                :value="value.id"
+                                            />
+                                            <span class="checkmark"></span>
+                                            <label class="form-check-label ml-2" :for="'attr-' + value.id">
+                                                {{ value.translation_lang.name }}
+                                            </label>
+                                            </div>
+                                        </li>
+                                        </ul>
+                                    </div>
+                                    </div>
+
+                                    <!-- ===== Кнопки ===== -->
+                                    <div class="d-flex gap-2 mt-4">
+                                    <button
+                                        type="button"
+                                        class="btn btn-warning text-white fw-bold"
+                                        @click="applyFilter"
+                                    >
+                                        {{useTrans('page.filter')}}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        class="btn btn-outline-secondary"
+                                        @click="resetFilter"
+                                    >
+                                       {{useTrans('page.cancel')}}
+                                    </button>
+                                    </div>
+
+                                </div>
+                                </div>
+
+                            </div>
+                            <!-- sidebar promote picture start -->
+                            <div class="single-sidebar mb-30">
+                                <div class="sidebar-thumb">
+                                    <a href="#"><img src="/assets/img/banner/img-static-sidebar.jpg" alt=""></a>
                                 </div>
                             </div>
-
+                                <!-- sidebar promote picture end -->
                         </div>
-                        <div class="shop-product-wrap row column_3">
-                            <template v-for="product in products" :key="product.id" >
-                                <div class="col-lg-3 col-md-4 col-sm-6">
-                                    <Product :product="product" />
+                        <div class="col-lg-9 order-first order-lg-last">
+                            <div class="product-shop-main-wrapper mb-50">
+                                <div class="shop-baner-img mb-70">
+                                    <a href="#"><img src="/assets/img/banner/category-image.webp" alt=""></a>
                                 </div>
-                            </template>
 
-                        </div>
+                                <div class="shop-product-wrap row column_3">
+                                    <template v-for="product in products" :key="product.id" >
+                                        <div class="col-lg-3 col-md-4 col-sm-6">
+                                            <Product :product="product" />
+                                        </div>
+                                    </template>
+
+                                </div>
 
 
-                        <!-- <div class="shop-product-wrap row column_3">
-                            <template v-for="product in products" :key="product.id" >
-                                <div    class="col-lg-3 col-md-4 col-sm-6">
-                                    <div class="product-item mb-30">
-                                        <div class="product-thumb">
-                                            <a href="product-details.html">
-                                                <img src="assets/img/product/product-1.jpg" class="pri-img" alt="">
-                                                <img src="assets/img/product/product-2.jpg" class="sec-img" alt="">
-                                            </a>
-                                            <div class="box-label">
-                                                <div class="label-product label_new">
-                                                    <span>new</span>
-                                                </div>
-                                            </div>
-                                            <div class="action-links">
-                                                <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                                <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                                <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                            </div>
+                                <div v-if="forPages.last_page > 1" class="paginatoin-area style-2 pt-35 pb-20 mt-5" >
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                        <div class="pagination-area">
+                                            <p>{{paginationText}}
+
+
+                                            {{ useTrans('page.paginat', {
+                                                from: forPages.from,
+                                                to: forPages.to,
+                                                of: forPages.total,
+                                                pages: forPages.last_page
+                                                })
+                                             }}
+                                            </p>
                                         </div>
-                                        <div class="product-caption">
-                                            <div class="manufacture-product">
-                                                <p><a href="shop-grid-left-sidebar.html">apple</a></p>
-                                            </div>
-                                            <div class="product-name">
-                                                <h4><a href="product-details.html">jony XB10 Portable  Wireless Speaker</a></h4>
-                                            </div>
-                                            <div class="ratings">
-                                                <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                                <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                                <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                                <span class="yellow"><i class="lnr lnr-star"></i></span>
-                                                <span><i class="lnr lnr-star"></i></span>
-                                            </div>
-                                            <div class="price-box">
-                                                <span class="regular-price">£30.31</span>
-                                            </div>
-                                            <button class="btn-cart" type="button">add to cart</button>
                                         </div>
-                                    </div>
-                                    <div class="sinrato-list-item mb-30">
-                                        <div class="sinrato-thumb">
-                                            <a href="product-details.html">
-                                                <img src="assets/img/product/product-12.jpg" class="pri-img" alt="">
-                                                <img src="assets/img/product/product-9.jpg" class="sec-img" alt="">
-                                            </a>
-                                            <div class="box-label">
-                                                <div class="label-product label_sale">
-                                                    <span>-10%</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="sinrato-list-item-content">
-                                            <div class="manufacture-product">
-                                                <span><a href="#">Canon</a></span>
-                                            </div>
-                                            <div class="sinrato-product-name">
-                                                <h4><a href="product-details.html">Beats EP Wired Headphone-Black</a></h4>
-                                            </div>
-                                            <div class="sinrato-ratings mb-15">
-                                                <span><i class="fa fa-star"></i></span>
-                                                <span><i class="fa fa-star"></i></span>
-                                                <span><i class="fa fa-star"></i></span>
-                                                <span><i class="fa fa-star"></i></span>
-                                                <span><i class="fa fa-star"></i></span>
-                                            </div>
-                                            <div class="sinrato-product-des">
-                                                <p>Canon's press material for the EOS 5D states that it 'defines (a) new D-SLR category', while we're not typically too concerned with marketing talk this particular statement is clearly pretty accurate...</p>
-                                            </div>
-                                        </div>
-                                        <div class="sinrato-box-action">
-                                            <div class="price-box">
-                                                <span class="regular-price"><span class="special-price">£50.00</span></span>
-                                                <span class="old-price"><del>£60.00</del></span>
-                                            </div>
-                                            <button class="btn-cart" type="button">add to cart</button>
-                                            <div class="action-links sinrat-list-icon">
-                                                <a href="#" title="Wishlist"><i class="lnr lnr-heart"></i></a>
-                                                <a href="#" title="Compare"><i class="lnr lnr-sync"></i></a>
-                                                <a href="#" title="Quick view" data-bs-target="#quickk_view" data-bs-toggle="modal"><i class="lnr lnr-magnifier"></i></a>
-                                            </div>
+
+                                        <div class="col-sm-6">
+                                        <ul class="pagination-box pagination-style-2">
+                                            <li v-for="link in forPages.links" :key="link.label"
+                                                :class="{ active: link.active, disabled: !link.url }">
+                                            <Link
+                                                v-if="link.url"
+                                                :href="link.url"
+                                                v-html="link.label"
+                                            />
+                                            <span v-else v-html="link.label"></span>
+                                            </li>
+                                        </ul>
                                         </div>
                                     </div>
                                 </div>
-                            </template>
-
-                        </div> -->
 
 
-
-                        <div class="paginatoin-area style-2 pt-35 pb-20">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="pagination-area">
-                                        <p>Showing 1 to 9 of 9 (1 Pages)</p>
+                                <!-- <div class="paginatoin-area style-2 pt-35 pb-20">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="pagination-area">
+                                                <p>Showing 1 to 9 of 9 (1 Pages)</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ul class="pagination-box pagination-style-2">
+                                                <li><a class="Previous" href="#">Previous</a>
+                                                </li>
+                                                <li class="active"><a href="#">1</a></li>
+                                                <li><a href="#">2</a></li>
+                                                <li><a href="#">3</a></li>
+                                                <li>
+                                                <a class="Next" href="#"> Next </a>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <ul class="pagination-box pagination-style-2">
-                                        <li><a class="Previous" href="#">Previous</a>
-                                        </li>
-                                        <li class="active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li>
-                                          <a class="Next" href="#"> Next </a>
-                                        </li>
-                                    </ul>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
-               </div>
-           </div>
-       </div>
-   </div>
+                </div>
+            </div>
     </GuestLayout>
 </template>
 

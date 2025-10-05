@@ -34,10 +34,10 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     Route::get('/cart', CartController::class)->name('cart');
 
 
-    Route::prefix('products')->name('products.')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('index');
-        Route::get('/{category_slug}/{slug}', [ProductController::class, 'show'])->name('show');
-    });
+    // Route::prefix('products')->group(function () {
+        Route::get('/products/{category_slug}', [ProductController::class, 'index'])->name('products');
+        Route::get('/products/{category_slug}/{slug}', [ProductController::class, 'show'])->name('products.product_show');
+    // });
 
     // Route::post('/products/prices', [ProductController::class, 'getPrices']); // цены для localStorage корзины
 

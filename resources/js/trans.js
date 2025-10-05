@@ -9,10 +9,29 @@ import { computed } from 'vue'
 // }
 
 
-export function useTrans(value) {
-    const array = usePage().props.translations;
+// export function useTrans(value) {
+//     const array = usePage().props.translations;
 
-    return value.split('.').reduce((t, k) => t?.[k] ?? value, array);
+//     return value.split('.').reduce((t, k) => t?.[k] ?? value, array);
+// }
+
+export function useTrans(key, params = {}) {
+    const translations = usePage().props.translations || {};
+
+    // Безопасно разбиваем ключ, если он вообще передан
+    if (typeof key !== 'string') return '';
+
+    // Находим текст перевода
+    const text = key.split('.').reduce((t, k) => t?.[k], translations);
+
+    // Если не нашли — возвращаем сам ключ
+    if (!text) return key;
+
+    // Подставляем параметры (например :from → 1)
+    return Object.entries(params).reduce((acc, [paramKey, paramValue]) => {
+        const regex = new RegExp(`:${paramKey}`, 'g');
+        return acc.replace(regex, paramValue);
+    }, text);
 }
 
 

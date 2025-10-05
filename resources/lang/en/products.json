@@ -1,0 +1,12 @@
+{
+    "title": "Products",
+    "filters": "Filters",
+    "price": "Price",
+    "min": "Min",
+    "max": "Max",
+    "categories": "Categories",
+    "filter": "Filter",
+    "cancel": "Cancel",
+    "paginat": "Showing :from to :to of :of"
+
+}

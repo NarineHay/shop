@@ -6,4 +6,5 @@ use App\Interfaces\BaseInterface;
 
 interface CategoryInterface extends BaseInterface
 {
+    public function getChildrenBySlug(string $slug);
 }

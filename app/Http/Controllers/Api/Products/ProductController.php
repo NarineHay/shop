@@ -18,9 +18,7 @@ class ProductController extends Controller
         $ids = $request->input('ids', []);
 
         $products = $this->service->getMoreRows('id', $ids, ['images','attributeValues']);
-// dd($products);
-        // $products = Product::whereIn('id', $ids)
-        //     ->get(['id',  'price']);
+
 
         return response()->json($products);
     }
