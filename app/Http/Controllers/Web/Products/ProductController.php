@@ -25,7 +25,7 @@ class ProductController extends Controller
         // $products = $this->service->queryActiveRows( ['category.translations', 'images', 'attributeValues.attribute'])->paginate(2);
         $filters = request()->only(['categories', 'attributes', 'price_min', 'price_max']);
 
-        $products = $this->service->getFilteredProducts($filters, 1, $category_slug);
+        $products = $this->service->getFilteredProducts($filters, 9, $category_slug);
         $attributes = AttributesHelper::getAll();
         $categorychildren = $this->categoryService->getChildrenBySlug($category_slug);
 
