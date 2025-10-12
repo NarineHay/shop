@@ -167,7 +167,11 @@ return [
         'current_password' => 'Текущий пароль',
         'description' => 'содержание',
         'mark' => 'оценка',
-       
+        "name" => "Имя",
+        "phone" => "Телефон",
+        "subject" => "Тема",
+        "message" => "Сообщение",
+
 
     ]
 ];

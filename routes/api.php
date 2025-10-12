@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Cart\CartController;
+use App\Http\Controllers\Api\Contact\ContactController;
 use App\Http\Controllers\Api\Products\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,3 +21,4 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::post('/products/prices', [ProductController::class, 'getPrices']); // цены для localStorage корзины
+

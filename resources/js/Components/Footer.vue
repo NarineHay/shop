@@ -82,7 +82,7 @@ const year = new Date().getFullYear()
                                 <div class="footer-useful-link">
                                     <ul>
                                         <li><span>{{ useTrans('app.footer.address') }}</span> {{ useTrans('app.footer.address_value') }}</li>
-                                        <li><span>{{ useTrans('app.footer.email') }}</span> kasamansolutions@gmail.com</li>
+                                        <li><span>{{ useTrans('app.footer.email') }}</span> kasamanesol@gmail.com</li>
                                         <li><span>{{ useTrans('app.footer.call_us') }}</span> <strong>+37455522511</strong></li>
                                     </ul>
                                 </div>
