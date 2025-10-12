@@ -281,7 +281,9 @@ function doLogout() {
                                         <li>
                                             <Link :href="useRoute('about_us')">{{useTrans('navbar.about_us')}}</Link>
                                         </li>
-                                        <li><a href="contact-us.html">{{useTrans('navbar.contact_us')}}</a></li>
+                                        <li>
+                                            <Link :href="useRoute('contact_us')">{{useTrans('navbar.contact_us')}}</Link>
+                                        </li>
 
 
                                     </ul>

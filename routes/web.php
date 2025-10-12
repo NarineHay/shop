@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\AboutUsController;
 use App\Http\Controllers\Web\CartController;
 use App\Http\Controllers\Web\CompareController;
+use App\Http\Controllers\Web\Contact\ContactController;
+use App\Http\Controllers\Web\ContactAsController;
 use App\Http\Controllers\Web\Portfolio\PortfolioController;
 use App\Http\Controllers\Web\Products\ProductController;
 use App\Http\Controllers\Web\WelcomeController;
@@ -28,6 +30,7 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
 {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
     Route::get('/about-us', AboutUsController::class)->name('about_us');
+    Route::get('/contact-us', [ContactAsController::class, 'index'])->name('contact_us');
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
     Route::get('/single-portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.single_portfolio');
     Route::get('/compare', CompareController::class)->name('compare');
@@ -40,6 +43,7 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     // });
 
     // Route::post('/products/prices', [ProductController::class, 'getPrices']); // цены для localStorage корзины
+    Route::post('/contact', ContactController::class)->name('contact');
 
 
     Route::get('dashboard', function () {
