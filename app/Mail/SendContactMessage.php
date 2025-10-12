@@ -10,31 +10,20 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\URL;
-class VerifyEmail extends Mailable
+class SendContactMessage extends Mailable
 {
     use Queueable, SerializesModels;
 
 
-    public $user;
-    public $url;
+    public $data;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($user)
+    public function __construct( $data)
     {
-        $this->user = $user;
-        $this->url = URL::temporarySignedRoute(
-            'verification.verify',
-            Carbon::now()->addMinutes(60),
-            [
-                'locale' => app()->getLocale(),
-                'id' => $user->getKey(),
-                'hash' => sha1($user->getEmailForVerification())
-            ]
-        );
+        $this->data = $data;
 
-        $this->to($user->email);
     }
 
     /**
@@ -43,7 +32,7 @@ class VerifyEmail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Verify Email',
+            subject: 'Contact message',
         );
 
     }
@@ -54,8 +43,7 @@ class VerifyEmail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.verify-email',
-            with: ['user' => $this->user, 'url' => $this->url]
+            view: 'emails.contact-message'
         );
 
 
@@ -70,4 +58,6 @@ class VerifyEmail extends Mailable
     {
         return [];
     }
+
+    
 }
