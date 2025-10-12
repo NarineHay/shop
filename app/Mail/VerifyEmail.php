@@ -28,9 +28,9 @@ class VerifyEmail extends Mailable
             'verification.verify',
             Carbon::now()->addMinutes(60),
             [
+                'locale' => app()->getLocale(),
                 'id' => $user->getKey(),
-                'hash' => sha1($user->getEmailForVerification()),
-                'locale' => app()->getLocale()
+                'hash' => sha1($user->getEmailForVerification())
             ]
         );
 
