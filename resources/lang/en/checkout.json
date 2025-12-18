@@ -1,0 +1,11 @@
+{
+    "title": "Checkout",
+    "agree_prefix": "I agree to the",
+    "terms": "terms of service",
+    "agree_suffix": "and will adhere to them unconditionally.",
+    "terms_required": "Please accept the terms of service.",
+    "login_required_for_address": "You must be logged in to use the account address.",
+    "address_incomplete": "Your profile address is incomplete. Please update your profile."
+
+
+}

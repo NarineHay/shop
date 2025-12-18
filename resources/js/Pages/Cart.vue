@@ -146,7 +146,7 @@ function getAttributeValueName(attrId, valueId) {
 
                                     <div class="cart-button-wrapper d-flex justify-content-between mt-4">
                                         <a href="shop-grid-left-sidebar.html" class="btn btn-secondary">{{useTrans('app.buttons.continue_shopping')}}</a>
-                                        <a href="checkout.html" class="btn btn-secondary dark align-self-end">{{useTrans('app.buttons.checkout')}}</a>
+                                        <a :href="useRoute('checkout')" class="btn btn-secondary dark align-self-end">{{useTrans('app.buttons.checkout')}}</a>
                                     </div>
                                 </div>
                             </div>
