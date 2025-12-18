@@ -12,7 +12,7 @@ import $ from 'jquery';
 window.$ = window.jQuery = $;
 
 import '../assets/js/vendor/modernizr-3.5.0.min.js';
-// import '../assets/js/vendor/jquery-1.12.4.min.js';  // если надо, но можно опустить — ты уже импортировал jQuery
+// import '../assets/js/vendor/jquery-1.12.4.min.js'; 
 import '../assets/js/bootstrap.min.js';
 import '../assets/js/plugins.js';
 import '../assets/js/ajax-mail.js';

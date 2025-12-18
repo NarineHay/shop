@@ -36,7 +36,7 @@ class HandleInertiaRequests extends Middleware
     {
         $locale = in_array(request()->segment(1), ['hy', 'ru', 'en']) ? request()->segment(1) : 'hy';
         app()->setLocale($locale);
-        
+
         $name = request()->route()->getName();
         $file = resource_path('lang/' . $locale . '/' . $name . ".json");
         $appFile = resource_path('lang/' . $locale . "/app.json");
@@ -47,6 +47,8 @@ class HandleInertiaRequests extends Middleware
 
         $categories = CategoryHelper::getCategoryTree();
         $user = Auth::user();
+        $userAddress = $user?->address;
+
 
         return [
             ...parent::share($request),
@@ -61,7 +63,9 @@ class HandleInertiaRequests extends Middleware
                     'name' => $user->name,
                     'email' => $user->email,
                     'roles' => $user->roles,
-                    'phone' => $user->phone
+                    'phone' => $user->phone,
+                    'region_id' => $userAddress ? $userAddress->region_id : null,
+                    'address' => $userAddress ? $userAddress->address : null
                 ] : null,
             ],
 

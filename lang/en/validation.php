@@ -198,6 +198,8 @@ return [
         "phone" => "phone",
         "subject" => "subject",
         "message" => "message",
+        "region_id" => "Region"
+
     ],
 
 ];

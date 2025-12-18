@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             CreateUserSeeder::class,
             CreateRolesSeeder::class,
-            AttributeSeeder::class
+            AttributeSeeder::class,
+            RegionsSeeder::class
         ]);
     }
 }
