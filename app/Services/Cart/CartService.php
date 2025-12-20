@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Products;
+namespace App\Services\Cart;
 
 use App\Interfaces\Products\ProductInterface;
 use App\Services\BaseService;

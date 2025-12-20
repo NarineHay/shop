@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\PortfolioResource\RelationManagers;
 
+use App\Filament\Resources\CategoryResource\RelationManagers\BaseImageRelationManager;
 use App\Models\PortfolioImage;
-use App\Filament\Resources\RelationManagers\BaseImageRelationManager;
 
 class ImagesRelationManager extends BaseImageRelationManager
 {
