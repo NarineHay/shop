@@ -67,5 +67,5 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
 
 require __DIR__.'/auth.php';
 //
-//
-//
+//1
+
