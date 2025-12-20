@@ -20,7 +20,7 @@ jobs:
 
       - name: Build frontend
         run: |
-          npm install
+          npm install --legacy-peer-deps
           npm run build
 
       - name: Deploy to VPS
@@ -41,6 +41,9 @@ jobs:
             docker compose exec -T app composer install --no-dev --optimize-autoloader
             docker compose exec -T app php artisan migrate --force
             docker compose exec -T app php artisan storage:link
+            docker compose exec -T app php artisan config:cache
+            docker compose exec -T app php artisan route:cache
+            docker compose exec -T app php artisan view:cache
 
             echo "✅ Deploy finished"
           EOF
