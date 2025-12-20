@@ -42,9 +42,5 @@ jobs:
             echo "🌱 Seeding..."
             docker compose exec -T app php artisan db:seed --force
 
-            echo "🎨 Frontend build..."
-            docker compose exec -T app npm install
-            docker compose exec -T app npm run build
-
             echo "✅ Deploy finished"
           EOF
