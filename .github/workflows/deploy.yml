@@ -1,4 +1,4 @@
-name: Deploy Laravel to VPS
+name: Deploy to VPS
 
 on:
   push:
@@ -16,96 +16,8 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-            - name: Deploy
+      - name: Deploy
         run: |
-          ssh -o StrictHostKeyChecking=no \
-          ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
-
-            # ====== ШАГ 1: Обновляем код ======
-            echo "🚀 ШАГ 1: Обновляем код"
-            cd /var/www/shop
-            git pull origin main
-            echo "✅ Код обновлен"
-            echo ""
-
-            # ====== ШАГ 2: Пересобираем контейнеры ======
-            echo "🚀 ШАГ 2: Пересобираем контейнеры"
-            docker compose down
-            docker compose up -d --build
-            sleep 20
-            echo "✅ Контейнеры запущены"
-            docker compose ps
-            echo ""
-
-            # ====== ШАГ 3: Composer ======
-            echo "🚀 ШАГ 3: Устанавливаем зависимости PHP"
-            if docker compose exec app composer install --no-dev --optimize-autoloader --no-interaction; then
-              echo "✅ Composer успешно установлен"
-            else
-              echo "❌ ОШИБКА Composer!"
-              exit 1
-            fi
-            echo ""
-
-            # ====== ШАГ 4: Ключ приложения ======
-            echo "🚀 ШАГ 4: Проверяем ключ приложения"
-            docker compose exec app php artisan key:generate --force
-            echo "✅ Ключ сгенерирован"
-            echo ""
-
-            # ====== ШАГ 5: Проверяем базу данных ======
-            echo "🚀 ШАГ 5: Проверяем подключение к базе"
-            if docker compose exec app php artisan tinker --execute="DB::connection()->getPdo(); echo 'OK';" 2>&1 | grep -q "OK"; then
-              echo "✅ База данных доступна"
-            else
-              echo "❌ НЕТ ПОДКЛЮЧЕНИЯ К БАЗЕ!"
-              echo "Проверь:"
-              echo "1. Запущен ли контейнер с MySQL: docker compose ps"
-              echo "2. Правильные ли настройки в .env"
-              exit 1
-            fi
-            echo ""
-
-            # ====== ШАГ 6: Миграции ======
-            echo "🚀 ШАГ 6: Выполняем миграции"
-            if docker compose exec app php artisan migrate --force --no-interaction; then
-              echo "✅ Миграции выполнены"
-            else
-              echo "⚠️ Ошибка миграций, но продолжаем"
-            fi
-            echo ""
-
-            # ====== ШАГ 7: Сидеры ======
-            echo "🚀 ШАГ 7: Запускаем сидеры"
-            if docker compose exec app php artisan db:seed --force --no-interaction; then
-              echo "✅ Сидеры выполнены"
-            else
-              echo "⚠️ Нет сидеров или ошибка"
-            fi
-            echo ""
-
-            # ====== ШАГ 8: NPM ======
-            echo "🚀 ШАГ 8: Фронтенд"
-            if docker compose exec app [ -f package.json ]; then
-              docker compose exec app npm install --production
-              docker compose exec app npm run build
-              echo "✅ Фронтенд собран"
-            else
-              echo "⚠️ Нет package.json"
-            fi
-            echo ""
-
-            # ====== ШАГ 9: Кэш ======
-            echo "🚀 ШАГ 9: Очищаем кэш"
-            docker compose exec app php artisan config:clear
-            docker compose exec app php artisan cache:clear
-            docker compose exec app php artisan view:clear
-            docker compose exec app php artisan route:clear
-            echo "✅ Кэш очищен"
-            echo ""
-
-            echo "🎉 ВСЁ ЗАВЕРШЕНО УСПЕШНО!"
-          EOF
           ssh -o StrictHostKeyChecking=no \
           ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
 
@@ -119,33 +31,16 @@ jobs:
             docker compose up -d --build
 
             echo "📦 Composer install..."
-            docker compose exec -T app composer install --no-dev --optimize-autoloader
+            docker compose exec -T shop_app composer install --no-dev --optimize-autoloader
 
             echo "🔑 App key..."
-            docker compose exec -T app php artisan key:generate --force
+            docker compose exec -T shop_app php artisan key:generate --force
 
             echo "🗄 Migrations..."
-            docker compose exec -T app php artisan migrate --force
+            docker compose exec -T shop_app php artisan migrate --force
 
             echo "🌱 Seeding..."
-            docker compose exec -T app php artisan db:seed --force
-
-            echo "📦 NPM install..."
-            docker compose exec -T app npm install
-
-            echo "🔨 NPM build..."
-            docker compose exec -T app npm run build
-
-            echo "🧹 Cache clear..."
-            docker compose exec -T app php artisan config:clear
-            docker compose exec -T app php artisan cache:clear
-            docker compose exec -T app php artisan view:clear
-            docker compose exec -T app php artisan route:clear
-
-            echo "⚡ Optimize..."
-            docker compose exec -T app php artisan config:cache
-            docker compose exec -T app php artisan route:cache
-            docker compose exec -T app php artisan view:cache
+            docker compose exec -T shop_app php artisan db:seed --force
 
             echo "✅ Deploy finished"
           EOF
