@@ -3,9 +3,11 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\AboutUsController;
 use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\CompareController;
 use App\Http\Controllers\Web\Contact\ContactController;
 use App\Http\Controllers\Web\ContactAsController;
+use App\Http\Controllers\Web\Portfolio\DashboardController;
 use App\Http\Controllers\Web\Portfolio\PortfolioController;
 use App\Http\Controllers\Web\Products\ProductController;
 use App\Http\Controllers\Web\WelcomeController;
@@ -35,7 +37,8 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     Route::get('/single-portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.single_portfolio');
     Route::get('/compare', CompareController::class)->name('compare');
     Route::get('/cart', CartController::class)->name('cart');
-
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
+    Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
     // Route::prefix('products')->group(function () {
         Route::get('/products/{category_slug}', [ProductController::class, 'index'])->name('products');
@@ -45,10 +48,10 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     // Route::post('/products/prices', [ProductController::class, 'getPrices']); // цены для localStorage корзины
     Route::post('/contact', ContactController::class)->name('contact');
 
-
-    Route::get('dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified_with_locale'])->name('dashboard');
+    // Route::get('dashboard', DashboardController::class)->middleware(['auth', 'verified_with_locale'])->name('dashboard');
+    // Route::get('dashboard', function () {
+    //     return Inertia::render('Dashboard');
+    // })->middleware(['auth', 'verified_with_locale'])->name('dashboard');
 } );
 
 

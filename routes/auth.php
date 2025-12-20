@@ -12,6 +12,8 @@ use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\AddressController;
+use App\Http\Controllers\Web\Portfolio\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( function()
@@ -68,10 +70,16 @@ Route::middleware('auth')->group(function () {
         Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
             ->name('logout');
 
+        Route::group(['prefix' => 'profile'], function () {
+            Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+            Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
+            Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-        Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-        Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-        Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+            Route::post('/address', AddressController::class)->name('profile.address');
+
+        });
+
+        Route::get('dashboard', DashboardController::class)->name('dashboard');
 
 
     });
@@ -83,6 +91,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/decrease/{itemId}', [CartController::class, 'decrease']);
     Route::delete('/cart/remove/{itemId}', [CartController::class, 'remove']);
     Route::delete('/cart/clear', [CartController::class, 'clear']);
+
 });
 
 Route::prefix('{locale}')

@@ -2,7 +2,7 @@
 
 namespace App\Filament\Resources\ProductResource\RelationManagers;
 
-use App\Filament\Resources\RelationManagers\BaseImageRelationManager;
+use App\Filament\Resources\CategoryResource\RelationManagers\BaseImageRelationManager;
 use App\Models\ProductImage;
 use Filament\Tables;
 use Filament\Forms;

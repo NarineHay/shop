@@ -12,7 +12,7 @@ return [
     'email_success' => 'The email has been successfully sent.',
     'error' => 'Something went wrong :(',
     'the_operation_was_successful' =>'The operation was successful.',
-
+    'address_incomplete' => 'Your profile address is incomplete.'
 
 
 ];

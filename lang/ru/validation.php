@@ -171,6 +171,9 @@ return [
         "phone" => "Телефон",
         "subject" => "Тема",
         "message" => "Сообщение",
+        "address" => "Адрес",
+        "region_id" => "Область"
+
 
 
     ]

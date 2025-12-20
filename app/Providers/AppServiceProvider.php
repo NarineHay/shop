@@ -7,10 +7,12 @@ use App\Interfaces\BaseInterface;
 use App\Interfaces\Categories\CategoryInterface;
 use App\Interfaces\Portfolio\PortfolioInterface;
 use App\Interfaces\Products\ProductInterface;
+use App\Interfaces\Users\AddressInterface;
 use App\Interfaces\Users\UserInterface;
 use App\Mail\CustomResetPasswordToMail;
 use App\Repositories\Categories\CategoryRepository;
 use App\Repositories\Products\ProductRepository;
+use App\Repositories\Users\AddressRepository;
 use App\Repositories\Users\UserRepository;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Session;
@@ -33,6 +35,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ProductInterface::class, ProductRepository::class);
         $this->app->bind(UserInterface::class, UserRepository::class);
         $this->app->bind(PortfolioInterface::class, PortfolioRepository::class);
+        $this->app->bind(AddressInterface::class, AddressRepository::class);
 
 
     }

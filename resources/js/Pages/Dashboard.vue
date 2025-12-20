@@ -4,6 +4,12 @@ import { Head, Link } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 
 import Edit from '@/Pages/Profile/Edit.vue'
+import Address from '@/Pages/Profile/Address.vue'
+
+const props = defineProps({
+  regions: Array,
+});
+
 </script>
 
 <template>
@@ -92,15 +98,11 @@ import Edit from '@/Pages/Profile/Edit.vue'
 
 
                                                 <div id="address" class="tab-pane" role="tabpanel" aria-labelledby="address-tab">
-                                                    <p>The following addresses will be used on the checkout page by default.</p>
-                                                    <h4 class="billing-address">Billing address</h4>
-                                                    <a class="btn btn-secondary my-4" href="#">edit</a>
-                                                    <p>HasTech</p>
-                                                    <p>Bangladesh</p>
+                                                     <Address :regions="props.regions" />
                                                 </div> <!-- end of tab-pane -->
 
                                                 <div id="account-details" class="tab-pane fade" role="tabpanel" aria-labelledby="account-details-tab">
-                                                    
+
                                                     <Edit />
                                                     <!-- <div class="login-form">
                                                         <form action="#">
