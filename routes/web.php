@@ -61,9 +61,8 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
 //     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 //     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 // });
-// test
-// test 2
-// test 3
+// test 1
+
 
 require __DIR__.'/auth.php';
 //
