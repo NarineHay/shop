@@ -9,6 +9,8 @@ services:
     volumes:
       - ./:/var/www
       - storage_data:/var/www/storage
+      - ./public:/var/www/public
+    environment:
     depends_on:
       - db
 
@@ -38,19 +40,19 @@ services:
     volumes:
       - dbdata:/var/lib/mysql
 
-  queue:
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
-    container_name: shop_queue
-    command: php artisan queue:work
-    env_file:
-      - .env
-    volumes:
-      - ./:/var/www
-      - storage_data:/var/www/storage
-    depends_on:
-      - db
+#   queue:
+#     build:
+#       context: .
+#       dockerfile: docker/php/Dockerfile
+#     container_name: shop_queue
+#     command: php artisan queue:work
+#     env_file:
+#       - .env
+#     volumes:
+#       - ./:/var/www
+#       - storage_data:/var/www/storage
+#     depends_on:
+#       - db
 
 volumes:
   dbdata:
