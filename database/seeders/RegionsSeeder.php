@@ -50,17 +50,19 @@ class RegionsSeeder extends Seeder
         ];
 
         foreach ($regions as $regionData) {
-            
-            $region = Region::create([
-                'code' => $regionData['code'],
-            ]);
 
-            
+
+            $region = Region::updateOrCreate(
+                ['code' => $regionData['code']],
+                []
+            );
+
+
             foreach ($regionData['translations'] as $locale => $name) {
-                $region->translations()->create([
-                    'locale' => $locale,
-                    'name' => $name,
-                ]);
+                $region->translations()->updateOrCreate(
+                    ['locale' => $locale],
+                    ['name' => $name]
+                );
             }
         }
     }
