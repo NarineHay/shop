@@ -32,23 +32,11 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 
 WORKDIR /var/www
 
-# 🔽 Копируем проект
-COPY . .
-
-# 🔽 PHP deps
-RUN composer install --no-dev --no-interaction --optimize-autoloader
-
-# 🔽 Frontend build
-RUN npm install --legacy-peer-deps \
-    && npm run build
-
-# 🔽 Права
-RUN chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
-
 # Entrypoint
 COPY docker/php/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
+
+RUN usermod -u 1000 www-data
 
 ENTRYPOINT ["entrypoint.sh"]
 CMD ["php-fpm"]
