@@ -21,7 +21,7 @@ use Filament\Tables\Actions\EditAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Validation\Rule;
 
-class ProductResource extends Resource
+class ProductOldResource extends Resource
 {
     use DynamicFilterTrait;
     protected static ?string $model = Product::class;
@@ -52,16 +52,6 @@ class ProductResource extends Resource
                     ->integer()
                     ->required()
                     ->suffix(' ֏'),
-
-                TextInput::make('quantity')
-                    ->label('Քանակ')
-                    ->numeric()
-                    ->integer()
-                    ->required(),
-
-                TextInput::make('number')
-                    ->label('Արտ. համարը')
-                    ->required(),
 
                 Toggle::make('active')->label('Ակտիվ')->default(true),
 
@@ -155,14 +145,6 @@ class ProductResource extends Resource
                 TextColumn::make('price')
                     ->label('Արժեք')
                     ->suffix(' ֏'),
-
-                TextColumn::make('quantity')
-                    ->label('Քանակ')
-                    ->sortable(),
-
-                TextColumn::make('number')
-                    ->label('Արտ. համարը')
-                    ->sortable(),
                 ToggleColumn::make('active')->label('Ակտիվ'),
             ])
              ->filters(self::makeDynamicFilters([
