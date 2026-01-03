@@ -15,7 +15,8 @@ class CompareController extends Controller
     }
     public function __invoke(Request $request)
     {
-        $products = $this->service->getMoreRows('id', $request->ids, ['category.translations', 'images', 'attributeValues.attribute']);
+        $ids = $request->ids ?? [];
+        $products = $this->service->getMoreRows('id', $ids, ['category.translations', 'images', 'attributeValues.attribute']);
 
         $attributes = AttributesHelper::getAll();
 
