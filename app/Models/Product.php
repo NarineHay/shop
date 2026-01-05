@@ -60,6 +60,11 @@ class Product extends Model
         );
     }
 
+    public function stock()
+    {
+        return $this->hasOne(Stock::class);
+    }
+
     protected static function booted()
     {
         static::deleting(function ($product) {

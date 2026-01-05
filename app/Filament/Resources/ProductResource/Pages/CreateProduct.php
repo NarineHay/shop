@@ -13,11 +13,13 @@ class CreateProduct extends CreateRecord
     protected static string $resource = ProductResource::class;
     protected array $translations = [];
     protected array $attributeValuesToSync = [];
+    protected int $stockQuantity = 0;
+
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         // Отделим translations перед сохранением
         $this->translations = Arr::pull($data, 'translations');
-
+        $this->stockQuantity = Arr::pull($data, 'stock_quantity', 0);
         // Отделяем attribute_value_ids (pivot)
         $this->attributeValuesToSync = collect(Arr::pull($data, 'attribute_value_ids', []))
             ->flatten()
@@ -42,5 +44,10 @@ class CreateProduct extends CreateRecord
         if (!empty($this->attributeValuesToSync)) {
             $this->record->attributeValues()->sync($this->attributeValuesToSync);
         }
+
+        $this->record->stock()->create([
+            'quantity' => $this->stockQuantity,
+        ]);
+
     }
 }
