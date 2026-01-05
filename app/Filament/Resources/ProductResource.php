@@ -3,6 +3,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers\ImagesRelationManager;
+use App\Filament\Resources\ProductResource\RelationManagers\StockRelationManager;
 use App\Filament\Traits\DynamicFilterTrait;
 use App\Models\Attribute;
 use App\Models\AttributeValue;
@@ -53,14 +54,23 @@ class ProductResource extends Resource
                     ->required()
                     ->suffix(' ֏'),
 
-                TextInput::make('quantity')
+                // TextInput::make('quantity')
+                //     ->label('Քանակ')
+                //     ->numeric()
+                //     ->integer()
+                //     ->required(),
+                TextInput::make('stock_quantity')
                     ->label('Քանակ')
                     ->numeric()
                     ->integer()
+                    ->default(fn($record) => $record->stock?->quantity ?? 0),
+
+                TextInput::make('sku')
+                    ->label('Արտ. համարը')
                     ->required(),
 
-                TextInput::make('number')
-                    ->label('Արտ. համարը')
+                TextInput::make('seria')
+                    ->label('Արտ. Սերիա')
                     ->required(),
 
                 Toggle::make('active')->label('Ակտիվ')->default(true),
@@ -156,13 +166,18 @@ class ProductResource extends Resource
                     ->label('Արժեք')
                     ->suffix(' ֏'),
 
-                TextColumn::make('quantity')
+                // TextColumn::make('quantity')
+                //     ->label('Քանակ')
+                //     ->sortable(),
+
+                TextColumn::make('stock.quantity')
                     ->label('Քանակ')
                     ->sortable(),
 
-                TextColumn::make('number')
+                TextColumn::make('sku')
                     ->label('Արտ. համարը')
                     ->sortable(),
+                    
                 ToggleColumn::make('active')->label('Ակտիվ'),
             ])
              ->filters(self::makeDynamicFilters([

@@ -11,7 +11,7 @@ class EditProduct extends EditRecord
     protected static string $resource = ProductResource::class;
     protected array $translations = [];
     protected array $attributeValuesToSync = [];
-
+    protected int $stockQuantity = 0;
 
     // Перед заполнением формы подтягиваем переводы в нужном формате
     protected function mutateFormDataBeforeFill(array $data): array
@@ -33,6 +33,7 @@ class EditProduct extends EditRecord
 
         $data['attribute_value_ids'] = $attributeValueIds;
 
+        $data['stock_quantity'] = $this->record->stock?->quantity ?? 0;
 
         return $data;
     }
@@ -48,6 +49,10 @@ class EditProduct extends EditRecord
             ->filter()
             ->toArray();
         unset($data['attribute_value_ids']);
+
+        $this->stockQuantity = $data['stock_quantity'] ?? 0;
+        unset($data['stock_quantity']);
+
 
         return $data;
     }
@@ -80,7 +85,14 @@ class EditProduct extends EditRecord
         if (!empty($this->attributeValuesToSync)) {
             $this->record->attributeValues()->sync($this->attributeValuesToSync);
         }
+
+        $this->record->stock()->updateOrCreate(
+            [], // условие: пустое, чтобы выбрать запись по product_id
+            ['quantity' => $this->stockQuantity]
+        );
     }
+
+    
     protected function getHeaderActions(): array
     {
         return [
