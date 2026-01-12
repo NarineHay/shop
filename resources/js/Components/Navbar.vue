@@ -7,7 +7,7 @@ import { Link, usePage, useForm, router  } from '@inertiajs/vue3';
 import { useTrans, useRoute } from '/resources/js/trans';
 import { useCompareStore } from '@/Stores/compare';
 import { useCartStore } from '@/Stores/cart';
-
+import {initSlickNavClass} from '@/slicknav'
 
 const compare = useCompareStore();
 const cart = useCartStore();
@@ -33,7 +33,8 @@ onMounted(async () => {
     cart.fetchProducts()    // гость → localStorage + цены
   }
 
-  initMeanMenu()
+    initSlickNavClass()
+    initMeanMenu()
 })
 
 // Текущий путь без локали
@@ -227,6 +228,83 @@ function doLogout() {
                     <div class="col-lg-12">
                         <div class="top-main-menu">
                             <div class="categories-menu-bar">
+                                <!-- <div class="slicknav_menu">
+                                    <a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn slicknav_collapsed"><span class="slicknav_menutxt">Categories</span><span class="slicknav_icon"><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span></span></a><ul class="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu" style="display: none;">
+                                        <li class="slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="shop-grid-left-sidebar.html" tabindex="-1">Audio &amp; Home Theater <span class="lnr lnr-chevron-right"></span></a>
+                                            <span class="slicknav_arrow">+</span></a><ul class="cat-submenu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+                                                <li class="slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="shop-grid-left-sidebar.html" tabindex="-1">Home Audio <span class="lnr lnr-chevron-right"></span></a>
+                                                    <span class="slicknav_arrow">+</span></a><ul class="cat-submenu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">CD Players &amp; Turntables</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Home Theater Systems</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Receivers &amp; Amplifiers</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Speakers</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Wireless  Audio</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Blu-ray Disc Players</a></li>
+                                                <li class="slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="shop-grid-left-sidebar.html" tabindex="-1">Curved TVs<span class="lnr lnr-chevron-right"></span></a>
+                                                    <span class="slicknav_arrow">+</span></a><ul class="cat-submenu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">CD Players &amp; Turntables</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Home Theater Systems</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Receivers &amp; Amplifiers</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Speakers</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Wireless  Audio</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Streaming Media Players</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">OLED TVs</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">LED &amp; LCD TVs</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="shop-grid-left-sidebar.html" tabindex="-1">Video &amp; Home Theater<span class="lnr lnr-chevron-right"></span></a>
+                                            <span class="slicknav_arrow">+</span></a><ul class="cat-submenu category-mega slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+                                                <li class="cat-mega-title slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="#" tabindex="-1">Security Cameras</a>
+                                                    <span class="slicknav_arrow">+</span></a><ul role="menu" aria-hidden="true" class="slicknav_hidden" style="display: none;">
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">DSLR Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Lense Camera</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Digital Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Mirrorless Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Point</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="cat-mega-title slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="#" tabindex="-1">Mirrorless Cameras</a>
+                                                    <span class="slicknav_arrow">+</span></a><ul role="menu" aria-hidden="true" class="slicknav_hidden" style="display: none;">
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">DSLR Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Lense Camera</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Digital Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Mirrorless Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Point</a></li>
+                                                    </ul>
+                                                </li>
+                                                <li class="cat-mega-title slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="#" tabindex="-1">Digital Cameras</a>
+                                                    <span class="slicknav_arrow">+</span></a><ul role="menu" aria-hidden="true" class="slicknav_hidden" style="display: none;">
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">DSLR Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Lense Camera</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Digital Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Mirrorless Cameras</a></li>
+                                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Point</a></li>
+                                                    </ul>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                        <li class="slicknav_collapsed slicknav_parent"><a href="#" role="menuitem" aria-haspopup="true" tabindex="-1" class="slicknav_item slicknav_row"><a href="shop-grid-left-sidebar.html" tabindex="-1">Cellphones &amp; Accessories<span class="lnr lnr-chevron-right"></span></a>
+                                            <span class="slicknav_arrow">+</span></a><ul class="cat-submenu slicknav_hidden" role="menu" aria-hidden="true" style="display: none;">
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">CD Players &amp; Turntables</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Home Theater Systems</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Receivers &amp; Amplifiers</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Speakers</a></li>
+                                                <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Wireless  Audio</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Top Item</a></li>
+                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Video Games Consoles</a></li>
+                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Business &amp; Office</a></li>
+                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Headphones &amp; Accessories</a></li>
+                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Quadcopters &amp; Accessories</a></li>
+                                        <li><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Network Devices</a></li>
+                                        <li class="category-item-parent hidden" style="display: none;"><a href="shop-grid-left-sidebar.html" role="menuitem" tabindex="-1">Smart Watches</a></li>
+                                        <li class="category-item-parent"><a class="more-btn" href="#" role="menuitem" tabindex="-1">More Categories</a></li>
+                                    </ul></div> -->
                                 <div class="categories-menu-btn ha-toggle">
                                     <div class="left">
                                         <i class="lnr lnr-text-align-left"></i>
@@ -259,7 +337,7 @@ function doLogout() {
                                             </ul>
                                         </li> -->
                                         <!-- <li class="category-item-parent hidden"><a href="shop-grid-left-sidebar.html">Smart Watches</a></li> -->
-                                        <li class="category-item-parent"><a class="more-btn" href="#">More Categories</a></li>
+                                        <!-- <li class="category-item-parent"><a class="more-btn" href="#">More Categories</a></li> -->
                                     </ul>
                                 </nav>
                             </div>
