@@ -749,12 +749,12 @@ export function initMeanMenu() {
 		});
 
 		// slick active
-		// $('#menu2').slicknav({
-		// 	label: "Categories",
-		// 	prependTo: '.categories-menu-bar',
-		// 	closedSymbol: '+',
-		// 	openedSymbol: '-'
-		// });
+		$('#menu2').slicknav({
+			label: "Categories",
+			prependTo: '.categories-menu-bar',
+			closedSymbol: '+',
+			openedSymbol: '-'
+		});
 
 		// pricing filter
 		// $( "#price-slider" ).slider({
