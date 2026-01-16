@@ -34,17 +34,13 @@ class ProductResource extends Resource
             Group::make([
                 Select::make('category_id')
                     ->label('Կատեգորիա')
-                    // ->options(fn () => Category::with('translations')->where('active', 1)->get()->mapWithKeys(
-                    //     fn ($cat) => [$cat->id => $cat->translation('hy')?->name ?? '(без названия)']
-                    // ))
-                    ->options(fn (CategoryService $service) =>
-                        $service->getActiveRows(['translations'])
-                            ->mapWithKeys(
-                                fn ($cat) => [$cat->id => $cat->translation('hy')?->name ?? '(без названия)']
-                            )
-                    )
+                    ->options(function (CategoryService $service) {
+                        $categories = $service->getActiveRows(['translations', 'children'])
+                            ->whereNull('parent_id');
+
+                        return self::buildCategoryOptions($categories);
+                    })
                     ->searchable()
-                    ->preload()
                     ->required(),
 
                 TextInput::make('price')
@@ -177,7 +173,7 @@ class ProductResource extends Resource
                 TextColumn::make('sku')
                     ->label('Արտ. համարը')
                     ->sortable(),
-                    
+
                 ToggleColumn::make('active')->label('Ակտիվ'),
             ])
              ->filters(self::makeDynamicFilters([
@@ -213,6 +209,25 @@ class ProductResource extends Resource
                 DeleteBulkAction::make(),
             ])
             ->defaultSort('id', 'desc');
+    }
+
+    private static function buildCategoryOptions($categories, $prefix = ''): array
+    {
+        $options = [];
+
+        foreach ($categories as $category) {
+            $options[$category->id] =
+                $prefix . ($category->translation('hy')?->name ?? '(без названия)');
+
+            if ($category->children->isNotEmpty()) {
+                $options += self::buildCategoryOptions(
+                    $category->children,
+                    $prefix . '— '
+                );
+            }
+        }
+
+        return $options;
     }
 
 

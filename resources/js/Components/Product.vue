@@ -75,12 +75,12 @@ const sortedImages = computed(() => {
 </template>
 <style scoped>
     .product-thumb {
-    width: 100%;
-    height: 250px; /* фиксированная высота карточки */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+        width: 100%;
+        aspect-ratio: 1 / 1; /* квадрат */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
     }
 
     .product-thumb img {

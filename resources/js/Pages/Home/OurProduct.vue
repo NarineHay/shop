@@ -21,13 +21,36 @@ onMounted(() => {
 
 function initCarousel() {
   // пример инициализации Owl Carousel
-  $('.product-gallary-active').owlCarousel({
-    items: 4,
-    margin: 30,
-    nav: true,
-    dots: false,
-    loop: true,
-  })
+    $('.product-gallary-active').owlCarousel({
+        items: 4,
+        margin: 30,
+        nav: true,
+        dots: false,
+        loop: true,
+        responsive:{
+				0:{
+					items:1,
+					nav:false
+		        },
+		        480:{
+					items:2,
+					nav:false
+		        },
+		        768:{
+		            items:3
+		        },
+		        992:{
+		            items:4
+		        },
+		       	1024:{
+		            items:4
+				},
+				1600:{
+		            items:7
+		        }
+
+		}
+    })
 }
 
 </script>
