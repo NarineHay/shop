@@ -2,9 +2,10 @@
 import { onMounted, onUpdated, nextTick, watch } from 'vue';
 import $ from 'jquery';
 import 'slick-carousel';
-import sliderImg4 from '../../../assets/img/slider/banner-4.png';
+import sliderImg4 from '../../../assets/img/slider/banner-9.png';
 import sliderImg7 from '../../../assets/img/slider/banner-7.png';
 import sliderImg8 from '../../../assets/img/slider/banner-8.png';
+// import sliderImg9 from '../../../assets/img/slider/banner-9.png';
 
 import { useTrans, useRoute, currentLocale } from '/resources/js/trans';
 import { useReinitSlider } from '/resources/js/hooks/useReinitSlider'
