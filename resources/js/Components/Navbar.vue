@@ -183,8 +183,8 @@ function doLogout() {
             <div class="container-fluid">
                 <div class="row align-items-center">
                     <div class="col-lg-2 col-md-4 col-sm-4 col-12">
-                        <div class="logo">
-                             <Link :href="useRoute('welcome')"><img src="/assets/img/logo/logo-3.png" alt="brand-logo"></Link>
+                        <div class="logo w-50">
+                             <Link :href="useRoute('welcome')"><img src="/assets/img/logo/kasaman.png" alt="brand-logo"></Link>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-12 col-12 order-sm-last">
@@ -404,4 +404,10 @@ function doLogout() {
     </div>
 </template>
 
-
+<style scoped>
+    .logo img {
+        max-width: 80px;  /* максимальная ширина */
+        width: 100%;       /* адаптивная ширина */
+        height: auto;
+    }
+</style>
