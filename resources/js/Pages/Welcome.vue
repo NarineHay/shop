@@ -544,7 +544,7 @@ onMounted(() => {
 }
 
 .about-icons{
-    color: #ffdd19;
+    color: #c92829;
     font-size: 50px;
 }
 </style>
