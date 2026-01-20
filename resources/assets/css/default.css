@@ -591,7 +591,8 @@
 /* Background Color */
 
 .theme-bg {
-	background: #fedc19;;
+	background: #c92829;
+	/*background: #fedc19; default color*/
 }
 .white-bg {
 	background: #fff;
