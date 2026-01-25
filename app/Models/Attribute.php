@@ -33,4 +33,10 @@ class Attribute extends Model
             ? $this->translations->firstWhere('locale', app()->getLocale())
             : null;
     }
+
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
 }
