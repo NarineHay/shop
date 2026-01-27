@@ -4,11 +4,17 @@ namespace App\Filament\Resources\AttributeResource\RelationManagers;
 
 use App\Filament\Resources\AttributeResource;
 use Filament\Forms;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\CreateAction;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
 class ValuesRelationManager extends RelationManager
@@ -18,25 +24,22 @@ class ValuesRelationManager extends RelationManager
     /* ---------------------------------
      | FORM
      |---------------------------------*/
-    public function form(Forms\Form $form): Forms\Form
+    public function form(Form $form): Form
 {
     return $form->schema([
-        Forms\Components\TextInput::make('code')
+        TextInput::make('code')
             ->label('Code')
             ->required()
             ->maxLength(50),
 
-        Forms\Components\Tabs::make('Translations')
+        Tabs::make('Translations')
             ->tabs(
                 collect(AttributeResource::SUPPORTED_LOCALES)
                     ->map(function ($label, $locale) {
-                        return Forms\Components\Tabs\Tab::make($label)
+                        return Tab::make($label)
                             ->schema([
-                                Forms\Components\TextInput::make("translations.{$locale}.name")
+                                TextInput::make("translations.{$locale}.name")
                                     ->label('Name')
-                                    ->default(fn ($get, $record) =>
-                                        $record->translations->firstWhere('locale', $locale)?->name
-                                    )
                                     ->required(),
                             ]);
                     })
@@ -47,42 +50,45 @@ class ValuesRelationManager extends RelationManager
     /* ---------------------------------
      | TABLE
      |---------------------------------*/
-    public function table(Tables\Table $table): Tables\Table
+    public function table(Table $table): Table
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('code')->sortable(),
+                TextColumn::make('code')->sortable(),
             ])
             ->actions([
-                EditAction::make()
-                    ->disabled(fn ($record) => $record->products()->exists())
-                    ->mutateFormDataUsing(fn (array $data, $record) => [
-                        ...$data,
+            EditAction::make()
+                ->disabled(fn($record) => $record->products()->exists())
+                ->fillForm(function ($record) {
+                    return [
+                        'code' => $record->code,
                         'translations' => $record->translations
                             ->keyBy('locale')
-                            ->map(fn ($t) => ['name' => $t->name])
+                            ->map(fn($t) => ['name' => $t->name])
                             ->toArray(),
-                    ])
-                    ->using(function ($record, array $data) {
-                        // update main code
-                        $record->update([
-                            'code' => $data['code'],
-                        ]);
+                    ];
+                })
+                ->using(function ($record, array $data) {
 
-                        // update translations
-                        foreach (AttributeResource::SUPPORTED_LOCALES as $locale => $_) {
-                            $name = $data['translations'][$locale]['name'] ?? null;
+                    // update code
+                    $record->update([
+                        'code' => $data['code'],
+                    ]);
 
-                            if ($name) {
-                                $record->translations()->updateOrCreate(
-                                    ['locale' => $locale],
-                                    ['name' => $name]
-                                );
-                            }
+                    // update translations
+                    foreach (AttributeResource::SUPPORTED_LOCALES as $locale => $_) {
+                        $name = $data['translations'][$locale]['name'] ?? null;
+
+                        if ($name) {
+                            $record->translations()->updateOrCreate(
+                                ['locale' => $locale],
+                                ['name' => $name]
+                            );
                         }
+                    }
 
-                        return $record;
-                    }),
+                    return $record;
+                }),
 
                 DeleteAction::make()
                     ->disabled(fn ($record) => $record->products()->exists()),
@@ -114,7 +120,7 @@ class ValuesRelationManager extends RelationManager
     /* ---------------------------------
      | QUERY
      |---------------------------------*/
-   protected function getTableQuery(): \Illuminate\Database\Eloquent\Builder
+   protected function getTableQuery(): Builder
 {
     return $this->getOwnerRecord()
         ->values()        // HasMany

@@ -29,43 +29,48 @@ class EditAttribute extends EditRecord
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        $this->record->translations()->each(function($translation) use ($data) {
+        // 🔹 сохраняем переводы атрибута
+        $this->record->translations()->each(function ($translation) use ($data) {
             $locale = $translation->locale;
-            if(isset($data['translations'][$locale])){
+
+            if (isset($data['translations'][$locale])) {
                 $translation->update([
-                    'name'=>$data['translations'][$locale]['name'] ?? $translation->name
+                    'name' => $data['translations'][$locale]['name'] ?? $translation->name,
                 ]);
             }
         });
 
-        // значения атрибута
-        if(isset($data['values'])){
-            foreach($data['values'] as $valueData){
-                // если value существует
-                $value = isset($valueData['id']) ? $this->record->values()->find($valueData['id']) : null;
+        // 🔹 сохраняем values
+        if (isset($data['values'])) {
+            foreach ($data['values'] as $valueData) {
+                $value = isset($valueData['id'])
+                    ? $this->record->values()->find($valueData['id'])
+                    : null;
 
-                if(!$value){
-                    // создаем новый
-                    $value = $this->record->values()->create(['code'=>$valueData['code'] ?? null]);
-                } else {
-                    // обновляем code, если value не привязан к продуктам
-                    if($value->products()->count() === 0){
-                        $value->update(['code'=>$valueData['code'] ?? $value->code]);
-                    }
+                if (! $value) {
+                    $value = $this->record->values()->create([
+                        'code' => $valueData['code'] ?? null,
+                    ]);
+                } elseif ($value->products()->count() === 0) {
+                    $value->update([
+                        'code' => $valueData['code'] ?? $value->code,
+                    ]);
                 }
 
-                // перевод для value
-                foreach(AttributeResource::SUPPORTED_LOCALES as $locale => $_){
+                foreach (AttributeResource::SUPPORTED_LOCALES as $locale => $_) {
                     $name = $valueData['translations'][$locale]['name'] ?? null;
-                    if($name){
+
+                    if ($name) {
                         $value->translations()->updateOrCreate(
-                            ['locale'=>$locale],
-                            ['name'=>$name]
+                            ['locale' => $locale],
+                            ['name' => $name]
                         );
                     }
                 }
             }
         }
+
+        unset($data['translations'], $data['values']);
 
         return $data;
     }
