@@ -27,7 +27,6 @@ jobs:
             git pull origin main
 
             echo '🐳 Rebuild containers...'
-            docker compose down
             docker compose up -d --build
 
             sleep 25
@@ -36,11 +35,17 @@ jobs:
 
             # Все команды последовательно
             docker compose exec -T app composer install --no-dev --optimize-autoloader --no-interaction
-            docker compose exec -T app php artisan key:generate --force
             docker compose exec -T app php artisan migrate --force
             docker compose exec -T app php artisan db:seed --force
-            docker compose exec -T app npm install
-            docker compose exec -T app npm run build
+
+            if git diff --name-only HEAD~1 | grep -E '^(resources/|package.json|package-lock.json|vite.config.js)'; then
+              echo "🎨 Frontend changes detected, building..."
+              docker compose exec -T app npm install
+              docker compose exec -T app npm run build
+            else
+              echo "🛑 No frontend changes, skipping npm build"
+            fi
+
             docker compose exec -T app php artisan config:clear
             docker compose exec -T app php artisan cache:clear
             docker compose exec -T app php artisan view:clear
