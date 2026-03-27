@@ -50,21 +50,21 @@ class AttributeSeeder extends Seeder
             // ***
             'power_kva' => [
                 'type' => 'select',
-                'translations' => ['hy' => 'Հզորություն (կՎԱ)','en' => 'Power (kVA)','ru' => 'Мощность (кВА)'],
+                'translations' => ['hy' => 'Հզորություն (kVA)','en' => 'Power (kVA)','ru' => 'Мощность (кВА)'],
                 'values' => [
-                    ['code'=>'1','translations'=>['hy'=>'1 կՎԱ','en'=>'1 kVA','ru'=>'1 кВА']],
-                    ['code'=>'1','translations'=>['hy'=>'1.5 կՎԱ','en'=>'1.5 kVA','ru'=>'1.5 кВА']],
-                    ['code'=>'3','translations'=>['hy'=>'3 կՎԱ','en'=>'3 kVA','ru'=>'3 кВА']],
-                    ['code'=>'5','translations'=>['hy'=>'5 կՎԱ','en'=>'5 kVA','ru'=>'5 кВА']],
-                    ['code'=>'6','translations'=>['hy'=>'6 կՎԱ','en'=>'6 kVA','ru'=>'6 кВА']],
-                    ['code'=>'7','translations'=>['hy'=>'7 կՎԱ','en'=>'7 kVA','ru'=>'7 кВА']],
-                    ['code'=>'9','translations'=>['hy'=>'9 կՎԱ','en'=>'9 kVA','ru'=>'9 кВА']],
-                    ['code'=>'10','translations'=>['hy'=>'10 կՎԱ','en'=>'10 kVA','ru'=>'10 кВА']],
-                    ['code'=>'15','translations'=>['hy'=>'15 կՎԱ','en'=>'15 kVA','ru'=>'15 кВА']],
-                    ['code'=>'20','translations'=>['hy'=>'20 կՎԱ','en'=>'20 kVA','ru'=>'20 кВА']],
-                    ['code'=>'30','translations'=>['hy'=>'30 կՎԱ','en'=>'30 kVA','ru'=>'30 кВА']],
-                    ['code'=>'45','translations'=>['hy'=>'45 կՎԱ','en'=>'45 kVA','ru'=>'45 кВА']],
-                    ['code'=>'60','translations'=>['hy'=>'60 կՎԱ','en'=>'60 kVA','ru'=>'60 кВА']],
+                    ['code'=>'1','translations'=>['hy'=>'1 kVA','en'=>'1 kVA','ru'=>'1 кВА']],
+                    ['code'=>'1_5','translations'=>['hy'=>'1.5 kVA','en'=>'1.5 kVA','ru'=>'1.5 кВА']],
+                    ['code'=>'3','translations'=>['hy'=>'3 kVA','en'=>'3 kVA','ru'=>'3 кВА']],
+                    ['code'=>'5','translations'=>['hy'=>'5 kVA','en'=>'5 kVA','ru'=>'5 кВА']],
+                    ['code'=>'6','translations'=>['hy'=>'6 kVA','en'=>'6 kVA','ru'=>'6 кВА']],
+                    ['code'=>'7','translations'=>['hy'=>'7 kVA','en'=>'7 kVA','ru'=>'7 кВА']],
+                    ['code'=>'9','translations'=>['hy'=>'9 kVA','en'=>'9 kVA','ru'=>'9 кВА']],
+                    ['code'=>'10','translations'=>['hy'=>'10 kVA','en'=>'10 kVA','ru'=>'10 кВА']],
+                    ['code'=>'15','translations'=>['hy'=>'15 kVA','en'=>'15 kVA','ru'=>'15 кВА']],
+                    ['code'=>'20','translations'=>['hy'=>'20 kVA','en'=>'20 kVA','ru'=>'20 кВА']],
+                    ['code'=>'30','translations'=>['hy'=>'30 kVA','en'=>'30 kVA','ru'=>'30 кВА']],
+                    ['code'=>'45','translations'=>['hy'=>'45 kVA','en'=>'45 kVA','ru'=>'45 кВА']],
+                    ['code'=>'60','translations'=>['hy'=>'60 kVA','en'=>'60 kVA','ru'=>'60 кВА']],
 
                     // добавь остальные значения
                 ],
@@ -76,15 +76,15 @@ class AttributeSeeder extends Seeder
                 'type' => 'select',
                 'translations' => ['hy' => 'Հզորություն (կՎտ)','en' => 'Power (kW)','ru' => 'Мощность (кВт)'],
                 'values' => [
-                    ['code'=>'0.75','translations'=>['hy'=>'0.75 կՎտ','en'=>'0.75 kW','ru'=>'0.75 кВт']],
-                    ['code'=>'1.5','translations'=>['hy'=>'1.5 կՎտ','en'=>'1.5 kW','ru'=>'1.5 кВт']],
-                    ['code'=>'2.2','translations'=>['hy'=>'2.2 կՎտ','en'=>'2.2 kW','ru'=>'2.2 кВт']],
+                    ['code'=>'0_75','translations'=>['hy'=>'0.75 կՎտ','en'=>'0.75 kW','ru'=>'0.75 кВт']],
+                    ['code'=>'1_5','translations'=>['hy'=>'1.5 կՎտ','en'=>'1.5 kW','ru'=>'1.5 кВт']],
+                    ['code'=>'2_2','translations'=>['hy'=>'2.2 կՎտ','en'=>'2.2 kW','ru'=>'2.2 кВт']],
                     ['code'=>'4','translations'=>['hy'=>'4 կՎտ','en'=>'4 kW','ru'=>'4 кВт']],
-                    ['code'=>'5.5','translations'=>['hy'=>'5.5 կՎտ','en'=>'5.5 kW','ru'=>'5.5 кВт']],
-                    ['code'=>'7.5','translations'=>['hy'=>'7.5 կՎտ','en'=>'7.5 kW','ru'=>'7.5 кВт']],
+                    ['code'=>'5_5','translations'=>['hy'=>'5.5 կՎտ','en'=>'5.5 kW','ru'=>'5.5 кВт']],
+                    ['code'=>'7_5','translations'=>['hy'=>'7.5 կՎտ','en'=>'7.5 kW','ru'=>'7.5 кВт']],
                     ['code'=>'11','translations'=>['hy'=>'11 կՎտ','en'=>'11 kW','ru'=>'11 кВт']],
                     ['code'=>'15','translations'=>['hy'=>'15 կՎտ','en'=>'15 kW','ru'=>'15 кВт']],
-                    ['code'=>'18.5','translations'=>['hy'=>'18.5 կՎտ','en'=>'18.5 kW','ru'=>'18.5 кВт']],
+                    ['code'=>'18_5','translations'=>['hy'=>'18.5 կՎտ','en'=>'18.5 kW','ru'=>'18.5 кВт']],
                     ['code'=>'22','translations'=>['hy'=>'22 կՎտ','en'=>'22 kW','ru'=>'22 кВт']],
                     ['code'=>'30','translations'=>['hy'=>'30 կՎտ','en'=>'30 kW','ru'=>'30 кВт']],
                     ['code'=>'35','translations'=>['hy'=>'35 կՎտ','en'=>'35 kW','ru'=>'35 кВт']],
@@ -99,19 +99,33 @@ class AttributeSeeder extends Seeder
                     ['code'=>'200','translations'=>['hy'=>'200 կՎտ','en'=>'200 kW','ru'=>'200 кВт']],
                     ['code'=>'240','translations'=>['hy'=>'240 կՎտ','en'=>'240 kW','ru'=>'240 кВт']],
 
+                ],
+            ],
 
-                    // добавь остальные значения
+
+            'power_w' => [
+                'type' => 'select',
+                'translations' => ['hy' => 'Հզորություն (W)', 'en' => 'Power (W)', 'ru' => 'Мощность (Вт)'],
+                'values' => [
+                    ['code' => '35', 'translations' => ['hy' => '35 W', 'en' => '35 W', 'ru' => '35 Вт']],
+                    ['code' => '50', 'translations' => ['hy' => '50 W', 'en' => '50 W', 'ru' => '50 Вт']],
+                    ['code' => '75', 'translations' => ['hy' => '75 W', 'en' => '75 W', 'ru' => '75 Вт']],
+                    ['code' => '100', 'translations' => ['hy' => '100 W', 'en' => '100 W', 'ru' => '100 Вт']],
+                    ['code' => '120', 'translations' => ['hy' => '120 W', 'en' => '120 W', 'ru' => '120 Вт']],
+                    ['code' => '150', 'translations' => ['hy' => '150 W', 'en' => '150 W', 'ru' => '150 Вт']],
+                    ['code' => '200', 'translations' => ['hy' => '200 W', 'en' => '200 W', 'ru' => '200 Вт']],
+                    ['code' => '240', 'translations' => ['hy' => '240 W', 'en' => '240 W', 'ru' => '240 Вт']]
                 ],
             ],
 
 
             // ***
-            'seats_count' => [
+            'number_of_ways' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Տեղերի քանակ',
                     'en' => 'Number of ways',
-                    'ru' => 'Количество мест'
+                    'ru' => 'Число мест'
                 ],
                 'values' => [
                     ['code' => '1', 'translations' => ['hy' => '1 տեղ', 'en' => '1 seat', 'ru' => '1 место']],
@@ -139,13 +153,41 @@ class AttributeSeeder extends Seeder
             'installation_type' => [
                 'type' => 'select',
                 'translations' => [
-                    'hy' => 'Տեղադրման տեղը',
+                    'hy' => 'Տեղադրման ձևը',
                     'en' => 'Installation type',
+                    'ru' => 'Тип установки',
+                ],
+                'values' => [
+                    [
+                        'code' => 'surface',
+                        'translations' => [
+                            'hy' => 'Արտաքին',
+                            'en' => 'Surface',
+                            'ru' => 'Навесной',
+                        ],
+                    ],
+                    [
+                        'code' => 'flush',
+                        'translations' => [
+                            'hy' => 'Ներքին',
+                            'en' => 'Flush',
+                            'ru' => 'Встраиваемый',
+                        ],
+                    ],
+                ],
+            ],
+
+
+            'installation_place' => [
+                'type' => 'select',
+                'translations' => [
+                    'hy' => 'Տեղադրման տեղը',
+                    'en' => 'Instalation place',
                     'ru' => 'Место установки',
                 ],
                 'values' => [
                     [
-                        'code' => 'external',
+                        'code' => 'surface',
                         'translations' => [
                             'hy' => 'Արտաքին',
                             'en' => 'Surface',
@@ -160,20 +202,12 @@ class AttributeSeeder extends Seeder
                             'ru' => 'DIN-рейка',
                         ],
                     ],
-                    // [
-                    //     'code' => 'internal',
-                    //     'translations' => [
-                    //         'hy' => 'Ներքին',
-                    //         'en' => 'Flush',
-                    //         'ru' => 'Встраиваемый',
-                    //     ],
-                    // ],
                 ],
             ],
 
 
             // ***
-            'security_type' => [
+            'fire_safety' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Հրդեհային անվտանգություն',
@@ -182,7 +216,7 @@ class AttributeSeeder extends Seeder
                 ],
                 'values' => [
                     [
-                        'code' => 'standard',
+                        'code' => 'regular',
                         'translations' => [
                             'hy' => 'Սովորական',
                             'en' => 'Regular',
@@ -190,10 +224,10 @@ class AttributeSeeder extends Seeder
                         ],
                     ],
                     [
-                        'code' => 'fireproof',
+                        'code' => 'flame_retardant',
                         'translations' => [
                             'hy' => 'Հրակայուն',
-                            'en' => 'Flame retarant',
+                            'en' => 'Flame retardant',
                             'ru' => 'Огнестойкий',
                         ],
                     ],
@@ -201,16 +235,16 @@ class AttributeSeeder extends Seeder
             ],
 
             // ***
-            'construction_type' => [
+            'configuration' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Կառուցվածք',
-                    'en' => 'Сonfiguration',
+                    'en' => 'Configuration',
                     'ru' => 'Конфигурация',
                 ],
                 'values' => [
                     [
-                        'code' => 'metal',
+                        'code' => 'metallic',
                         'translations' => [
                             'hy' => 'Մետաղական',
                             'en' => 'Metallic',
@@ -218,7 +252,7 @@ class AttributeSeeder extends Seeder
                         ],
                     ],
                     [
-                        'code' => 'non_metal',
+                        'code' => 'non-metallic',
                         'translations' => [
                             'hy' => 'Ոչ մետաղական',
                             'en' => 'Non-metallic',
@@ -230,7 +264,7 @@ class AttributeSeeder extends Seeder
 
 
             // ***
-            'current_amperage' => [
+            'current' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Հոսանքի ուժ',
@@ -238,33 +272,33 @@ class AttributeSeeder extends Seeder
                     'ru' => 'Сила тока (А)',
                 ],
                 'values' => [
-                    ['code' => '0_01_0_16', 'translations' => ['hy' => '0.1-0.16 A', 'en' => '0.1-0.16 A', 'ru' => '0.1-0.16 А']],
-                    ['code' => '0_16_0_25', 'translations' => ['hy' => '0.16-0.25 A', 'en' => '0.16-0.25 A', 'ru' => '0.16-0.25 А']],
-                    ['code' => '0_25_0_4', 'translations' => ['hy' => '0.25-0.4 A', 'en' => '0.25-0.4 A', 'ru' => '0.25-0.4 А']],
-                    ['code' => '0_4_0_6', 'translations' => ['hy' => '0.4-0.6 A', 'en' => '0.4-0.6 A', 'ru' => '0.4-0.6 А']],
-                    ['code' => '0_4_0_63', 'translations' => ['hy' => '0.4-0.63 A', 'en' => '0.4-0.63 A', 'ru' => '0.4-0.63 А']],
-                    ['code' => '0_63_1', 'translations' => ['hy' => '0.63-1 A', 'en' => '0.63-1 A', 'ru' => '0.63-1 А']],
-                    ['code' => '1_1_6', 'translations' => ['hy' => '1-1.6 A', 'en' => '1-1.6 A', 'ru' => '1-1.6 А']],
-                    ['code' => '1_6_2_5', 'translations' => ['hy' => '1.6-2.5 A', 'en' => '1.6-2.5 A', 'ru' => '1.6-2.5 А']],
-                    ['code' => '2_5_4', 'translations' => ['hy' => '2.5-4 A', 'en' => '2.5-4 A', 'ru' => '2.5-4 А']],
-                    ['code' => '4_6_3', 'translations' => ['hy' => '4-6 A', 'en' => '4-6 A', 'ru' => '4-6 А']],
-                    ['code' => '4_6_3', 'translations' => ['hy' => '4-6.3 A', 'en' => '4-6.3 A', 'ru' => '4-6.3 А']],
-                    ['code' => '5_5_8', 'translations' => ['hy' => '5.5-8 A', 'en' => '5.5-8 A', 'ru' => '5.5-8 А']],
-                    ['code' => '6_10', 'translations' => ['hy' => '6-10 A', 'en' => '6-10 A', 'ru' => '6-10 А']],
-                    ['code' => '7_10', 'translations' => ['hy' => '7-10 A', 'en' => '7-10 A', 'ru' => '7-10 А']],
-                    ['code' => '9_13', 'translations' => ['hy' => '9-13 A', 'en' => '9-13 A', 'ru' => '9-13 А']],
-                    ['code' => '9_14', 'translations' => ['hy' => '9-14 A', 'en' => '9-14 A', 'ru' => '9-14 А']],
-                    ['code' => '9_38', 'translations' => ['hy' => '9-38 A', 'en' => '9-38 A', 'ru' => '9-38 А']],
-                    ['code' => '12_18', 'translations' => ['hy' => '12-18 A', 'en' => '12-18 A', 'ru' => '12-18 А']],
-                    ['code' => '13_18', 'translations' => ['hy' => '13-18 A', 'en' => '13-18 A', 'ru' => '13-18 А']],
-                    ['code' => '17_23', 'translations' => ['hy' => '17-23 A', 'en' => '17-23 A', 'ru' => '17-23 А']],
-                    ['code' => '17_25', 'translations' => ['hy' => '17-25 A', 'en' => '17-25 A', 'ru' => '17-25 А']],
-                    ['code' => '20_25', 'translations' => ['hy' => '20-25 A', 'en' => '20-25 A', 'ru' => '20-25 А']],
-                    ['code' => '24_32', 'translations' => ['hy' => '24-32 A', 'en' => '24-32 A', 'ru' => '24-32 А']],
-                    ['code' => '25_40', 'translations' => ['hy' => '25-40 A', 'en' => '25-40 A', 'ru' => '25-40 А']],
-                    ['code' => '40_60', 'translations' => ['hy' => '40-60 A', 'en' => '40-60 A', 'ru' => '40-60 А']],
-                    ['code' => '40_95', 'translations' => ['hy' => '40-95 A','en' => '40-95 A','ru' => '40-95 А']],
-                    ['code' => '56_80', 'translations' => ['hy' => '56-80 A', 'en' => '56-80 A', 'ru' => '56-80 А']],
+                    ['code' => '0_1-0_16', 'translations' => ['hy' => '0.1-0.16 A', 'en' => '0.1-0.16 A', 'ru' => '0.1-0.16 А']],
+                    ['code' => '0_16-0_25', 'translations' => ['hy' => '0.16-0.25 A', 'en' => '0.16-0.25 A', 'ru' => '0.16-0.25 А']],
+                    ['code' => '0_25-0_4', 'translations' => ['hy' => '0.25-0.4 A', 'en' => '0.25-0.4 A', 'ru' => '0.25-0.4 А']],
+                    ['code' => '0_4-0_6', 'translations' => ['hy' => '0.4-0.6 A', 'en' => '0.4-0.6 A', 'ru' => '0.4-0.6 А']],
+                    ['code' => '0_4-0_63', 'translations' => ['hy' => '0.4-0.63 A', 'en' => '0.4-0.63 A', 'ru' => '0.4-0.63 А']],
+                    ['code' => '0_63-1', 'translations' => ['hy' => '0.63-1 A', 'en' => '0.63-1 A', 'ru' => '0.63-1 А']],
+                    ['code' => '1-1_6', 'translations' => ['hy' => '1-1.6 A', 'en' => '1-1.6 A', 'ru' => '1-1.6 А']],
+                    ['code' => '1_6-2_5', 'translations' => ['hy' => '1.6-2.5 A', 'en' => '1.6-2.5 A', 'ru' => '1.6-2.5 А']],
+                    ['code' => '2_5-4', 'translations' => ['hy' => '2.5-4 A', 'en' => '2.5-4 A', 'ru' => '2.5-4 А']],
+                    ['code' => '4-6', 'translations' => ['hy' => '4-6 A', 'en' => '4-6 A', 'ru' => '4-6 А']],
+                    ['code' => '4-6_3', 'translations' => ['hy' => '4-6.3 A', 'en' => '4-6.3 A', 'ru' => '4-6.3 А']],
+                    ['code' => '5_5-8', 'translations' => ['hy' => '5.5-8 A', 'en' => '5.5-8 A', 'ru' => '5.5-8 А']],
+                    ['code' => '6-10', 'translations' => ['hy' => '6-10 A', 'en' => '6-10 A', 'ru' => '6-10 А']],
+                    ['code' => '7-10', 'translations' => ['hy' => '7-10 A', 'en' => '7-10 A', 'ru' => '7-10 А']],
+                    ['code' => '9-13', 'translations' => ['hy' => '9-13 A', 'en' => '9-13 A', 'ru' => '9-13 А']],
+                    ['code' => '9-14', 'translations' => ['hy' => '9-14 A', 'en' => '9-14 A', 'ru' => '9-14 А']],
+                    ['code' => '9-38', 'translations' => ['hy' => '9-38 A', 'en' => '9-38 A', 'ru' => '9-38 А']],
+                    ['code' => '12-18', 'translations' => ['hy' => '12-18 A', 'en' => '12-18 A', 'ru' => '12-18 А']],
+                    ['code' => '13-18', 'translations' => ['hy' => '13-18 A', 'en' => '13-18 A', 'ru' => '13-18 А']],
+                    ['code' => '17-23', 'translations' => ['hy' => '17-23 A', 'en' => '17-23 A', 'ru' => '17-23 А']],
+                    ['code' => '17-25', 'translations' => ['hy' => '17-25 A', 'en' => '17-25 A', 'ru' => '17-25 А']],
+                    ['code' => '20-25', 'translations' => ['hy' => '20-25 A', 'en' => '20-25 A', 'ru' => '20-25 А']],
+                    ['code' => '24-32', 'translations' => ['hy' => '24-32 A', 'en' => '24-32 A', 'ru' => '24-32 А']],
+                    ['code' => '25-40', 'translations' => ['hy' => '25-40 A', 'en' => '25-40 A', 'ru' => '25-40 А']],
+                    ['code' => '40-60', 'translations' => ['hy' => '40-60 A', 'en' => '40-60 A', 'ru' => '40-60 А']],
+                    ['code' => '40-95', 'translations' => ['hy' => '40-95 A','en' => '40-95 A','ru' => '40-95 А']],
+                    ['code' => '56-80', 'translations' => ['hy' => '56-80 A', 'en' => '56-80 A', 'ru' => '56-80 А']],
                     ['code' => '9',  'translations' => ['hy' => '9 A',  'en' => '9 A',  'ru' => '9 А']],
                     ['code' => '10',  'translations' => ['hy' => '10 A',  'en' => '10 A',  'ru' => '10 А']],
                     ['code' => '12', 'translations' => ['hy' => '12 A', 'en' => '12 A', 'ru' => '12 А']],
@@ -308,17 +342,17 @@ class AttributeSeeder extends Seeder
                     'ru' => 'Диапазон задержки времени',
                 ],
                 'values' => [
-                    ['code'=>'0.1','translations'=>['hy'=>'0.1 վրկ','en'=>'0.1 sec','ru'=>'0.1 сек']],
-                    ['code'=>'0.1_3','translations'=>['hy'=>'0.1-3 վրկ','en'=>'0.1-3 sec','ru'=>'0.1-3 сек']],
-                    ['code'=>'1_3','translations'=>['hy'=>'1-3 վրկ','en'=>'1-3 sec','ru'=>'1-3 сек']],
-                    ['code'=>'10_180','translations'=>['hy'=>'10-180 վրկ','en'=>'10-180 sec','ru'=>'10-180 сек']],
-                    ['code'=>'0_1_30','translations'=>['hy'=>'0.1-30 վրկ','en'=>'0.1-30 sec','ru'=>'0.1-30 сек']],
+                    ['code'=>'0_1','translations'=>['hy'=>'0.1 վրկ','en'=>'0.1 sec','ru'=>'0.1 сек']],
+                    ['code'=>'0_1-3','translations'=>['hy'=>'0.1-3 վրկ','en'=>'0.1-3 sec','ru'=>'0.1-3 сек']],
+                    ['code'=>'1-3','translations'=>['hy'=>'1-3 վրկ','en'=>'1-3 sec','ru'=>'1-3 сек']],
+                    ['code'=>'10-180','translations'=>['hy'=>'10-180 վրկ','en'=>'10-180 sec','ru'=>'10-180 сек']],
+                    ['code'=>'0_1-30','translations'=>['hy'=>'0.1-30 վրկ','en'=>'0.1-30 sec','ru'=>'0.1-30 сек']],
                 ],
             ],
 
 
             // ***
-            'phase_count' => [
+            'number_of_phases' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Ֆազերի քանակ',
@@ -326,8 +360,8 @@ class AttributeSeeder extends Seeder
                     'ru' => 'Количество фаз',
                 ],
                 'values' => [
-                    ['code'=>'1_3','translations'=>['hy'=>'1 ֆազ - 3 ֆազ','en'=>'1 phase - 3 phases','ru'=>'1 фаза - 3 фазы']],
-                    ['code'=>'3_3','translations'=>['hy'=>'3 ֆազ - 3 ֆազ','en'=>'3 phases - 3 phases','ru'=>'3 фазы - 3 фазы']],
+                    ['code'=>'1-3','translations'=>['hy'=>'1 ֆազ-3 ֆազ','en'=>'1 phase-3 phases','ru'=>'1 фаза-3 фазы']],
+                    ['code'=>'3-3','translations'=>['hy'=>'3 ֆազ-3 ֆազ','en'=>'3 phases-3 phases','ru'=>'3 фазы-3 фазы']],
                     ['code'=>'2','translations'=>['hy'=>'2 ֆազ','en'=>'2 phases','ru'=>'2 фазы']],
                     ['code'=>'3','translations'=>['hy'=>'3 ֆազ','en'=>'3 phases','ru'=>'3 фазы']],
                     ['code'=>'4','translations'=>['hy'=>'4 ֆազ','en'=>'4 phases','ru'=>'4 фазы']],
@@ -353,11 +387,11 @@ class AttributeSeeder extends Seeder
                     ['code'=>'380','translations'=>['hy'=>'380 V','en'=>'380 V','ru'=>'380 В']],
                 ],
             ],
-c
+
 
             // ***
 
-            'passage_count' => [
+            'number_of_cut_out' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Անցքերի քանակ',
@@ -374,7 +408,7 @@ c
 
             // ***
 
-            'passage_diameter' => [
+            'diameter_of_cut_out' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Անցքի տրամագիծ',
@@ -390,7 +424,7 @@ c
 
             // ***
 
-            'contact_count' => [
+            'number_of_contacts' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Կոնտակտների քանակ',
@@ -417,13 +451,14 @@ c
                     ['code'=>'2P_E','translations'=>['hy'=>'2P+E','en'=>'2P+E','ru'=>'2P+E']],
                     ['code'=>'NO','translations'=>['hy'=>'NO','en'=>'NO','ru'=>'NO']],
                     ['code'=>'NC','translations'=>['hy'=>'NC','en'=>'NC','ru'=>'NC']],
-
-                ],c
+                    ['code' => '2NO', 'translations' => ['hy' => '2NO', 'en' => '2NO', 'ru' => '2NO']],
+                    ['code' => '2NC', 'translations' => ['hy' => '2NC', 'en' => '2NC', 'ru' => '2NC']],
+                ],
             ],
 
 
             // ***
-            'protection' => [
+            'degree_of_protection' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Պաշտպանություն աստիճանը',
@@ -438,7 +473,7 @@ c
 
 
             // ***
-            'position_count' => [
+            'number_of_positions' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Դիրքերի քանակ',
@@ -530,11 +565,11 @@ c
             ],
 
 
-            'position ' => [
+            'position' => [
                 'type' => 'select',
                 'translations' => [
                     'hy' => 'Դիրքը',
-                    'en' => 'Position ',
+                    'en' => 'Position',
                     'ru' => 'Положение',
                 ],
                 'values' => [
@@ -550,11 +585,11 @@ c
                     'en' => 'Pin number',
                     'ru' => 'Количестов гнезд'
                 ],
-                'values' => [                   
+                'values' => [
                     ['code' => '8', 'translations' => ['hy' => '8', 'en' => '8', 'ru' => '8']],
                     ['code' => '11', 'translations' => ['hy' => '11', 'en' => '11', 'ru' => '11']],
                     ['code' => '14', 'translations' => ['hy' => '14', 'en' => '14', 'ru' => '14']]
-              
+
                 ],
             ],
 
