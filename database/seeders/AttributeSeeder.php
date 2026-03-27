@@ -451,7 +451,8 @@ class AttributeSeeder extends Seeder
                     ['code'=>'2P_E','translations'=>['hy'=>'2P+E','en'=>'2P+E','ru'=>'2P+E']],
                     ['code'=>'NO','translations'=>['hy'=>'NO','en'=>'NO','ru'=>'NO']],
                     ['code'=>'NC','translations'=>['hy'=>'NC','en'=>'NC','ru'=>'NC']],
-
+                    ['code' => '2NO', 'translations' => ['hy' => '2NO', 'en' => '2NO', 'ru' => '2NO']],
+                    ['code' => '2NC', 'translations' => ['hy' => '2NC', 'en' => '2NC', 'ru' => '2NC']],
                 ],
             ],
 
