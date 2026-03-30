@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class ProductImportService
+class ProductImportServiceOld
 {
     protected GoogleSheetsClient $client;
 
@@ -23,12 +23,9 @@ class ProductImportService
     public function importFromSheet(string $sheetId, string $range): void
     {
         $rows = $this->client->getAssocRows($sheetId, $range);
-        
-        // берём только первые 3 строки
-        $rows = array_slice($rows, 0, 3);
 
         foreach ($rows as $item) {
-            $category = Category::whereHas('translations', function ($q) use ($item) {
+            $category = Category::whereHas('translations', function($q) use ($item) {
                 $q->where('slug', $item['sub_category_slug']);
             })->first();
 
@@ -54,83 +51,66 @@ class ProductImportService
                     [
                         'name' => $item["{$locale}_name"] ?? '',
                         'slug' => $item["{$locale}_slug"] ?? Str::slug($item["{$locale}_name"] ?? ''),
-                        // 'description' => $item["{$locale}_description"] ?? '',
+                        'description' => $item["{$locale}_description"] ?? '',
                     ]
                 );
             }
 
-            // ПАРСИНГ attributes
-            if (!empty($item['attributes'])) {
-                $pairs = explode(';', $item['attributes']);
+            // Атрибуты
+            $attributes = [
+                'color',
+                'motor_power_kw',
+                'motor_power_hp',
+                'supply_voltage',
+                'current_rating',
+                'phases',
+                'supply_frequency',
+                'communication_protocol',
+                'cooling_type',
+                'ip_rating',
+                'width_mm',
+                'height_mm',
+                'depth_mm',
+            ];
 
-                foreach ($pairs as $pair) {
-                    $pair = trim($pair);
-                    if (!$pair) continue;
-
-                    if (!str_contains($pair, '=')) continue;
-
-                    [$slug, $code] = explode('=', $pair);
-
-                    $slug = trim($slug);
-                    $code = trim($code);
-
-                    $attribute = Attribute::where('slug', $slug)->first();
-
-                    if (!$attribute) continue;
-
-                    $value = AttributeValue::where('attribute_id', $attribute->id)
-                        ->where('code', $code)
+            foreach ($attributes as $attr) {
+                if (!empty($item[$attr])) {
+                    $attribute = Attribute::where('slug', $attr)->first();
+                    $value = AttributeValue::where('attribute_id', $attribute?->id)
+                        ->where('code', $item[$attr])
                         ->first();
 
-                    if (!$value) continue;
-
-                    // продукт ← значение атрибута
-                    $product->attributeValues()->syncWithoutDetaching([$value->id]);
-
-                    // категория ← атрибут (attribute_category)
-                    if ($category) {
-                        $category->attributes()->syncWithoutDetaching([
-                            $attribute->id => ['is_filterable' => true]
-                        ]);
+                    if ($attribute && $value) {
+                        $product->attributeValues()->syncWithoutDetaching([$value->id]);
                     }
                 }
             }
 
-            // КАРТИНКИ
+            // Картинки
+            // if (!empty($item['image_url'])) {
+            //     try {
+            //         $product->addMediaFromUrl($item['image_url'])
+            //             ->toMediaCollection('images');
+            //     } catch (\Exception $e) {
+            //         // Логируем ошибки скачивания картинок
+            //         logger()->error("Ошибка добавления картинки для SKU {$product->sku}: {$e->getMessage()}");
+            //     }
+            // }
 
-            // main_image
-            if (!empty($item['main_image'])) {
+            if (!empty($item['image_url'])) {
                 try {
-                    $this->saveProductImage($product, $item['main_image'], true);
+                    $this->saveProductImage($product, $item['image_url'], true);
                 } catch (\Throwable $e) {
-                    logger()->error('Main image import failed', [
+                    logger()->error('Image import failed', [
                         'sku' => $product->sku,
-                        'url' => $item['main_image'],
+                        'url' => $item['image_url'],
                         'error' => $e->getMessage(),
                     ]);
                 }
             }
-
-            // images (через запятую)
-            if (!empty($item['images'])) {
-                $images = array_map('trim', explode(',', $item['images']));
-
-                foreach ($images as $imageUrl) {
-                    if (!$imageUrl) continue;
-
-                    try {
-                        $this->saveProductImage($product, $imageUrl, false);
-                    } catch (\Throwable $e) {
-                        logger()->error('Image import failed', [
-                            'sku' => $product->sku,
-                            'url' => $imageUrl,
-                            'error' => $e->getMessage(),
-                        ]);
-                    }
-                }
-            }
         }
     }
+
 
     private function normalizeGoogleDriveUrl(string $url): string
     {
@@ -174,4 +154,5 @@ class ProductImportService
             'is_main' => $isMain,
         ]);
     }
+
 }
