@@ -52,6 +52,10 @@ class Category extends Model
     }
 
 
+    public function attributes()
+    {
+        return $this->belongsToMany(Attribute::class);
+    }
 
     public function getDepth(): int
     {

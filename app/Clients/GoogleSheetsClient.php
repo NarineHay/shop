@@ -43,14 +43,18 @@ class GoogleSheetsClient
         if (empty($rows)) return [];
 
         $headers = array_map(fn($h) => trim($h), array_shift($rows));
+        $headerCount = count($headers);
 
         $result = [];
         foreach ($rows as $row) {
+            // Если в строке меньше значений, дополняем null
+            $row = array_pad($row, $headerCount, null);
+
             $item = array_combine($headers, $row);
 
-            // Заполняем пустые значения
-            foreach ($headers as $header) {
-                if (!isset($item[$header])) $item[$header] = null;
+            // Если больше значений, обрезаем лишние
+            if (count($row) > $headerCount) {
+                $row = array_slice($row, 0, $headerCount);
             }
 
             $result[] = $item;

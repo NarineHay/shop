@@ -10,7 +10,9 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 class ProductImportService
 {
     protected GoogleSheetsClient $client;
@@ -22,8 +24,9 @@ class ProductImportService
 
     public function importFromSheet(string $sheetId, string $range): void
     {
+        // dd($this->client);
         $rows = $this->client->getAssocRows($sheetId, $range);
-        
+
         // берём только первые 3 строки
         $rows = array_slice($rows, 0, 3);
 
@@ -145,33 +148,51 @@ class ProductImportService
         return $url;
     }
 
+
     private function saveProductImage(Product $product, string $url, bool $isMain = false): void
     {
+        // ini_set('memory_limit', '512M');
         $url = $this->normalizeGoogleDriveUrl($url);
 
-        $response = Http::timeout(30)->get($url);
+        $existing = $product->images()->where('original_url', $url)->first();
+        if ($existing) {
+            if ($isMain && !$existing->is_main) {
+                $existing->update(['is_main' => true]);
+            }
+            return;
+        }
 
+        $response = Http::timeout(60)->get($url);
         if (! $response->successful()) {
-            throw new \Exception('Image download failed');
+            throw new \Exception('Image download failed: ' . $url);
         }
 
-        $extension = 'jpg';
-        $contentType = $response->header('Content-Type');
-
-        if (str_contains($contentType, 'png')) {
-            $extension = 'png';
-        } elseif (str_contains($contentType, 'webp')) {
-            $extension = 'webp';
-        }
-
-        $fileName = Str::uuid() . '.' . $extension;
+        $fileName = Str::uuid() . '.webp';
         $path = "products/{$product->id}/{$fileName}";
+        $fullPath = Storage::disk('public')->path($path);
 
-        Storage::disk('public')->put($path, $response->body());
+        $directory = dirname($fullPath);
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        // Фасад Image теперь использует read()
+        $image = Image::read($response->body())
+            ->resize(800, 800, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })
+            ->toWebp(90);
+
+        $image->save($fullPath);
 
         $product->images()->create([
             'path' => $path,
+            'original_url' => $url,
             'is_main' => $isMain,
         ]);
     }
+
+
+
 }
