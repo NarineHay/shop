@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Schema;
 
 class CategorySeeder extends Seeder
 {
@@ -13,9 +14,13 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         // Очищаем таблицы перед заполнением
         DB::table('category_translations')->truncate();
         DB::table('categories')->truncate();
+
+        Schema::enableForeignKeyConstraints();
 
         // Вставляем категории с новыми ID по порядку
         $categories = [
@@ -283,9 +288,10 @@ class CategorySeeder extends Seeder
         ];
 
         // Вставляем все категории
-        foreach ($categories as $category) {
-            DB::table('categories')->insert($category);
-        }
+        // foreach ($categories as $category) {
+        //     DB::table('categories')->insert($category);
+        // }
+        DB::table('categories')->insert($categories);
 
         $this->command->info('Categories seeded successfully! Total: ' . count($categories));
     }
