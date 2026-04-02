@@ -34,9 +34,13 @@ class Attribute extends Model
             : null;
     }
 
-
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsToMany(Category::class);
     }
+
+    // public function category()
+    // {
+    //     return $this->belongsTo(Category::class);
+    // }
 }
