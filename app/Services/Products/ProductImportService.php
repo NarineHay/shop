@@ -149,25 +149,6 @@ class ProductImportService
     //     return $url;
     // }
 
-    private function normalizeGoogleDriveUrl(string $url): string
-    {
-        $url = trim($url);
-
-        if (str_contains($url, 'drive.google.com')) {
-
-            // вариант: /file/d/ID
-            if (preg_match('~/file/d/([^/]+)~', $url, $m)) {
-                return 'https://drive.google.com/uc?export=download&id=' . $m[1];
-            }
-
-            // вариант: ?id=ID
-            if (preg_match('~id=([^&]+)~', $url, $m)) {
-                return 'https://drive.google.com/uc?export=download&id=' . $m[1];
-            }
-        }
-
-        return $url;
-    }
 
 
     // private function saveProductImage(Product $product, string $url, bool $isMain = false): void
@@ -214,10 +195,29 @@ class ProductImportService
     //     ]);
     // }
 
+    private function normalizeGoogleDriveUrl(string $url): string
+    {
+        $url = trim($url);
+
+        if (str_contains($url, 'drive.google.com')) {
+
+            // Вариант /file/d/ID
+            if (preg_match('~/file/d/([^/]+)~', $url, $m)) {
+                return 'https://drive.google.com/uc?export=download&id=' . $m[1];
+            }
+
+            // Вариант ?id=ID
+            if (preg_match('~id=([^&]+)~', $url, $m)) {
+                return 'https://drive.google.com/uc?export=download&id=' . $m[1];
+            }
+        }
+
+        return $url;
+    }
+
     private function saveProductImage(Product $product, string $url, bool $isMain = false): void
     {
         $url = $this->normalizeGoogleDriveUrl($url);
-        $cookieJar = new CookieJar();
 
         $existing = $product->images()->where('original_url', $url)->first();
         if ($existing) {
@@ -227,48 +227,53 @@ class ProductImportService
             return;
         }
 
-        // 1. Первый запрос
-        $response = Http::timeout(60)
+        $cookieJar = new CookieJar();
+
+        // Первый запрос
+        $response = Http::timeout(15)
             ->withOptions([
                 'allow_redirects' => true,
                 'cookies' => $cookieJar,
             ])
             ->get($url);
 
-        if (!$response->successful()) {
-            throw new \Exception('Download failed: ' . $url);
-        }
-
         $contentType = $response->header('Content-Type');
 
-        // 2. Если не картинка — пробуем confirm token
+        // Если вернулся HTML, пробуем confirm token
         if (!str_contains($contentType, 'image')) {
-
             if (preg_match('/confirm=([0-9A-Za-z_]+)/', $response->body(), $matches)) {
-
                 $confirmUrl = $url . '&confirm=' . $matches[1];
 
-                $response = Http::timeout(60)
+                $response = Http::timeout(15)
                     ->withOptions([
                         'allow_redirects' => true,
                         'cookies' => $cookieJar,
                     ])
                     ->get($confirmUrl);
 
-                if (!$response->successful()) {
-                    throw new \Exception('Confirm download failed: ' . $confirmUrl);
-                }
-
                 $contentType = $response->header('Content-Type');
             }
         }
 
-        // 3. Финальная проверка
+        // Проверка, что это реально картинка
         if (!str_contains($contentType, 'image')) {
-            throw new \Exception('Not an image: ' . $contentType);
+            logger()->warning('Skipped (not image)', [
+                'url' => $url,
+                'content_type' => $contentType,
+                'sku' => $product->sku
+            ]);
+            return;
         }
 
-        // 4. Сохраняем
+        // Защита от слишком маленьких файлов
+        if (strlen($response->body()) < 1000) {
+            logger()->warning('Skipped (too small, probably not image)', [
+                'url' => $url,
+                'sku' => $product->sku
+            ]);
+            return;
+        }
+
         $fileName = Str::uuid() . '.webp';
         $path = "products/{$product->id}/{$fileName}";
         $fullPath = Storage::disk('public')->path($path);
@@ -277,6 +282,7 @@ class ProductImportService
             mkdir(dirname($fullPath), 0755, true);
         }
 
+        // Сохраняем картинку
         $image = Image::read($response->body())
             ->resize(800, 800, function ($constraint) {
                 $constraint->aspectRatio();
