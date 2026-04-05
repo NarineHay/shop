@@ -13,6 +13,11 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libicu-dev \
     build-essential \
+    libmagickwand-dev \
+    imagemagick \
+    libwebp-dev \
+    && pecl install imagick \
+    && docker-php-ext-enable imagick \
     && docker-php-ext-install \
         pdo_mysql \
         mbstring \

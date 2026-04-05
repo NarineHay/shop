@@ -10,7 +10,9 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
+use Intervention\Image\Laravel\Facades\Image;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Imagick\Driver;
 class ProductImportService
 {
     protected GoogleSheetsClient $client;
@@ -22,10 +24,14 @@ class ProductImportService
 
     public function importFromSheet(string $sheetId, string $range): void
     {
+        // dd($this->client);
         $rows = $this->client->getAssocRows($sheetId, $range);
 
+        // берём только первые 3 строки
+        // $rows = array_slice($rows, 0, 3);
+
         foreach ($rows as $item) {
-            $category = Category::whereHas('translations', function($q) use ($item) {
+            $category = Category::whereHas('translations', function ($q) use ($item) {
                 $q->where('slug', $item['sub_category_slug']);
             })->first();
 
@@ -51,66 +57,83 @@ class ProductImportService
                     [
                         'name' => $item["{$locale}_name"] ?? '',
                         'slug' => $item["{$locale}_slug"] ?? Str::slug($item["{$locale}_name"] ?? ''),
-                        'description' => $item["{$locale}_description"] ?? '',
+                        // 'description' => $item["{$locale}_description"] ?? '',
                     ]
                 );
             }
 
-            // Атрибуты
-            $attributes = [
-                'color',
-                'motor_power_kw',
-                'motor_power_hp',
-                'supply_voltage',
-                'current_rating',
-                'phases',
-                'supply_frequency',
-                'communication_protocol',
-                'cooling_type',
-                'ip_rating',
-                'width_mm',
-                'height_mm',
-                'depth_mm',
-            ];
+            // ПАРСИНГ attributes
+            if (!empty($item['attributes'])) {
+                $pairs = explode(';', $item['attributes']);
 
-            foreach ($attributes as $attr) {
-                if (!empty($item[$attr])) {
-                    $attribute = Attribute::where('slug', $attr)->first();
-                    $value = AttributeValue::where('attribute_id', $attribute?->id)
-                        ->where('code', $item[$attr])
+                foreach ($pairs as $pair) {
+                    $pair = trim($pair);
+                    if (!$pair) continue;
+
+                    if (!str_contains($pair, '=')) continue;
+
+                    [$slug, $code] = explode('=', $pair);
+
+                    $slug = trim($slug);
+                    $code = trim($code);
+
+                    $attribute = Attribute::where('slug', $slug)->first();
+
+                    if (!$attribute) continue;
+
+                    $value = AttributeValue::where('attribute_id', $attribute->id)
+                        ->where('code', $code)
                         ->first();
 
-                    if ($attribute && $value) {
-                        $product->attributeValues()->syncWithoutDetaching([$value->id]);
+                    if (!$value) continue;
+
+                    // продукт ← значение атрибута
+                    $product->attributeValues()->syncWithoutDetaching([$value->id]);
+
+                    // категория ← атрибут (attribute_category)
+                    if ($category) {
+                        $category->attributes()->syncWithoutDetaching([
+                            $attribute->id => ['is_filterable' => true]
+                        ]);
                     }
                 }
             }
 
-            // Картинки
-            // if (!empty($item['image_url'])) {
-            //     try {
-            //         $product->addMediaFromUrl($item['image_url'])
-            //             ->toMediaCollection('images');
-            //     } catch (\Exception $e) {
-            //         // Логируем ошибки скачивания картинок
-            //         logger()->error("Ошибка добавления картинки для SKU {$product->sku}: {$e->getMessage()}");
-            //     }
-            // }
+            // КАРТИНКИ
 
-            if (!empty($item['image_url'])) {
+            // main_image
+            if (!empty($item['main_image'])) {
                 try {
-                    $this->saveProductImage($product, $item['image_url'], true);
+                    $this->saveProductImage($product, $item['main_image'], true);
                 } catch (\Throwable $e) {
-                    logger()->error('Image import failed', [
+                    logger()->error('Main image import failed', [
                         'sku' => $product->sku,
-                        'url' => $item['image_url'],
+                        'url' => $item['main_image'],
                         'error' => $e->getMessage(),
                     ]);
                 }
             }
+
+            // images (через запятую)
+            if (!empty($item['images'])) {
+                $images = array_map('trim', explode(',', $item['images']));
+
+                foreach ($images as $imageUrl) {
+                    if (!$imageUrl) continue;
+
+                    try {
+                        $this->saveProductImage($product, $imageUrl, false);
+                    } catch (\Throwable $e) {
+                        logger()->error('Image import failed', [
+                            'sku' => $product->sku,
+                            'url' => $imageUrl,
+                            'error' => $e->getMessage(),
+                        ]);
+                    }
+                }
+            }
         }
     }
-
 
     private function normalizeGoogleDriveUrl(string $url): string
     {
@@ -125,34 +148,51 @@ class ProductImportService
         return $url;
     }
 
+
     private function saveProductImage(Product $product, string $url, bool $isMain = false): void
     {
+        // ini_set('memory_limit', '512M');
         $url = $this->normalizeGoogleDriveUrl($url);
 
-        $response = Http::timeout(30)->get($url);
+        $existing = $product->images()->where('original_url', $url)->first();
+        if ($existing) {
+            if ($isMain && !$existing->is_main) {
+                $existing->update(['is_main' => true]);
+            }
+            return;
+        }
 
+        $response = Http::timeout(60)->get($url);
         if (! $response->successful()) {
-            throw new \Exception('Image download failed');
+            throw new \Exception('Image download failed: ' . $url);
         }
 
-        $extension = 'jpg';
-        $contentType = $response->header('Content-Type');
-
-        if (str_contains($contentType, 'png')) {
-            $extension = 'png';
-        } elseif (str_contains($contentType, 'webp')) {
-            $extension = 'webp';
-        }
-
-        $fileName = Str::uuid() . '.' . $extension;
+        $fileName = Str::uuid() . '.webp';
         $path = "products/{$product->id}/{$fileName}";
+        $fullPath = Storage::disk('public')->path($path);
 
-        Storage::disk('public')->put($path, $response->body());
+        $directory = dirname($fullPath);
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
+        }
+
+        // Фасад Image теперь использует read()
+        $image = Image::read($response->body())
+            ->resize(800, 800, function ($constraint) {
+                $constraint->aspectRatio();
+                $constraint->upsize();
+            })
+            ->toWebp(90);
+
+        $image->save($fullPath);
 
         $product->images()->create([
             'path' => $path,
+            'original_url' => $url,
             'is_main' => $isMain,
         ]);
     }
+
+
 
 }
