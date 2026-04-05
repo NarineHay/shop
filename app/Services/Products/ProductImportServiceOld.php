@@ -129,7 +129,7 @@ class ProductImportServiceOld
     {
         $url = $this->normalizeGoogleDriveUrl($url);
 
-        $response = Http::timeout(30)->get($url);
+        $response = Http::timeout(60)->get($url);
 
         if (! $response->successful()) {
             throw new \Exception('Image download failed');

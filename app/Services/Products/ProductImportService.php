@@ -28,7 +28,7 @@ class ProductImportService
         $rows = $this->client->getAssocRows($sheetId, $range);
 
         // берём только первые 3 строки
-        $rows = array_slice($rows, 0, 3);
+        // $rows = array_slice($rows, 0, 3);
 
         foreach ($rows as $item) {
             $category = Category::whereHas('translations', function ($q) use ($item) {
