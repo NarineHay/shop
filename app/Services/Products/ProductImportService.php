@@ -135,12 +135,32 @@ class ProductImportService
         }
     }
 
+    // private function normalizeGoogleDriveUrl(string $url): string
+    // {
+    //     $url = trim($url);
+
+    //     if (str_contains($url, 'drive.google.com')) {
+    //         if (preg_match('~/file/d/([^/]+)~', $url, $m)) {
+    //             return 'https://drive.google.com/uc?export=download&id=' . $m[1];
+    //         }
+    //     }
+
+    //     return $url;
+    // }
+
     private function normalizeGoogleDriveUrl(string $url): string
     {
         $url = trim($url);
 
         if (str_contains($url, 'drive.google.com')) {
+
+            // вариант: /file/d/ID
             if (preg_match('~/file/d/([^/]+)~', $url, $m)) {
+                return 'https://drive.google.com/uc?export=download&id=' . $m[1];
+            }
+
+            // вариант: ?id=ID
+            if (preg_match('~id=([^&]+)~', $url, $m)) {
                 return 'https://drive.google.com/uc?export=download&id=' . $m[1];
             }
         }
@@ -149,9 +169,52 @@ class ProductImportService
     }
 
 
+    // private function saveProductImage(Product $product, string $url, bool $isMain = false): void
+    // {
+    //     // ini_set('memory_limit', '512M');
+    //     $url = $this->normalizeGoogleDriveUrl($url);
+
+    //     $existing = $product->images()->where('original_url', $url)->first();
+    //     if ($existing) {
+    //         if ($isMain && !$existing->is_main) {
+    //             $existing->update(['is_main' => true]);
+    //         }
+    //         return;
+    //     }
+
+    //     $response = Http::timeout(60)->get($url);
+    //     if (! $response->successful()) {
+    //         throw new \Exception('Image download failed: ' . $url);
+    //     }
+
+    //     $fileName = Str::uuid() . '.webp';
+    //     $path = "products/{$product->id}/{$fileName}";
+    //     $fullPath = Storage::disk('public')->path($path);
+
+    //     $directory = dirname($fullPath);
+    //     if (!file_exists($directory)) {
+    //         mkdir($directory, 0755, true);
+    //     }
+
+    //     // Фасад Image теперь использует read()
+    //     $image = Image::read($response->body())
+    //         ->resize(800, 800, function ($constraint) {
+    //             $constraint->aspectRatio();
+    //             $constraint->upsize();
+    //         })
+    //         ->toWebp(90);
+
+    //     $image->save($fullPath);
+
+    //     $product->images()->create([
+    //         'path' => $path,
+    //         'original_url' => $url,
+    //         'is_main' => $isMain,
+    //     ]);
+    // }
+
     private function saveProductImage(Product $product, string $url, bool $isMain = false): void
     {
-        // ini_set('memory_limit', '512M');
         $url = $this->normalizeGoogleDriveUrl($url);
 
         $existing = $product->images()->where('original_url', $url)->first();
@@ -162,21 +225,56 @@ class ProductImportService
             return;
         }
 
-        $response = Http::timeout(60)->get($url);
-        if (! $response->successful()) {
-            throw new \Exception('Image download failed: ' . $url);
+        // 1. Первый запрос
+        $response = Http::timeout(60)
+            ->withOptions([
+                'allow_redirects' => true,
+                'cookies' => true,
+            ])
+            ->get($url);
+
+        if (!$response->successful()) {
+            throw new \Exception('Download failed: ' . $url);
         }
 
+        $contentType = $response->header('Content-Type');
+
+        // 2. Если не картинка — пробуем confirm token
+        if (!str_contains($contentType, 'image')) {
+
+            if (preg_match('/confirm=([0-9A-Za-z_]+)/', $response->body(), $matches)) {
+
+                $confirmUrl = $url . '&confirm=' . $matches[1];
+
+                $response = Http::timeout(60)
+                    ->withOptions([
+                        'allow_redirects' => true,
+                        'cookies' => true,
+                    ])
+                    ->get($confirmUrl);
+
+                if (!$response->successful()) {
+                    throw new \Exception('Confirm download failed: ' . $confirmUrl);
+                }
+
+                $contentType = $response->header('Content-Type');
+            }
+        }
+
+        // 3. Финальная проверка
+        if (!str_contains($contentType, 'image')) {
+            throw new \Exception('Not an image: ' . $contentType);
+        }
+
+        // 4. Сохраняем
         $fileName = Str::uuid() . '.webp';
         $path = "products/{$product->id}/{$fileName}";
         $fullPath = Storage::disk('public')->path($path);
 
-        $directory = dirname($fullPath);
-        if (!file_exists($directory)) {
-            mkdir($directory, 0755, true);
+        if (!file_exists(dirname($fullPath))) {
+            mkdir(dirname($fullPath), 0755, true);
         }
 
-        // Фасад Image теперь использует read()
         $image = Image::read($response->body())
             ->resize(800, 800, function ($constraint) {
                 $constraint->aspectRatio();
