@@ -13,7 +13,6 @@ use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
-use GuzzleHttp\Cookie\CookieJar;
 class ProductImportService
 {
     protected GoogleSheetsClient $client;
@@ -136,78 +135,12 @@ class ProductImportService
         }
     }
 
-    // private function normalizeGoogleDriveUrl(string $url): string
-    // {
-    //     $url = trim($url);
-
-    //     if (str_contains($url, 'drive.google.com')) {
-    //         if (preg_match('~/file/d/([^/]+)~', $url, $m)) {
-    //             return 'https://drive.google.com/uc?export=download&id=' . $m[1];
-    //         }
-    //     }
-
-    //     return $url;
-    // }
-
-
-
-    // private function saveProductImage(Product $product, string $url, bool $isMain = false): void
-    // {
-    //     // ini_set('memory_limit', '512M');
-    //     $url = $this->normalizeGoogleDriveUrl($url);
-
-    //     $existing = $product->images()->where('original_url', $url)->first();
-    //     if ($existing) {
-    //         if ($isMain && !$existing->is_main) {
-    //             $existing->update(['is_main' => true]);
-    //         }
-    //         return;
-    //     }
-
-    //     $response = Http::timeout(60)->get($url);
-    //     if (! $response->successful()) {
-    //         throw new \Exception('Image download failed: ' . $url);
-    //     }
-
-    //     $fileName = Str::uuid() . '.webp';
-    //     $path = "products/{$product->id}/{$fileName}";
-    //     $fullPath = Storage::disk('public')->path($path);
-
-    //     $directory = dirname($fullPath);
-    //     if (!file_exists($directory)) {
-    //         mkdir($directory, 0755, true);
-    //     }
-
-    //     // Фасад Image теперь использует read()
-    //     $image = Image::read($response->body())
-    //         ->resize(800, 800, function ($constraint) {
-    //             $constraint->aspectRatio();
-    //             $constraint->upsize();
-    //         })
-    //         ->toWebp(90);
-
-    //     $image->save($fullPath);
-
-    //     $product->images()->create([
-    //         'path' => $path,
-    //         'original_url' => $url,
-    //         'is_main' => $isMain,
-    //     ]);
-    // }
-
     private function normalizeGoogleDriveUrl(string $url): string
     {
         $url = trim($url);
 
         if (str_contains($url, 'drive.google.com')) {
-
-            // Вариант /file/d/ID
             if (preg_match('~/file/d/([^/]+)~', $url, $m)) {
-                return 'https://drive.google.com/uc?export=download&id=' . $m[1];
-            }
-
-            // Вариант ?id=ID
-            if (preg_match('~id=([^&]+)~', $url, $m)) {
                 return 'https://drive.google.com/uc?export=download&id=' . $m[1];
             }
         }
@@ -215,8 +148,10 @@ class ProductImportService
         return $url;
     }
 
+
     private function saveProductImage(Product $product, string $url, bool $isMain = false): void
     {
+        // ini_set('memory_limit', '512M');
         $url = $this->normalizeGoogleDriveUrl($url);
 
         $existing = $product->images()->where('original_url', $url)->first();
@@ -227,62 +162,21 @@ class ProductImportService
             return;
         }
 
-        $cookieJar = new CookieJar();
-
-        // Первый запрос
-        $response = Http::timeout(15)
-            ->withOptions([
-                'allow_redirects' => true,
-                'cookies' => $cookieJar,
-            ])
-            ->get($url);
-
-        $contentType = $response->header('Content-Type');
-
-        // Если вернулся HTML, пробуем confirm token
-        if (!str_contains($contentType, 'image')) {
-            if (preg_match('/confirm=([0-9A-Za-z_]+)/', $response->body(), $matches)) {
-                $confirmUrl = $url . '&confirm=' . $matches[1];
-
-                $response = Http::timeout(15)
-                    ->withOptions([
-                        'allow_redirects' => true,
-                        'cookies' => $cookieJar,
-                    ])
-                    ->get($confirmUrl);
-
-                $contentType = $response->header('Content-Type');
-            }
-        }
-
-        // Проверка, что это реально картинка
-        if (!str_contains($contentType, 'image')) {
-            logger()->warning('Skipped (not image)', [
-                'url' => $url,
-                'content_type' => $contentType,
-                'sku' => $product->sku
-            ]);
-            return;
-        }
-
-        // Защита от слишком маленьких файлов
-        if (strlen($response->body()) < 1000) {
-            logger()->warning('Skipped (too small, probably not image)', [
-                'url' => $url,
-                'sku' => $product->sku
-            ]);
-            return;
+        $response = Http::timeout(60)->get($url);
+        if (! $response->successful()) {
+            throw new \Exception('Image download failed: ' . $url);
         }
 
         $fileName = Str::uuid() . '.webp';
         $path = "products/{$product->id}/{$fileName}";
         $fullPath = Storage::disk('public')->path($path);
 
-        if (!file_exists(dirname($fullPath))) {
-            mkdir(dirname($fullPath), 0755, true);
+        $directory = dirname($fullPath);
+        if (!file_exists($directory)) {
+            mkdir($directory, 0755, true);
         }
 
-        // Сохраняем картинку
+        // Фасад Image теперь использует read()
         $image = Image::read($response->body())
             ->resize(800, 800, function ($constraint) {
                 $constraint->aspectRatio();
