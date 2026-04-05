@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Imagick\Driver;
+use GuzzleHttp\Cookie\CookieJar;
 class ProductImportService
 {
     protected GoogleSheetsClient $client;
@@ -216,6 +217,7 @@ class ProductImportService
     private function saveProductImage(Product $product, string $url, bool $isMain = false): void
     {
         $url = $this->normalizeGoogleDriveUrl($url);
+        $cookieJar = new CookieJar();
 
         $existing = $product->images()->where('original_url', $url)->first();
         if ($existing) {
@@ -229,7 +231,7 @@ class ProductImportService
         $response = Http::timeout(60)
             ->withOptions([
                 'allow_redirects' => true,
-                'cookies' => true,
+                'cookies' => $cookieJar,
             ])
             ->get($url);
 
@@ -249,7 +251,7 @@ class ProductImportService
                 $response = Http::timeout(60)
                     ->withOptions([
                         'allow_redirects' => true,
-                        'cookies' => true,
+                        'cookies' => $cookieJar,
                     ])
                     ->get($confirmUrl);
 
