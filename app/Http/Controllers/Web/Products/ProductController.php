@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Web\Products;
 
 use App\Helpers\AttributesHelper;
 use App\Http\Controllers\Controller;
+use App\Models\Attribute;
 use App\Services\Categories\CategoryService;
 use App\Services\Products\ProductService;
 use Illuminate\Http\Request;
@@ -26,8 +27,16 @@ class ProductController extends Controller
         $filters = request()->only(['categories', 'attributes', 'price_min', 'price_max']);
 
         $products = $this->service->getFilteredProducts($filters, 9, $category_slug);
-        $attributes = AttributesHelper::getAll();
-        $categorychildren = $this->categoryService->getChildrenBySlug($category_slug);
+
+        $categorychildren = $this->categoryService
+            ->getChildrenBySlug(
+                $category_slug,
+                ['attributes.translations', 'attributes.values.translations']
+            );
+
+        $categoryIds = $categorychildren->pluck('id');
+        $attributes = AttributesHelper::forFilter($categoryIds);
+
 
         return Inertia::render(
             'Products/Index',

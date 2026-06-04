@@ -14,4 +14,17 @@ class AttributesHelper
 
         return $attributes;
     }
+
+    public static function forFilter($categoryIds): Collection
+    {
+        $attributes = Attribute::with(['translations', 'values.translations'])
+            ->whereHas('categories', function ($q) use ($categoryIds) {
+                $q->whereIn('categories.id', $categoryIds);
+            })
+            ->get();
+            
+        return $attributes;
+    }
+
+
 }
