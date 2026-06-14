@@ -29,16 +29,17 @@ const mainImage = computed(() => {
 
        <div class="blogg-content card-body fixed-content">
       <!-- Кнопка Show more -->
-      <span class="post-date ">
-        <Link :href="route('portfolio.single_portfolio', [props.locale, portfolio.id])">{{useTrans('app.buttons.show_more')}}</Link>
+      <span >
+        <Link class="btn-cart py-2 text-white" type="btn" 
+              :href="route('portfolio.single_portfolio', [props.locale, portfolio.id])">
+              {{useTrans('app.buttons.show_more')}}
+        </Link>
       </span>
 
       <!-- Название с фиксированной высотой -->
-      <div class="title-wrapper">
-        <h5>
-          <a href="blog-details.html">{{ portfolio.translation_lang?.name }}</a>
-        </h5>
-      </div>
+      <div class="title-wrapper mt-2">
+        <h5>{{ portfolio.translation_lang?.name }} </h5>
+      </div>      
 
       <!-- Описание -->
       <p class="text-truncate-3 mt-3">{{ portfolio.translation_lang?.description }}</p>
@@ -68,12 +69,7 @@ const mainImage = computed(() => {
   justify-content: flex-start;
   overflow: hidden;
 }
-.post-date{
-    width: fit-content;
-    padding: 8px;
-    text-align: center;
-    font-weight: bold;
-}
+
 /* Название: фиксированная высота и максимум 2 строки */
 .title-wrapper {
   height: 48px; /* подгоняем под 2 строки */

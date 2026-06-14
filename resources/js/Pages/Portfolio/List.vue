@@ -16,7 +16,7 @@ const props = defineProps({
     portfolio: Array,
     locale: String
 })
-
+console.log(props.portfolio, 33333);
 </script>
 
 <template>

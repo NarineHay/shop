@@ -6,10 +6,12 @@ use App\Filament\Resources\CategoryResource\Pages;
 use App\Filament\Traits\DynamicFilterTrait;
 use App\Models\Category;
 use App\Services\Categories\CategoryService;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Form;
@@ -21,6 +23,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class CategoryResource extends Resource
@@ -62,12 +65,25 @@ class CategoryResource extends Resource
                     ->label('Ակտիվ')
                     ->default(true),
 
+
                 Tabs::make('Translations')
                     ->tabs(
                         collect(self::SUPPORTED_LOCALES)->map(
                             fn($label, $locale) => self::makeLangTab($locale, $label)
                         )->toArray()
                     ),
+
+               
+                FileUpload::make('image')
+                    ->image()
+                    ->disk('public')
+                    ->directory(fn ($record) => $record
+                        ? "categories/{$record->id}"
+                        : "categories/temp"
+                    )->getUploadedFileNameForStorageUsing(
+                    fn ($file) => $file->hashName()
+                )
+
             ])
         ]);
     }
@@ -95,7 +111,13 @@ class CategoryResource extends Resource
                     }
 
                     return $rule;
-                })
+                }),
+
+            Textarea::make("translations.{$locale}.description")
+                ->label('Նկարագրություն')
+                ->required()
+                ->rows(4)
+                ->default(fn($record) => $record?->translation($locale)?->description),
         ]);
     }
 

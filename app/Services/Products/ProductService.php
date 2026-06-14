@@ -15,7 +15,7 @@ class ProductService extends BaseService
         parent::__construct($repository);
     }
 
-    public function getBySlug(string $slug): Product
+    public function getBySlug(string $slug, array $with = []): Product
     {
 
         $product = $this->repository->findBySlug($slug);

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Interfaces\BaseInterface;
+use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseService
 {
@@ -21,6 +22,12 @@ abstract class BaseService
     {
         return $this->repository->getById($id, $with);
     }
+
+    public function getBySlug(string $slug, array $with = []): Model
+    {
+        return $this->repository->getBySlug($slug, $with);
+    }
+
 
     public function store(array $data): mixed
     {

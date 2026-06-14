@@ -18,6 +18,7 @@
     "cart": "Cart",
     "products": "Products",
     "product_show": "Show",
-    "contact_us": "Contact Us"
+    "contact_us": "Contact Us",
+    "category_page": ":category"
 
 }
