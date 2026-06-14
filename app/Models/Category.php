@@ -7,13 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Category extends Model
 {
     use SoftDeletes, DynamicFilterTrait;
 
     protected $guarded = [];
-    protected $appends = ['translation'];
+    protected $appends = ['translation', 'image_url'];
 
 
     // public function parent(): BelongsTo
@@ -68,5 +69,32 @@ class Category extends Model
         }
 
         return $depth;
+    }
+
+    public function getImageUrlAttribute(): ?string
+    {
+        return $this->image
+            ? Storage::disk('public')->url($this->image)
+            : null;
+    }
+
+    public function page()
+    {
+        return $this->hasOne(CategoryPage::class);
+    }
+
+
+    protected static function booted(): void
+    {
+        static::deleting(function (Category $category) {
+
+            if ($category->image) {
+                Storage::disk('public')->delete($category->image);
+            }
+
+            Storage::disk('public')->deleteDirectory(
+                "categories/{$category->id}"
+            );
+        });
     }
 }

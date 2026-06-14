@@ -1678,7 +1678,7 @@ span.yellow {
     background: #c92829;
     border: medium none;
     border-radius: 25px;
-    color: #111;
+    color: #fff;
     cursor: pointer;
     font-size: 14px;
     line-height: 36px;
@@ -4049,7 +4049,7 @@ label {
 .btn-secondary:hover {
     background-color: #c92829;
     border-color: #c92829;
-    color: #111;
+    color: #fff;
 }
 
 /* Components Custom Inputs */

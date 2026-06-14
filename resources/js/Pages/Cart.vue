@@ -6,7 +6,7 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import Checkbox from "@/Components/Checkbox.vue";
-import { Head, Link, useForm, usePage } from "@inertiajs/vue3";
+import { Head, Link, useForm, usePage, router  } from "@inertiajs/vue3";
 import { useTrans, useRoute } from "/resources/js/trans";
 import { useCartStore } from '@/Stores/cart';
 
@@ -18,6 +18,10 @@ const props = defineProps({
 const cart = useCartStore()
 const page = usePage();
 const user = page.props.auth.user;
+
+const goBack = () => {
+    window.history.back()
+}
 
 console.log(cart, 444)
 onMounted(() => {
@@ -145,7 +149,7 @@ function getAttributeValueName(attrId, valueId) {
                                     </div>
 
                                     <div class="cart-button-wrapper d-flex justify-content-between mt-4">
-                                        <a href="shop-grid-left-sidebar.html" class="btn btn-secondary">{{useTrans('app.buttons.continue_shopping')}}</a>
+                                        <a href="#" @click.prevent="goBack" class="btn btn-secondary">{{useTrans('app.buttons.continue_shopping')}}</a>
                                         <a :href="useRoute('checkout')" class="btn btn-secondary dark align-self-end">{{useTrans('app.buttons.checkout')}}</a>
                                     </div>
                                 </div>
