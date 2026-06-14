@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\AboutUsController;
 use App\Http\Controllers\Web\CartController;
+use App\Http\Controllers\Web\Category\CategoryPageController;
 use App\Http\Controllers\Web\CheckoutController;
 use App\Http\Controllers\Web\CompareController;
 use App\Http\Controllers\Web\Contact\ContactController;
@@ -39,6 +40,8 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
     Route::get('/cart', CartController::class)->name('cart');
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+    Route::get('/category/{slug}', CategoryPageController::class)->name('category_page');
 
     // Route::prefix('products')->group(function () {
         Route::get('/products/{category_slug}', [ProductController::class, 'index'])->name('products');

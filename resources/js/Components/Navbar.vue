@@ -15,9 +15,10 @@ const cart = useCartStore();
 const page = usePage();
 const form = useForm()
 
-const categories = page.props.categories;
+// const categories = page.props.categories;
+const categories = computed(() => page.props.categories ?? [])
 const user = page.props.auth.user;
-
+console.log(categories, 'categories in navbar')
 const breadcrumbs = computed(() => page.props.breadcrumbs || [])
 const showBreadcrumbs = computed(() => {
     return breadcrumbs.value.length && route().current() !== 'welcome'
@@ -47,24 +48,68 @@ onMounted(async () => {
 //     return currentPath ? `/${lang}${currentPath}` : `/${lang}`
 // }
 
+// watch(
+//     () => page.props.categories,
+//     (value) => {
+//         console.log('CATEGORIES UPDATED', value)
+//     },
+//     { deep: true, immediate: true }
+// )
+
+// function localizedUrl(lang) {
+//   const props = page.props
+
+//   if (props.product && props.product.translations) {
+//     const p = props.product
+
+//     const productSlug = p.translations.find(tr => tr.locale === lang)?.slug || 'default-slug'
+//     const categorySlug = p.category.translations.find(t => t.locale === lang)?.slug || 'default-category'
+
+//     if (productSlug) return `/${lang}/products/${categorySlug}/${productSlug}`
+
+//   }
+
+//   const parts = page.url.split('/').filter(Boolean)
+//   parts.shift() // убираем текущую локаль
+//   const path = parts.join('/')
+//   return path ? `/${lang}/${path}` : `/${lang}`
+// }
 
 function localizedUrl(lang) {
-  const props = page.props
+    const props = page.props
 
-  if (props.product && props.product.translations) {
-    const p = props.product
+    // Product page
+    if (props.product?.translations) {
 
-    const productSlug = p.translations.find(tr => tr.locale === lang)?.slug || 'default-slug'
-    const categorySlug = p.category.translations.find(t => t.locale === lang)?.slug || 'default-category'
+        const productSlug =
+            props.product.translations.find(t => t.locale === lang)?.slug
 
-    if (productSlug) return `/${lang}/products/${categorySlug}/${productSlug}`
+        const categorySlug =
+            props.product.category.translations.find(t => t.locale === lang)?.slug
 
-  }
+        return `/${lang}/products/${categorySlug}/${productSlug}`
+    }
 
-  const parts = page.url.split('/').filter(Boolean)
-  parts.shift() // убираем текущую локаль
-  const path = parts.join('/')
-  return path ? `/${lang}/${path}` : `/${lang}`
+    // Category page
+    if (props.categoryPage?.category?.translations) {
+
+        const categorySlug =
+            props.categoryPage.category.translations.find(
+                t => t.locale === lang
+            )?.slug
+
+        return `/${lang}/category/${categorySlug}`
+    }
+
+    const parts = page.url.split('/').filter(Boolean)
+
+    parts.shift()
+
+    const path = parts.join('/')
+
+    return path
+        ? `/${lang}/${path}`
+        : `/${lang}`
 }
 
 
@@ -226,7 +271,7 @@ function doLogout() {
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <div class="top-main-menu">
+                        <div class="top-main-menu ">
                             <div class="categories-menu-bar">
                                 <!-- <div class="slicknav_menu">
                                     <a href="#" aria-haspopup="true" role="button" tabindex="0" class="slicknav_btn slicknav_collapsed"><span class="slicknav_menutxt">Categories</span><span class="slicknav_icon"><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span><span class="slicknav_icon-bar"></span></span></a><ul class="slicknav_nav slicknav_hidden" aria-hidden="true" role="menu" style="display: none;">
@@ -318,7 +363,7 @@ function doLogout() {
                                     <ul id="menu2">
                                         <CategoryItem
                                             v-for="category in categories"
-                                            :key="category.id"
+                                            :key="`${category.id}-${page.props.locale}`"
                                             :category="category"
                                         />
                                         <!-- <li v-for="category in categories" :key="category.id" >
@@ -343,7 +388,7 @@ function doLogout() {
                             </div>
                             <div class="main-menu">
                                 <nav id="mobile-menu">
-                                    <ul>
+                                    <ul >
                                         <!-- <li><a href="#">HOME<span class="lnr lnr-chevron-down"></span></a>
                                             <ul class="dropdown">
                                                 <li><a href="index.html">Home Version 1</a></li>
@@ -352,23 +397,23 @@ function doLogout() {
                                                 <li><a href="index-4.html">Home Version 4</a></li>
                                             </ul>
                                         </li> -->
-                                        <li><a href="contact-us.html">{{useTrans('navbar.our_services')}}</a></li>
-                                        <li>
-                                            <Link :href="useRoute('portfolio')">{{useTrans('navbar.portfolio')}}</Link>
+                                        <li><a  class="text-white" href="contact-us.html">{{useTrans('navbar.our_services')}}</a></li>
+                                        <li >
+                                            <Link class="text-white" :href="useRoute('portfolio')">{{useTrans('navbar.portfolio')}}</Link>
                                         </li>
                                         <li>
-                                            <Link :href="useRoute('about_us')">{{useTrans('navbar.about_us')}}</Link>
+                                            <Link class="text-white" :href="useRoute('about_us')">{{useTrans('navbar.about_us')}}</Link>
                                         </li>
                                         <li>
-                                            <Link :href="useRoute('contact_us')">{{useTrans('navbar.contact_us')}}</Link>
+                                            <Link class="text-white" :href="useRoute('contact_us')">{{useTrans('navbar.contact_us')}}</Link>
                                         </li>
 
 
                                     </ul>
                                 </nav>
                             </div> <!-- </div> end main menu -->
-                            <div class="header-call-action">
-                                <p><span class="lnr lnr-phone"></span>Hotline : <strong>+37455522511</strong></p>
+                            <div class="header-call-action ">
+                                <p><span class="lnr lnr-phone text-white"></span> <strong class="text-white">Hotline : +37455522511</strong></p>
                             </div>
                         </div>
                     </div>
@@ -386,7 +431,7 @@ function doLogout() {
                 <div class="col-12">
                     <div class="breadcrumb-wrap">
                         <nav aria-label="breadcrumb">
-                            <ul class="breadcrumb">
+                            <!-- <ul class="breadcrumb">
                                 <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item" :class="{ active: index === breadcrumbs.length - 1 }">
                                     <template v-if="crumb.href && index !== breadcrumbs.length - 1">
                                         <a :href="crumb.href">{{ useTrans(crumb.label) }}</a>
@@ -395,7 +440,24 @@ function doLogout() {
                                         {{ useTrans(crumb.label) }}
                                     </template>
                                 </li>
-                            </ul>
+                            </ul> -->
+
+                            <ul class="breadcrumb">
+                            <li v-for="(crumb, index) in breadcrumbs" :key="index" class="breadcrumb-item" :class="{ active: index === breadcrumbs.length - 1 }">
+                                <template v-if="crumb.href && index !== breadcrumbs.length - 1">
+                                    <a :href="crumb.href">
+                                        {{ crumb.label === 'breadcrumbs.category_page' && page.props.categoryPage?.category?.translation?.name 
+                                            ? page.props.categoryPage.category.translation.name 
+                                            : useTrans(crumb.label) }}
+                                    </a>
+                                </template>
+                                <template v-else>
+                                    {{ crumb.label === 'breadcrumbs.category_page' && page.props.categoryPage?.category?.translation?.name 
+                                        ? page.props.categoryPage.category.translation.name 
+                                        : useTrans(crumb.label) }}
+                                </template>
+                            </li>
+                        </ul>
                         </nav>
                     </div>
                 </div>

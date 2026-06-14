@@ -6,6 +6,7 @@ use App\Filament\Resources\CategoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 
 class CreateCategory extends CreateRecord
 {
@@ -20,10 +21,24 @@ class CreateCategory extends CreateRecord
 
     protected function afterCreate(): void
     {
+        if ($this->record->image) {
+
+            $oldPath = $this->record->image;
+
+            $newPath = "categories/{$this->record->id}/" . basename($oldPath);
+
+            Storage::disk('public')->move($oldPath, $newPath);
+
+            $this->record->update([
+                'image' => $newPath,
+            ]);
+        }
+
         foreach ($this->translations as $locale => $values) {
             $this->record->translations()->create([
                 'locale' => $locale,
                 'name' => $values['name'] ?? '',
+                'description' => $values['description'] ?? '',
                 'slug' => $values['slug'] ?? '',
             ]);
         }

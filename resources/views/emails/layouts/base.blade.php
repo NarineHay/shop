@@ -71,7 +71,7 @@
     .btn-secondary:hover {
         background-color: #fedc19;
         border-color: #fedc19;
-        color: #111;
+        color: #fff;
     }
 
     .email-footer {
