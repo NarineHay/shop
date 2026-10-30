@@ -1,17 +1,13 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { usePage, router } from '@inertiajs/vue3'
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link } from '@inertiajs/vue3';
 import { useTrans } from '/resources/js/trans';
-
-const page = usePage()
 
 const props = defineProps({
     categoryPage: Object,
     locale: String
 })
-console.log('CategoryPage props:', props.categoryPage)
 // Banner dannye
 const bannerImage = computed(() => {
     if (props.categoryPage?.banner_image) {
@@ -21,7 +17,7 @@ const bannerImage = computed(() => {
 })
 
 const bannerTitle = computed(() => {
-    if (props.categoryPage?.translation_lang.banner_title) {
+    if (props.categoryPage?.translation_lang?.banner_title) {
         return props.categoryPage.translation_lang.banner_title
     }
     if (props.categoryPage?.category?.translation?.name) {
@@ -31,7 +27,7 @@ const bannerTitle = computed(() => {
 })
 
 const bannerText = computed(() => {
-    if (props.categoryPage?.translation_lang.banner_text) {
+    if (props.categoryPage?.translation_lang?.banner_text) {
         return props.categoryPage.translation_lang.banner_text
     }
     return ''
@@ -93,13 +89,10 @@ const mainImage = (category) => {
 // Funktsiya dlya polucheniya ssylki
 const getCategoryLink = (category) => {
     if (category.children && category.children.length > 0) {
-        return `/${props.locale}/category-page/${category.translation?.slug}`
+        return `/${props.locale}/category/${category.translation?.slug}`
     }
     return `/${props.locale}/products/${category.translation?.slug}`
 }
-
-// Debug
-console.log('Children categories:', childrenCategories.value)
 </script>
 
 <template>
@@ -111,28 +104,25 @@ console.log('Children categories:', childrenCategories.value)
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="banner-container"
-                             :style="{ backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${bannerImage})` }"
-                             style="background-size: cover; background-position: center; border-radius: 15px; padding: 60px 40px;">
-                            <div class="banner-content text-center">
-                                <h1 v-if="bannerTitle" class="banner-title">
-                                    {{ bannerTitle }}
-                                </h1>
-                                <p v-if="bannerText" class="banner-text">
-                                    {{ bannerText }}
-                                </p>
-                            </div>
-                        </div>
+                        <img :src="bannerImage" :alt="bannerTitle" class="banner-image">
                     </div>
                 </div>
             </div>
         </div>
 
-         <div class="container-fluid">
+        <div class="category-intro container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <h2>{{ props.categoryPage.translation_lang.page_title }}</h2>
-                    <p v-html="props.categoryPage.translation_lang.content"></p>
+                    <h1 v-if="bannerTitle" class="banner-title">{{ bannerTitle }}</h1>
+                    <p v-if="bannerText" class="banner-text">{{ bannerText }}</p>
+                    <h2 v-if="props.categoryPage?.translation_lang?.page_title">
+                        {{ props.categoryPage.translation_lang.page_title }}
+                    </h2>
+                    <div
+                        v-if="props.categoryPage?.translation_lang?.content"
+                        class="category-content"
+                        v-html="props.categoryPage.translation_lang.content"
+                    ></div>
                 </div>
             </div>
         </div>
@@ -148,7 +138,6 @@ console.log('Children categories:', childrenCategories.value)
                                      :key="category.id"
                                      class="col-sm-6 col-lg-4">
 
-                                    <!-- Odna kartochka s odnim borderom -->
                                     <div class="single-blogg-item mb-30">
                                         <div class="blogg-thumb">
                                             <Link :href="getCategoryLink(category)">
@@ -156,18 +145,18 @@ console.log('Children categories:', childrenCategories.value)
                                             </Link>
                                         </div>
 
-                                        <div class="blogg-content card-body fixed-content">
-                                            <span>
-                                                <Link class="btn-cart py-2 text-white" type="btn" :href="getCategoryLink(category)">
-                                                    {{ useTrans('app.buttons.show_more') }}
+                                        <div class="blogg-content card-body">
+                                            <h5>
+                                                <Link :href="getCategoryLink(category)">
+                                                    {{ category.translation?.name || category.name }}
                                                 </Link>
-                                            </span>
-
-                                            <div class="title-wrapper mt-2">
-                                                <h5>{{ category.translation?.name || category.name }}</h5>
-                                            </div>
-
-                                            <p class="text-truncate-3 mt-3">{{ category.translation?.description }}</p>
+                                            </h5>
+                                            <Link
+                                                class="btn-cart d-inline-block text-white"
+                                                :href="getCategoryLink(category)"
+                                            >
+                                                {{ useTrans('app.buttons.show_more') }}
+                                            </Link>
                                         </div>
                                     </div>
                                 </div>
@@ -206,25 +195,29 @@ console.log('Children categories:', childrenCategories.value)
 </template>
 
 <style scoped>
-/* Banner styles */
-.banner-container {
-    transition: all 0.3s ease;
+.banner-image {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
 }
 
-/* H1 стили - белый большой текст */
+.category-intro {
+    padding-bottom: 15px;
+}
+
 .banner-title {
-    color: white !important;
+    color: #333 !important;
     font-size: 48px !important;
     font-weight: bold !important;
-    margin-bottom: 20px !important;
+    margin-bottom: 15px !important;
 }
 
-/* P стили */
 .banner-text {
-    color: white !important;
+    color: #555 !important;
     font-size: 20px !important;
-    max-width: 800px !important;
-    margin: 0 auto !important;
+    line-height: 1.6;
+    margin-bottom: 25px !important;
 }
 
 /* H2 стили */
@@ -237,15 +230,15 @@ h2 {
 
 /* Odna kartochka s odnim borderom */
 .single-blogg-item {
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    border-radius: 10px;
     overflow: hidden;
     transition: all 0.3s ease;
     background: white;
 }
 
 .single-blogg-item:hover {
-    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    border-color: #c92829;
 }
 
 .blogg-thumb {
@@ -267,60 +260,30 @@ h2 {
 }
 
 /* Fiksiruem vysotu vsego kontenta */
-.fixed-content {
-    height: 220px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    overflow: hidden;
-    padding: 15px;
+.blogg-content {
+    padding: 22px 15px 26px;
+    text-align: left;
 }
 
-
-/* Nazvanie: fiksirovannaya vysota i maksimum 2 stroki */
-.title-wrapper {
-    height: 48px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    margin-bottom: 5px;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.title-wrapper h5 {
+.blogg-content h5 {
     margin: 0;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 22px;
 }
 
-.title-wrapper h5 a {
+.blogg-content h5 a {
     color: #333;
     text-decoration: none;
     transition: color 0.3s;
 }
 
-.title-wrapper h5 a:hover {
+.blogg-content h5 a:hover {
     color: #4a90e2;
 }
 
 h5::before {
     background: none;
-}
-
-/* Opisanie: maksimum 3 stroki */
-.text-truncate-3 {
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #666;
-    font-size: 14px;
-    line-height: 1.5;
-    margin-top: 10px;
 }
 
 /* Pagination - vash stil */
@@ -361,8 +324,9 @@ h5::before {
 
 /* Responsive */
 @media (max-width: 768px) {
-    .banner-container {
-        padding: 40px 20px !important;
+    .banner-area-wrapper {
+        padding-top: 15px;
+        padding-bottom: 20px;
     }
 
     .banner-title {
@@ -377,14 +341,6 @@ h5::before {
         height: 180px;
     }
 
-    .fixed-content {
-        height: 200px;
-    }
-
-    .title-wrapper {
-        height: 40px;
-    }
-    
     h2 {
         font-size: 24px !important;
     }
