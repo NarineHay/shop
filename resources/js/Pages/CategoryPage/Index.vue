@@ -245,18 +245,19 @@ h2 {
     width: 100%;
     height: 200px;
     overflow: hidden;
+    background: #fff;
 }
 
 .img-fit {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
-    transition: transform 0.3s ease;
+    transition: opacity 0.3s ease;
 }
 
 .single-blogg-item:hover .img-fit {
-    transform: scale(1.05);
+    opacity: 0.9;
 }
 
 /* Fiksiruem vysotu vsego kontenta */
