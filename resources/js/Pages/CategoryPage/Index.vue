@@ -59,7 +59,7 @@ watch(() => props.categoryPage, () => {
 
 // Pagination
 const currentPage = ref(1)
-const itemsPerPage = 6
+const itemsPerPage = 8
 
 const paginatedChildren = computed(() => {
     const start = (currentPage.value - 1) * itemsPerPage
@@ -136,7 +136,7 @@ const getCategoryLink = (category) => {
                             <div class="row">
                                 <div v-for="category in paginatedChildren"
                                      :key="category.id"
-                                     class="col-sm-6 col-lg-4">
+                                     class="col-sm-6 col-lg-3">
 
                                     <div class="single-blogg-item mb-30">
                                         <div class="blogg-thumb">
@@ -208,7 +208,7 @@ const getCategoryLink = (category) => {
 
 .banner-title {
     color: #333 !important;
-    font-size: 48px !important;
+    font-size: 30px !important;
     font-weight: bold !important;
     margin-bottom: 15px !important;
 }
@@ -268,9 +268,9 @@ h2 {
 
 .blogg-content h5 {
     margin: 0;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 400;
-    line-height: 22px;
+    line-height: 20px;
 }
 
 .blogg-content h5 a {
@@ -331,7 +331,7 @@ h2 {
     }
 
     .banner-title {
-        font-size: 32px !important;
+        font-size: 24px !important;
     }
 
     .banner-text {
