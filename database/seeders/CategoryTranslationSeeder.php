@@ -159,16 +159,19 @@ class CategoryTranslationSeeder extends Seeder
             [29, 'en', 'Automatic transfer switches', 'automatic-transfer-switches', '2026-03-21 21:19:22', '2026-03-21 21:19:22'],
         ];
 
-        // Вставляем все переводы
         foreach ($translations as $translation) {
-            DB::table('category_translations')->insert([
-                'category_id' => $translation[0],
-                'locale' => $translation[1],
-                'name' => $translation[2],
-                'slug' => $translation[3],
-                'created_at' => $translation[4],
-                'updated_at' => $translation[5],
-            ]);
+            DB::table('category_translations')->updateOrInsert(
+                [
+                    'category_id' => $translation[0],
+                    'locale' => $translation[1],
+                ],
+                [
+                    'name' => $translation[2],
+                    'slug' => $translation[3],
+                    'created_at' => $translation[4],
+                    'updated_at' => $translation[5],
+                ]
+            );
         }
 
         $this->command->info('Category translations seeded successfully! Total: ' . count($translations));

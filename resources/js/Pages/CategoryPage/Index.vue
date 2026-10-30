@@ -283,8 +283,8 @@ h2 {
     color: #4a90e2;
 }
 
-h5::before {
-    background: none;
+.blogg-content h5::before {
+    content: none;
 }
 
 /* Pagination - vash stil */
