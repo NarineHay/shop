@@ -115,7 +115,6 @@ class CategoryResource extends Resource
 
             Textarea::make("translations.{$locale}.description")
                 ->label('Նկարագրություն')
-                ->required()
                 ->rows(4)
                 ->default(fn($record) => $record?->translation($locale)?->description),
         ]);
