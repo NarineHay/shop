@@ -1,0 +1,21 @@
+{
+    "title": "Our Services",
+    "headline": "For your project — from equipment selection to a working system",
+    "intro": "Whether you’re building a new system, upgrading existing equipment or equipping an electrical panel, KASAMAN can help organise the work around your site and equipment requirements.",
+    "electrical_installation_title": "Electrical Installation",
+    "electrical_installation_text": "We carry out electrical installation work for homes and industrial facilities. We plan connections and component installation with the system’s use and future maintenance in mind.",
+    "industrial_automation_title": "Industrial Automation",
+    "industrial_automation_text": "We automate the control of equipment and motors. We tailor the solution to the operating process: what needs to start, when it should start and how it should be controlled.",
+    "panel_assembly_title": "Electrical Panel Assembly",
+    "panel_assembly_text": "We assemble distribution and control panels to meet project requirements. We focus on component layout, orderly wiring and access for maintenance.",
+    "equipment_supply_title": "Equipment Selection and Supply",
+    "equipment_supply_text": "We help select the equipment needed for electrical protection, control and power supply. The HIMEL range is also available in our online store.",
+    "technical_advice_title": "Technical Advice",
+    "technical_advice_text": "Together, we clarify your needs, equipment requirements and component compatibility. We explain the available options so you understand what you’re choosing and why.",
+    "maintenance_upgrades_title": "Maintenance and Upgrades for Existing Systems",
+    "maintenance_upgrades_text": "We assess how your existing system operates and recommend maintenance or modifications based on its condition and your changing requirements.",
+    "cta": "Send us your project or describe the issue, and we’ll discuss the work involved and the next steps.",
+    "consultation_button": "Get a Consultation",
+    "project_button": "Send Your Project",
+    "catalog_button": "Browse the HIMEL Range"
+}
