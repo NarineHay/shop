@@ -62,6 +62,9 @@ const year = new Date().getFullYear()
                                 <div class="footer-useful-link">
                                     <ul>
                                         <li>
+                                            <Link :href="useRoute('services')">{{ useTrans('navbar.our_services') }}</Link>
+                                        </li>
+                                        <li>
                                             <Link :href="useRoute('about_us')" >{{ useTrans('app.about_us') }}</Link>
                                         </li>
 
