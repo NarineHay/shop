@@ -11,6 +11,7 @@ use App\Http\Controllers\Web\ContactAsController;
 use App\Http\Controllers\Web\Portfolio\DashboardController;
 use App\Http\Controllers\Web\Portfolio\PortfolioController;
 use App\Http\Controllers\Web\Products\ProductController;
+use App\Http\Controllers\Web\ServicesController;
 use App\Http\Controllers\Web\WelcomeController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::prefix( '{locale}' )->where( [ 'locale' => '[a-zA-Z]{2}' ] )->group( func
 {
     Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
     Route::get('/about-us', AboutUsController::class)->name('about_us');
+    Route::get('/services', ServicesController::class)->name('services');
     Route::get('/contact-us', [ContactAsController::class, 'index'])->name('contact_us');
     Route::get('/portfolio', [PortfolioController::class, 'index'])->name('portfolio');
     Route::get('/single-portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.single_portfolio');

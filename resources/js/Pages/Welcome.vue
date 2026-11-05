@@ -103,7 +103,9 @@ onMounted(() => {
     <!-- feature area end -->
 
     <!-- product wrapper area start -->
-    <OurProduct :products="props.products" />
+    <div id="catalog">
+        <OurProduct :products="props.products" />
+    </div>
     <!-- product wrapper area start -->
 
     <!-- featured categories area start -->
