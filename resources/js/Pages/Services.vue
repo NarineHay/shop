@@ -31,7 +31,7 @@ const services = [
                 </div>
             </div>
 
-            <div class="services-list pt-60 pb-35">
+            <div class="services-list pt-70 pb-35">
                 <div class="container-fluid">
                     <div class="row">
                         <div
@@ -87,9 +87,7 @@ const services = [
 
 .services-hero {
     padding: 72px 0 66px;
-    background:
-        linear-gradient(135deg, rgba(201, 40, 41, 0.08), rgba(255, 255, 255, 0) 55%),
-        #f7f7f7;
+    background: #fff;
     border-bottom: 1px solid #ececec;
 }
 
